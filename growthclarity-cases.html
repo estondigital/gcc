@@ -87,10 +87,70 @@ ul { list-style:none; }
 .btn-xl { padding:17px 34px; font-size:16px; }
 .btn-lg { padding:14px 28px; font-size:15px; }
 .btn-md { padding:11px 22px; font-size:14px; }
-.btn-green { background:var(--green); color:var(--ink); }
-.btn-green:hover { background:var(--green-2); transform:translateY(-3px); box-shadow:0 20px 50px var(--green-glow); }
-.btn-outline-white { background:transparent; color:rgba(255,255,255,.75); border:1.5px solid rgba(255,255,255,.2); }
-.btn-outline-white:hover { border-color:rgba(255,255,255,.5); color:var(--white); background:rgba(255,255,255,.06); }
+/* ── CTA ANIMATIONS ── */
+@keyframes ctaPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,230,118,.5), 0 4px 20px var(--green-glow); }
+  50%      { box-shadow: 0 0 0 10px rgba(0,230,118,0), 0 8px 30px rgba(0,230,118,.3); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes arrowBounce {
+  0%,100% { transform: translateX(0); }
+  50%      { transform: translateX(5px); }
+}
+@keyframes ctaWiggle {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  20%      { transform: translateY(-3px) rotate(-1deg); }
+  40%      { transform: translateY(-5px) rotate(1deg); }
+  60%      { transform: translateY(-3px) rotate(-1deg); }
+  80%      { transform: translateY(-1px) rotate(0deg); }
+}
+
+.btn-green {
+  background: linear-gradient(90deg, var(--green) 0%, #00ffaa 50%, var(--green) 100%);
+  background-size: 200% auto;
+  color: var(--ink);
+  animation: ctaPulse 2.8s ease-in-out infinite;
+  position: relative; overflow: hidden;
+}
+.btn-green::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.35) 50%, transparent 60%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  pointer-events: none;
+}
+.btn-green:hover {
+  background: var(--green-2);
+  background-size: 100% auto;
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 20px 50px var(--green-glow), 0 0 0 3px rgba(0,230,118,.25);
+  animation: ctaWiggle .5s var(--ease) forwards, ctaPulse 2.8s .5s ease-in-out infinite;
+}
+.btn-green::after { content:''; }
+.btn-arrow.btn-green::after { content: '→'; animation: arrowBounce 1.2s ease-in-out infinite; display:inline-block; }
+.btn-green:hover::after { animation: arrowBounce .4s ease-in-out 3; }
+
+.btn-outline-white {
+  background:transparent; color:rgba(255,255,255,.75);
+  border:1.5px solid rgba(255,255,255,.2);
+  transition: all .3s var(--ease);
+  position: relative; overflow: hidden;
+}
+.btn-outline-white::before {
+  content: '';
+  position: absolute; top:50%; left:50%;
+  width:0; height:0;
+  background: rgba(255,255,255,.06);
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  transition: width .5s var(--ease), height .5s var(--ease);
+}
+.btn-outline-white:hover::before { width:300px; height:300px; }
+.btn-outline-white:hover { border-color:rgba(255,255,255,.5); color:var(--white); }
 .btn-outline-dark { background:transparent; color:var(--navy); border:1.5px solid rgba(11,31,58,.2); }
 .btn-outline-dark:hover { border-color:var(--navy); background:var(--navy); color:var(--white); }
 .btn-arrow::after { content:'→'; }
@@ -486,7 +546,7 @@ footer { background:#050d19; padding:52px 48px 28px; border-top:1px solid var(--
     <a href="index.html#systems">Systems</a>
     <a href="#" class="active" style="color:var(--white)">Case Studies</a>
     <a href="index.html#about">About</a>
-    <a href="https://linkedin.com/in/jithin-george" target="_blank" class="nav-cta">Get GTM Breakdown →</a>
+    <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" class="nav-cta">Get GTM Breakdown →</a>
   </div>
 </nav>
 
@@ -644,8 +704,8 @@ footer { background:#050d19; padding:52px 48px 28px; border-top:1px solid var(--
       <h3>Want the same clarity<br>for <em>your GTM?</em></h3>
       <p>I'll show you exactly what's broken and how to fix it. One focused conversation. Zero fluff.</p>
       <div class="cta-btns">
-        <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
-        <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-outline-white btn-xl">Subscribe to Newsletter</a>
+        <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
+        <a href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7415340728588926976" target="_blank" class="btn btn-outline-white btn-xl">Subscribe to Newsletter</a>
       </div>
       <p class="cta-microcopy">Series A–B · B2B SaaS · $1M–$20M ARR only</p>
     </div>
@@ -1018,8 +1078,8 @@ footer { background:#050d19; padding:52px 48px 28px; border-top:1px solid var(--
       <h3>Want the same clarity<br>for <em>your conversion?</em></h3>
       <p>I'll diagnose exactly where your funnel is breaking — and show you what it would take to fix it. One focused conversation. No obligation.</p>
       <div class="cta-btns">
-        <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
-        <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-outline-white btn-lg">Subscribe to Newsletter</a>
+        <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
+        <a href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7415340728588926976" target="_blank" class="btn btn-outline-white btn-lg">Subscribe to Newsletter</a>
       </div>
       <p class="cta-microcopy">Series A–B · B2B SaaS · $1M–$20M ARR</p>
     </div>
@@ -1305,8 +1365,8 @@ footer { background:#050d19; padding:52px 48px 28px; border-top:1px solid var(--
       <h3>Let's build yours<br>from the <em>right foundation.</em></h3>
       <p>I'll help you find the trigger event your buyers respond to, and design the system that turns it into predictable pipeline.</p>
       <div class="cta-btns">
-        <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
-        <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-outline-white btn-lg">Subscribe to Newsletter</a>
+        <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
+        <a href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7415340728588926976" target="_blank" class="btn btn-outline-white btn-lg">Subscribe to Newsletter</a>
       </div>
       <p class="cta-microcopy">Series A–B · B2B SaaS · $1M–$20M ARR</p>
     </div>
@@ -1592,8 +1652,8 @@ footer { background:#050d19; padding:52px 48px 28px; border-top:1px solid var(--
       <h3>The fix is probably<br><em>not what you think.</em></h3>
       <p>I'll show you exactly what's driving it — and how to fix the unit economics without cutting budget or sacrificing pipeline.</p>
       <div class="cta-btns">
-        <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
-        <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-outline-white btn-lg">Subscribe to Newsletter</a>
+        <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
+        <a href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7415340728588926976" target="_blank" class="btn btn-outline-white btn-lg">Subscribe to Newsletter</a>
       </div>
       <p class="cta-microcopy">Series A–B · B2B SaaS · $1M–$20M ARR</p>
     </div>
@@ -1613,8 +1673,8 @@ footer { background:#050d19; padding:52px 48px 28px; border-top:1px solid var(--
       <a href="index.html">Home</a>
       <a href="index.html#systems">Systems</a>
       <a href="index.html#about">About</a>
-      <a href="https://linkedin.com/in/jithin-george" target="_blank">LinkedIn</a>
-      <a href="https://linkedin.com/in/jithin-george" target="_blank">Newsletter</a>
+      <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank">LinkedIn</a>
+      <a href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7415340728588926976" target="_blank">Newsletter</a>
     </div>
     <div class="footer-copy">© 2025 GrowthClarity Co. · Jithin George</div>
   </div>
