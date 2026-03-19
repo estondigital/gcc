@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrowthClarity Co. — GTM System Architect for B2B SaaS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   ROOT TOKENS
+============================================ */
+:root {
+  --navy:        #0B1F3A;
+  --navy-2:      #0d2444;
+  --navy-3:      #112d52;
+  --ink:         #060f1c;
+  --white:       #FFFFFF;
+  --off-white:   #F5F7FA;
+  --green:       #00E676;
+  --green-2:     #00c960;
+  --green-glow:  rgba(0,230,118,.18);
+  --green-soft:  rgba(0,230,118,.08);
+  --red-soft:    rgba(255,80,80,.12);
+  --red:         #ff5050;
+  --muted:       #8296b0;
+  --muted-2:     #4d6480;
+  --border-dark: rgba(255,255,255,.07);
+  --border:      rgba(0,0,0,.08);
+  --ease:        cubic-bezier(.16,1,.3,1);
+}
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:16px; }
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--white);
+  color: var(--navy);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  line-height: 1.1;
+  letter-spacing: -.03em;
+}
+
+a { text-decoration:none; color:inherit; }
+button { font-family:inherit; cursor:pointer; border:none; background:none; }
+ul { list-style:none; }
+
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--navy-3); border-radius:3px; }
+
+/* ============================================
+   NAV
+============================================ */
+#nav {
+  position:fixed; top:0; left:0; right:0; z-index:9999;
+  height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 48px;
+  background:rgba(6,15,28,.94);
+  backdrop-filter:blur(20px) saturate(1.5);
+  border-bottom:1px solid var(--border-dark);
+  transition:border-color .3s;
+}
+
+.nav-brand {
+  display:flex; align-items:center; gap:10px;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-weight:800; font-size:17px; color:var(--white);
+  cursor:pointer;
+}
+.nav-brand span { color:var(--green); }
+.nav-pulse {
+  width:9px; height:9px; border-radius:50%;
+  background:var(--green);
+  animation:navpulse 2.5s infinite;
+}
+@keyframes navpulse {
+  0%  { box-shadow:0 0 0 0 var(--green-glow); }
+  60% { box-shadow:0 0 0 10px rgba(0,230,118,0); }
+  100%{ box-shadow:0 0 0 0 rgba(0,230,118,0); }
+}
+
+.nav-links {
+  display:flex; align-items:center; gap:2px;
+}
+.nav-links a {
+  padding:8px 16px; border-radius:6px;
+  font-size:14px; font-weight:500; color:rgba(255,255,255,.55);
+  transition:color .2s, background .2s;
+  display:block;
+}
+.nav-links a:hover { color:var(--white); background:rgba(255,255,255,.06); }
+
+.nav-cta {
+  background:var(--green); color:var(--ink) !important;
+  padding:10px 22px !important; border-radius:8px !important;
+  font-weight:700 !important; font-size:13px !important;
+  transition:all .2s !important;
+}
+.nav-cta:hover {
+  background:var(--green-2) !important;
+  transform:translateY(-1px);
+  box-shadow:0 8px 24px var(--green-glow) !important;
+}
+
+/* ============================================
+   SHARED
+============================================ */
+.wrap { max-width:1180px; margin:0 auto; padding:0 48px; }
+.wrap-sm { max-width:760px; margin:0 auto; padding:0 48px; }
+section { padding:104px 48px; }
+
+.eyebrow {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--green); margin-bottom:18px;
+}
+.eyebrow::before {
+  content:''; display:block; width:24px; height:2px; background:var(--green);
+}
+
+.section-title {
+  font-size:clamp(32px,4.5vw,56px);
+  color:var(--navy); margin-bottom:18px; font-weight:800;
+}
+.section-title em { font-style:normal; color:var(--green); }
+.section-title.light { color:var(--white); }
+.section-body {
+  font-size:17px; color:var(--muted-2); line-height:1.75;
+  max-width:560px; margin-bottom:52px;
+}
+.section-body strong { color:var(--navy); font-weight:600; }
+.section-body.light { color:rgba(255,255,255,.5); }
+.section-body.light strong { color:rgba(255,255,255,.85); }
+
+/* BUTTONS */
+.btn {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-weight:700; border-radius:9px;
+  transition:all .25s var(--ease);
+  cursor:pointer; border:none;
+  text-decoration:none;
+}
+.btn-xl { padding:17px 34px; font-size:16px; }
+.btn-lg { padding:14px 28px; font-size:15px; }
+.btn-md { padding:11px 22px; font-size:14px; }
+.btn-green { background:var(--green); color:var(--ink); }
+.btn-green:hover { background:var(--green-2); transform:translateY(-3px); box-shadow:0 20px 50px var(--green-glow); }
+.btn-outline-white {
+  background:transparent; color:rgba(255,255,255,.75);
+  border:1.5px solid rgba(255,255,255,.2);
+}
+.btn-outline-white:hover { border-color:rgba(255,255,255,.5); color:var(--white); background:rgba(255,255,255,.06); }
+.btn-outline-dark {
+  background:transparent; color:var(--navy);
+  border:1.5px solid rgba(11,31,58,.2);
+}
+.btn-outline-dark:hover { border-color:var(--navy); background:var(--navy); color:var(--white); }
+.btn-arrow::after { content:'→'; }
+
+/* TAGS */
+.tag {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:4px 12px; border-radius:100px;
+  font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+}
+.tag-green { background:var(--green-soft); border:1px solid rgba(0,230,118,.25); color:var(--green); }
+.tag-white { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.65); }
+
+/* ============================================
+   HERO
+============================================ */
+#hero {
+  min-height:100vh;
+  background:var(--ink);
+  display:flex; flex-direction:column; justify-content:center;
+  padding:120px 48px 80px;
+  position:relative; overflow:hidden;
+}
+#hero::before {
+  content:''; position:absolute; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.3; pointer-events:none; z-index:0;
+}
+.hero-grid-bg {
+  position:absolute; inset:0; z-index:0;
+  background-image:
+    linear-gradient(rgba(0,230,118,.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,230,118,.032) 1px, transparent 1px);
+  background-size:72px 72px;
+}
+.hero-glow-1 {
+  position:absolute; top:-120px; right:-80px;
+  width:720px; height:720px; border-radius:50%;
+  background:radial-gradient(circle, rgba(0,230,118,.13), transparent 68%);
+  pointer-events:none; z-index:1;
+}
+.hero-glow-2 {
+  position:absolute; bottom:-200px; left:-60px;
+  width:600px; height:600px; border-radius:50%;
+  background:radial-gradient(circle, rgba(0,80,220,.08), transparent 65%);
+  pointer-events:none; z-index:1;
+}
+.hero-inner {
+  position:relative; z-index:2;
+  max-width:1180px; margin:0 auto; width:100%;
+  display:grid; grid-template-columns:1fr 430px; gap:72px; align-items:center;
+}
+.hero-left > * { animation:heroIn .8s var(--ease) both; }
+.hero-left > *:nth-child(2) { animation-delay:.1s; }
+.hero-left > *:nth-child(3) { animation-delay:.2s; }
+.hero-left > *:nth-child(4) { animation-delay:.3s; }
+.hero-left > *:nth-child(5) { animation-delay:.4s; }
+@keyframes heroIn {
+  from { opacity:0; transform:translateY(28px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.hero-kicker {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:7px 16px 7px 10px;
+  background:rgba(0,230,118,.1); border:1px solid rgba(0,230,118,.25);
+  border-radius:100px; margin-bottom:28px;
+}
+.hero-kicker-dot { width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); }
+.hero-kicker span { font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--green); }
+
+.hero-h1 {
+  font-size:clamp(46px,6.5vw,86px);
+  color:var(--white); font-weight:800; margin-bottom:28px; line-height:1.02;
+}
+.hero-h1 .accent { color:var(--green); }
+.hero-h1 .stroke { -webkit-text-stroke:2px rgba(255,255,255,.3); color:transparent; }
+.hero-sub {
+  font-size:18px; color:rgba(255,255,255,.52);
+  line-height:1.75; max-width:540px; margin-bottom:40px;
+}
+.hero-sub strong { color:rgba(255,255,255,.85); font-weight:600; }
+.hero-cta-row { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:48px; }
+.hero-note { font-size:12px; color:rgba(255,255,255,.28); display:flex; align-items:center; gap:6px; }
+.hero-note::before { content:'🔒'; font-size:11px; }
+.hero-stats {
+  display:flex; align-items:center; gap:40px;
+  padding-top:40px; border-top:1px solid rgba(255,255,255,.07);
+}
+.hero-stat-num {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:36px; font-weight:800; color:var(--white); line-height:1;
+}
+.hero-stat-num em { color:var(--green); font-style:normal; }
+.hero-stat-label { font-size:12px; color:rgba(255,255,255,.38); text-transform:uppercase; letter-spacing:.07em; margin-top:4px; }
+.stat-div { width:1px; height:44px; background:rgba(255,255,255,.08); }
+
+/* HERO CARD */
+.hero-card {
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09);
+  border-radius:20px; padding:28px; backdrop-filter:blur(12px);
+  animation:heroIn .8s .3s var(--ease) both;
+}
+.hcard-topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+.hcard-title { font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:rgba(255,255,255,.32); }
+.hcard-live { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:700; color:var(--green); }
+.hcard-live-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:navpulse 2s infinite; }
+.hcard-metric-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+.hcard-metric { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); border-radius:10px; padding:14px; }
+.hcard-metric-lbl { font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.28); margin-bottom:6px; }
+.hcard-metric-val { font-family:'Bricolage Grotesque',sans-serif; font-size:22px; font-weight:800; color:var(--white); }
+.hcard-metric-delta { font-size:11px; color:var(--green); font-weight:700; margin-top:3px; }
+.hcard-chart { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06); border-radius:10px; padding:16px; margin-bottom:12px; }
+.hcard-chart-lbl { font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.28); margin-bottom:12px; }
+.hcard-bars { display:flex; align-items:flex-end; gap:5px; height:72px; }
+.hbar { flex:1; border-radius:3px 3px 0 0; background:rgba(0,230,118,.18); }
+.hbar.hi { background:var(--green); }
+.hcard-status { display:flex; flex-direction:column; gap:8px; }
+.hcard-status-row {
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06); border-radius:8px; padding:10px 14px;
+}
+.hcard-status-lbl { font-size:12px; color:rgba(255,255,255,.45); }
+.hcard-status-val { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; color:var(--white); }
+.hcard-status-val.green { color:var(--green); }
+
+/* ============================================
+   TRUST BAR
+============================================ */
+.trust-bar {
+  background:rgba(11,31,58,.97);
+  border-top:1px solid var(--border-dark); border-bottom:1px solid var(--border-dark);
+  padding:14px 48px;
+}
+.trust-bar-inner { max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.trust-label { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.22); margin-right:6px; }
+.trust-pill {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:5px 14px; border-radius:100px;
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+  font-size:12px; font-weight:500; color:rgba(255,255,255,.45);
+}
+.trust-pill::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--green); }
+
+/* ============================================
+   ICP FILTER
+============================================ */
+.icp-wrapper {
+  background:var(--ink);
+}
+.icp-grid {
+  display:grid; grid-template-columns:1fr 1px 1fr; gap:60px;
+  max-width:1180px; margin:0 auto;
+}
+.icp-divider { background:rgba(255,255,255,.07); }
+.icp-col h3 {
+  font-size:16px; font-weight:700; margin-bottom:24px;
+  display:flex; align-items:center; gap:10px;
+}
+.icp-col.yes h3 { color:var(--green); }
+.icp-col.no h3 { color:rgba(255,255,255,.4); }
+.icp-items { display:flex; flex-direction:column; gap:10px; }
+.icp-item {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:14px 16px; border-radius:10px;
+  font-size:14px; line-height:1.55;
+}
+.icp-col.yes .icp-item {
+  background:rgba(0,230,118,.05); border:1px solid rgba(0,230,118,.12); color:rgba(255,255,255,.75);
+}
+.icp-col.no .icp-item {
+  background:rgba(255,80,80,.04); border:1px solid rgba(255,80,80,.1); color:rgba(255,255,255,.4);
+}
+.icp-check { flex-shrink:0; margin-top:1px; font-size:12px; font-weight:700; }
+.icp-col.yes .icp-check { color:var(--green); }
+.icp-col.no .icp-check { color:var(--red); }
+
+/* ============================================
+   PROBLEM SECTION
+============================================ */
+.problem-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:20px; margin-top:52px;
+}
+.problem-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:14px; padding:32px;
+  position:relative; overflow:hidden;
+  transition:all .3s var(--ease);
+}
+.problem-card::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, #ff4040, #ff8a00);
+}
+.problem-card:hover { transform:translateY(-6px); box-shadow:0 24px 70px rgba(11,31,58,.1); }
+.pc-num {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:48px; font-weight:800; color:rgba(11,31,58,.06); line-height:1; margin-bottom:-8px;
+}
+.pc-title { font-size:18px; color:var(--navy); font-weight:700; margin-bottom:10px; }
+.pc-body { font-size:14px; color:var(--muted-2); line-height:1.7; }
+
+/* ============================================
+   SYSTEMS / SERVICES
+============================================ */
+.systems-section { background:var(--ink); }
+.systems-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:52px; }
+.sys-card {
+  background:rgba(255,255,255,.03); border:1px solid var(--border-dark);
+  border-radius:18px; padding:36px; position:relative; overflow:hidden;
+  transition:all .35s var(--ease);
+}
+.sys-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity:0; transition:opacity .35s;
+}
+.sys-card:hover::before { opacity:1; }
+.sys-card:hover { background:rgba(0,230,118,.04); border-color:rgba(0,230,118,.2); transform:translateY(-5px); box-shadow:0 24px 70px rgba(0,0,0,.3); }
+.sys-num { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; color:rgba(0,230,118,.5); letter-spacing:.12em; text-transform:uppercase; margin-bottom:18px; }
+.sys-title { font-size:22px; font-weight:800; color:var(--white); margin-bottom:14px; }
+.sys-body { font-size:15px; color:rgba(255,255,255,.45); line-height:1.7; margin-bottom:28px; }
+.sys-outcomes { display:flex; flex-direction:column; gap:10px; }
+.sys-outcome { display:flex; align-items:flex-start; gap:10px; font-size:14px; color:rgba(255,255,255,.5); line-height:1.5; }
+.sys-outcome::before { content:'→'; color:var(--green); font-weight:700; flex-shrink:0; }
+
+/* ============================================
+   HOW IT WORKS
+============================================ */
+.how-section { background:var(--off-white); }
+.steps-track {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--border); border-radius:18px; overflow:hidden;
+  margin-top:52px; background:var(--white);
+  box-shadow:0 12px 60px rgba(11,31,58,.06);
+}
+.step-item {
+  padding:36px 28px; border-right:1px solid var(--border);
+  position:relative; overflow:hidden;
+  transition:background .3s;
+}
+.step-item:last-child { border-right:none; }
+.step-item:hover { background:var(--off-white); }
+.step-item::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:var(--green); transform:scaleX(0); transform-origin:left; transition:transform .4s var(--ease);
+}
+.step-item:hover::after { transform:scaleX(1); }
+.step-num-bg { font-family:'Bricolage Grotesque',sans-serif; font-size:60px; font-weight:800; color:rgba(11,31,58,.05); line-height:1; margin-bottom:-8px; }
+.step-title { font-size:19px; font-weight:700; color:var(--navy); margin-bottom:10px; }
+.step-body { font-size:14px; color:var(--muted-2); line-height:1.65; }
+.step-week { font-size:11px; color:var(--green); font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin-top:12px; }
+
+/* ============================================
+   CASE STUDY PREVIEW (homepage)
+============================================ */
+.cases-preview { background:var(--navy); }
+.cases-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:52px; }
+.case-preview-card {
+  background:rgba(255,255,255,.04); border:1px solid var(--border-dark);
+  border-radius:16px; overflow:hidden;
+  transition:all .3s var(--ease);
+  cursor:pointer;
+}
+.case-preview-card:hover { background:rgba(255,255,255,.07); border-color:rgba(0,230,118,.2); transform:translateY(-4px); box-shadow:0 24px 60px rgba(0,0,0,.3); }
+.case-preview-top {
+  padding:28px; border-bottom:1px solid var(--border-dark);
+}
+.case-preview-tag {
+  font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--green); margin-bottom:14px; display:block;
+}
+.case-preview-title { font-size:19px; font-weight:800; color:var(--white); margin-bottom:10px; line-height:1.3; }
+.case-preview-desc { font-size:14px; color:rgba(255,255,255,.4); line-height:1.6; }
+.case-preview-metrics { padding:24px 28px; display:flex; gap:24px; }
+.cpm { }
+.cpm-num { font-family:'Bricolage Grotesque',sans-serif; font-size:28px; font-weight:800; color:var(--green); line-height:1; }
+.cpm-lbl { font-size:11px; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.06em; margin-top:3px; }
+.case-preview-link {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 28px; border-top:1px solid var(--border-dark);
+  font-size:13px; font-weight:700; color:var(--green);
+  transition:gap .2s;
+}
+.case-preview-card:hover .case-preview-link { gap:12px; }
+
+/* ============================================
+   RESULTS / METRICS SECTION
+============================================ */
+.results-section { background:var(--ink); }
+.metrics-grid {
+  display:grid; grid-template-columns:repeat(5,1fr);
+  gap:2px; border:1px solid var(--border-dark);
+  border-radius:18px; overflow:hidden; margin-top:52px;
+}
+.metric-card {
+  padding:40px 24px;
+  background:rgba(255,255,255,.03);
+  text-align:center; border-right:1px solid var(--border-dark);
+  transition:background .3s;
+}
+.metric-card:last-child { border-right:none; }
+.metric-card:hover { background:rgba(255,255,255,.06); }
+.metric-big { font-family:'Bricolage Grotesque',sans-serif; font-size:52px; font-weight:800; color:var(--green); line-height:1; margin-bottom:10px; }
+.metric-lbl { font-size:13px; color:rgba(255,255,255,.4); line-height:1.5; }
+
+/* ============================================
+   CONTRARIAN SECTION
+============================================ */
+.contrarian-section { background:var(--off-white); }
+.contrarian-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:52px; }
+.contrarian-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:16px; padding:36px;
+  transition:all .3s var(--ease);
+}
+.contrarian-card:hover { transform:translateY(-5px); box-shadow:0 24px 70px rgba(11,31,58,.08); border-color:rgba(0,230,118,.3); }
+.contrarian-card::before {
+  content:'"'; font-family:'Bricolage Grotesque',sans-serif;
+  font-size:80px; color:var(--green); opacity:.15;
+  line-height:.8; display:block; margin-bottom:12px;
+}
+.contrarian-quote { font-size:20px; font-weight:800; color:var(--navy); line-height:1.3; margin-bottom:14px; }
+.contrarian-quote em { font-style:normal; color:var(--green); }
+.contrarian-body { font-size:14px; color:var(--muted-2); line-height:1.7; }
+
+/* ============================================
+   NEWSLETTER
+============================================ */
+.newsletter-section { background:var(--navy); text-align:center; }
+.newsletter-inner { max-width:640px; margin:0 auto; }
+.newsletter-inner h2 { font-size:clamp(30px,4vw,48px); color:var(--white); margin-bottom:16px; }
+.newsletter-inner h2 em { font-style:normal; color:var(--green); }
+.newsletter-inner p { font-size:17px; color:rgba(255,255,255,.45); margin-bottom:36px; line-height:1.7; }
+.newsletter-perks { display:flex; justify-content:center; gap:28px; margin-top:28px; flex-wrap:wrap; }
+.perk { display:flex; align-items:center; gap:8px; font-size:13px; color:rgba(255,255,255,.4); }
+.perk::before { content:'✓'; color:var(--green); font-weight:700; }
+
+/* ============================================
+   VS TABLE
+============================================ */
+.vs-section { background:var(--off-white); }
+.vs-container { border:1px solid var(--border); border-radius:18px; overflow:hidden; margin-top:52px; box-shadow:0 12px 60px rgba(11,31,58,.06); }
+.vs-header { display:grid; grid-template-columns:1fr 1fr 1fr; background:var(--navy); }
+.vs-header-cell {
+  padding:18px 28px;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:14px; font-weight:700;
+  border-right:1px solid var(--border-dark);
+}
+.vs-header-cell:last-child { border-right:none; }
+.vs-header-cell.topic { color:rgba(255,255,255,.28); font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+.vs-header-cell.agency { color:#ff6060; }
+.vs-header-cell.us { color:var(--green); }
+.vs-row { display:grid; grid-template-columns:1fr 1fr 1fr; border-top:1px solid var(--border); transition:background .2s; }
+.vs-row:hover { background:rgba(0,230,118,.02); }
+.vs-cell { padding:16px 28px; font-size:14px; border-right:1px solid var(--border); }
+.vs-cell:last-child { border-right:none; }
+.vs-cell.topic { color:var(--navy); font-weight:600; }
+.vs-cell.agency { color:#b44; }
+.vs-cell.us { color:var(--green); font-weight:600; }
+
+/* ============================================
+   ABOUT STRIP
+============================================ */
+.about-strip { background:var(--ink); }
+.about-inner-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:80px;
+  align-items:center; max-width:1180px; margin:0 auto;
+}
+.founder-card {
+  background:var(--navy-2); border:1px solid rgba(255,255,255,.08);
+  border-radius:22px; padding:48px;
+}
+.founder-avatar {
+  width:80px; height:80px; border-radius:50%;
+  background:linear-gradient(135deg, rgba(0,230,118,.25), rgba(0,100,220,.2));
+  border:2px solid rgba(0,230,118,.3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:34px; margin-bottom:22px;
+}
+.founder-name { font-family:'Bricolage Grotesque',sans-serif; font-size:28px; font-weight:800; color:var(--white); margin-bottom:4px; }
+.founder-role { font-size:14px; color:var(--green); font-weight:600; margin-bottom:28px; }
+.founder-quote {
+  font-size:17px; color:rgba(255,255,255,.65);
+  line-height:1.75; font-style:italic;
+  border-left:3px solid var(--green); padding-left:20px; margin-bottom:32px;
+}
+.founder-stats { display:flex; gap:32px; }
+.fstat-num { font-family:'Bricolage Grotesque',sans-serif; font-size:32px; font-weight:800; color:var(--green); display:block; }
+.fstat-lbl { font-size:11px; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.06em; }
+
+.about-content-right {}
+.about-content-right h2 { font-size:clamp(30px,3.5vw,46px); color:var(--white); margin-bottom:20px; }
+.about-content-right h2 em { font-style:normal; color:var(--green); }
+.about-content-right p { font-size:16px; color:rgba(255,255,255,.48); line-height:1.75; margin-bottom:16px; }
+.about-skills { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:32px; }
+.skill-tag {
+  display:flex; align-items:center; gap:10px;
+  padding:14px 16px; background:rgba(255,255,255,.04);
+  border:1px solid var(--border-dark); border-radius:10px;
+  font-size:14px; color:rgba(255,255,255,.6); font-weight:500;
+  transition:all .25s;
+}
+.skill-tag:hover { border-color:rgba(0,230,118,.2); color:rgba(255,255,255,.9); background:rgba(0,230,118,.04); }
+.skill-tag::before { content:'✓'; color:var(--green); font-weight:800; font-size:12px; }
+
+/* ============================================
+   FINAL CTA
+============================================ */
+.cta-section {
+  background:var(--navy); position:relative; overflow:hidden; text-align:center;
+}
+.cta-section::before {
+  content:''; position:absolute; left:50%; top:-160px; transform:translateX(-50%);
+  width:900px; height:600px; border-radius:50%;
+  background:radial-gradient(circle, rgba(0,230,118,.1), transparent 60%); pointer-events:none;
+}
+.cta-gfx { position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg, transparent, var(--green), transparent); }
+.cta-inner { position:relative; z-index:2; max-width:700px; margin:0 auto; }
+.cta-inner h2 { font-size:clamp(34px,5vw,62px); color:var(--white); margin-bottom:20px; font-weight:800; }
+.cta-inner h2 em { font-style:normal; color:var(--green); }
+.cta-inner p { font-size:18px; color:rgba(255,255,255,.45); margin-bottom:40px; line-height:1.7; }
+.cta-btns { display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; }
+.cta-microcopy { font-size:13px; color:rgba(255,255,255,.22); margin-top:18px; }
+
+/* ============================================
+   FOOTER
+============================================ */
+footer { background:#050d19; padding:72px 48px 32px; border-top:1px solid var(--border-dark); }
+.footer-top {
+  display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:52px;
+  max-width:1180px; margin:0 auto;
+  padding-bottom:52px; border-bottom:1px solid var(--border-dark); margin-bottom:32px;
+}
+.footer-brand-name { font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; color:var(--white); }
+.footer-brand-name span { color:var(--green); }
+.footer-brand-blurb { font-size:14px; color:rgba(255,255,255,.32); line-height:1.75; margin-top:14px; max-width:300px; }
+.footer-col-title { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.22); margin-bottom:16px; }
+.footer-col-links { display:flex; flex-direction:column; gap:10px; }
+.footer-col-links a { font-size:14px; color:rgba(255,255,255,.4); transition:color .2s; }
+.footer-col-links a:hover { color:var(--white); }
+.footer-bottom {
+  max-width:1180px; margin:0 auto;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:13px; color:rgba(255,255,255,.18); flex-wrap:wrap; gap:12px;
+}
+
+/* ============================================
+   SCROLL REVEAL
+============================================ */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .65s var(--ease), transform .65s var(--ease); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width:960px) {
+  #nav { padding:0 20px; }
+  .nav-links { display:none; }
+  .hero-inner { grid-template-columns:1fr; }
+  .hero-card { display:none; }
+  .hero-stats { gap:24px; flex-wrap:wrap; }
+  .problem-grid, .systems-grid, .contrarian-grid, .cases-grid { grid-template-columns:1fr 1fr; }
+  .steps-track, .metrics-grid { grid-template-columns:1fr 1fr; }
+  .about-inner-grid { grid-template-columns:1fr; }
+  .icp-grid { grid-template-columns:1fr; }
+  .icp-divider { display:none; }
+  .footer-top { grid-template-columns:1fr 1fr; }
+  section { padding:64px 24px; }
+}
+@media (max-width:600px) {
+  .problem-grid, .systems-grid, .contrarian-grid, .cases-grid { grid-template-columns:1fr; }
+  .metrics-grid { grid-template-columns:1fr 1fr; }
+  .about-skills { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-brand" onclick="window.location.href='#hero'">
+    <div class="nav-pulse"></div>
+    Growth<span>Clarity</span>&nbsp;Co.
+  </div>
+  <div class="nav-links">
+    <a href="#systems">Systems</a>
+    <a href="#how-it-works">Framework</a>
+    <a href="#case-studies">Case Studies</a>
+    <a href="#about">About</a>
+    <a href="growthclarity-cases.html" style="color:rgba(255,255,255,.6)">Deep Dives</a>
+    <a href="https://linkedin.com/in/jithin-george" target="_blank" class="nav-cta">Get GTM Breakdown →</a>
+  </div>
+</nav>
+
+<!-- ════════ HERO ════════ -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-kicker">
+        <div class="hero-kicker-dot"></div>
+        <span>GTM System Architect · B2B SaaS · Series A–B</span>
+      </div>
+      <h1 class="hero-h1">
+        Your Growth<br>
+        Isn't Broken.<br>
+        It's <span class="accent">Misaligned.</span>
+      </h1>
+      <p class="hero-sub">
+        I help B2B SaaS companies fix GTM systems to turn <strong>inconsistent pipeline</strong> into <strong>predictable revenue.</strong><br><br>
+        Most SaaS companies don't have a demand problem. They have a system problem.
+      </p>
+      <div class="hero-cta-row">
+        <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
+        <a href="growthclarity-cases.html" class="btn btn-outline-white btn-xl">View Case Studies</a>
+      </div>
+      <p class="hero-note">45-minute focused conversation. Zero fluff. Real diagnosis.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">3<em>×</em></div>
+          <div class="hero-stat-label">Avg. Pipeline Growth</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">+30<em>%</em></div>
+          <div class="hero-stat-label">Demo Rate Increase</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">↓40<em>%</em></div>
+          <div class="hero-stat-label">CAC Reduction</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">9<em>+</em></div>
+          <div class="hero-stat-label">Years in B2B SaaS</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hcard-topbar">
+        <span class="hcard-title">GTM Health Monitor · Live</span>
+        <div class="hcard-live"><div class="hcard-live-dot"></div> Active</div>
+      </div>
+      <div class="hcard-metric-row">
+        <div class="hcard-metric">
+          <div class="hcard-metric-lbl">Qualified Pipeline</div>
+          <div class="hcard-metric-val">$2.4M</div>
+          <div class="hcard-metric-delta">↑ +31% MoM</div>
+        </div>
+        <div class="hcard-metric">
+          <div class="hcard-metric-lbl">Win Rate</div>
+          <div class="hcard-metric-val">34%</div>
+          <div class="hcard-metric-delta">↑ +12 pts</div>
+        </div>
+        <div class="hcard-metric">
+          <div class="hcard-metric-lbl">CAC</div>
+          <div class="hcard-metric-val">$3.2K</div>
+          <div class="hcard-metric-delta">↓ −41% QoQ</div>
+        </div>
+        <div class="hcard-metric">
+          <div class="hcard-metric-lbl">LTV:CAC</div>
+          <div class="hcard-metric-val">6.1×</div>
+          <div class="hcard-metric-delta">↑ healthy</div>
+        </div>
+      </div>
+      <div class="hcard-chart">
+        <div class="hcard-chart-lbl">Pipeline Growth (Last 8 Weeks)</div>
+        <div class="hcard-bars">
+          <div class="hbar" style="height:30%"></div>
+          <div class="hbar" style="height:44%"></div>
+          <div class="hbar" style="height:38%"></div>
+          <div class="hbar" style="height:56%"></div>
+          <div class="hbar" style="height:52%"></div>
+          <div class="hbar" style="height:68%"></div>
+          <div class="hbar" style="height:64%"></div>
+          <div class="hbar hi" style="height:92%"></div>
+        </div>
+      </div>
+      <div class="hcard-status">
+        <div class="hcard-status-row">
+          <span class="hcard-status-lbl">GTM Alignment Score</span>
+          <span class="hcard-status-val green">92 / 100</span>
+        </div>
+        <div class="hcard-status-row">
+          <span class="hcard-status-lbl">Msg/Market Fit</span>
+          <span class="hcard-status-val green">89%</span>
+        </div>
+        <div class="hcard-status-row">
+          <span class="hcard-status-lbl">Pipeline Multiple</span>
+          <span class="hcard-status-val">3.2× target</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <span class="trust-label">Built for</span>
+    <span class="trust-pill">Series A SaaS</span>
+    <span class="trust-pill">Series B Growth Teams</span>
+    <span class="trust-pill">$1M–$20M ARR</span>
+    <span class="trust-pill">GTM Leaders</span>
+    <span class="trust-pill">Revenue-Focused Founders</span>
+    <span class="trust-pill">Sales + Marketing Orgs</span>
+  </div>
+</div>
+
+<!-- ICP FILTER -->
+<section class="icp-wrapper" style="padding:80px 48px;">
+  <div class="icp-grid reveal">
+    <div class="icp-col yes">
+      <div class="eyebrow" style="color:var(--green)">This is for you if</div>
+      <div class="icp-items">
+        <div class="icp-item"><span class="icp-check">✓</span>You're a B2B SaaS company between $1M–$20M ARR</div>
+        <div class="icp-item"><span class="icp-check">✓</span>Pipeline is inconsistent — some months great, some months dead</div>
+        <div class="icp-item"><span class="icp-check">✓</span>CAC has been rising and you don't fully know why</div>
+        <div class="icp-item"><span class="icp-check">✓</span>You have sales + marketing but they're not aligned</div>
+        <div class="icp-item"><span class="icp-check">✓</span>Messaging feels generic — competitors say the same things</div>
+        <div class="icp-item"><span class="icp-check">✓</span>You've raised Series A or B and need predictable revenue</div>
+        <div class="icp-item"><span class="icp-check">✓</span>You want a system, not just another campaign</div>
+      </div>
+    </div>
+    <div class="icp-divider"></div>
+    <div class="icp-col no">
+      <div class="eyebrow" style="color:rgba(255,80,80,.7)">This is NOT for you if</div>
+      <div class="icp-items">
+        <div class="icp-item"><span class="icp-check">✕</span>You're pre-product or still validating an idea</div>
+        <div class="icp-item"><span class="icp-check">✕</span>You're a freelancer, agency, or services business</div>
+        <div class="icp-item"><span class="icp-check">✕</span>You want quick-fix tactics without fixing fundamentals</div>
+        <div class="icp-item"><span class="icp-check">✕</span>Leadership isn't bought in to GTM transformation</div>
+        <div class="icp-item"><span class="icp-check">✕</span>You're looking for someone to just execute, not think</div>
+        <div class="icp-item"><span class="icp-check">✕</span>You don't have budget for growth investment</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM SECTION -->
+<section class="section" style="background:var(--off-white);">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Root Cause Analysis</div>
+      <h2 class="section-title">You don't have a traffic problem.<br>You have a <em>clarity problem.</em></h2>
+      <p class="section-body">Most B2B SaaS companies invest in more marketing without fixing the underlying system. Here's what's actually happening inside your GTM.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card reveal">
+        <div class="pc-num">01</div>
+        <div class="pc-title">Weak Positioning</div>
+        <div class="pc-body">You look like everyone else. Buyers can't understand why you specifically. So they don't buy — or they buy the competitor who explains it better.</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="pc-num">02</div>
+        <div class="pc-title">Generic Messaging</div>
+        <div class="pc-body">Your copy talks about features, not outcomes. It turns visitors into confused prospects who ghost your sales team mid-funnel.</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="pc-num">03</div>
+        <div class="pc-title">Rising CAC</div>
+        <div class="pc-body">You're paying more to acquire customers who churn faster. This is a structural ICP problem, not a channel problem — and it compounds.</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="pc-num">04</div>
+        <div class="pc-title">Misaligned GTM</div>
+        <div class="pc-body">Sales and marketing are playing different games. Leads don't convert because the narrative breaks down at exactly the wrong moment.</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="pc-num">05</div>
+        <div class="pc-title">No Growth System</div>
+        <div class="pc-body">You're running one-off campaigns hoping something sticks. Revenue requires a repeatable, engineered system — not a calendar of tactics.</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="pc-num">06</div>
+        <div class="pc-title">Wrong Demand Motion</div>
+        <div class="pc-body">You're generating awareness but not intent. Buyers exist — they just don't understand why now, why you, or why they should act at all.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEMS -->
+<section id="systems" class="section systems-section">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Growth Systems</div>
+      <h2 class="section-title light">Three systems that create<br><em>predictable revenue.</em></h2>
+      <p class="section-body light">Not services. Not deliverables. <strong>Engineered systems</strong> designed to compound over time.</p>
+    </div>
+    <div class="systems-grid">
+      <div class="sys-card reveal">
+        <div class="sys-num">01 — Positioning</div>
+        <div class="sys-title">Fix Your Positioning</div>
+        <div class="sys-body">Own a distinct position in your market so buyers choose you without needing convincing. The foundation everything else is built on.</div>
+        <div class="sys-outcomes">
+          <div class="sys-outcome">Clear category definition that differentiates</div>
+          <div class="sys-outcome">ICP sharpening — stop selling to everyone</div>
+          <div class="sys-outcome">Value prop that resonates with real buyers</div>
+          <div class="sys-outcome">Sales + marketing speak the same language</div>
+        </div>
+      </div>
+      <div class="sys-card reveal">
+        <div class="sys-num">02 — Pipeline</div>
+        <div class="sys-title">Build Your Pipeline Engine</div>
+        <div class="sys-body">Create a demand engine that generates qualified pipeline consistently — buyers who already understand your value before they talk to sales.</div>
+        <div class="sys-outcomes">
+          <div class="sys-outcome">Multi-channel demand architecture</div>
+          <div class="sys-outcome">Content that converts, not just attracts</div>
+          <div class="sys-outcome">Intent signals mapped to buying stage</div>
+          <div class="sys-outcome">Pipeline predictability within 90 days</div>
+        </div>
+      </div>
+      <div class="sys-card reveal">
+        <div class="sys-num">03 — Scale</div>
+        <div class="sys-title">Scale Revenue Efficiently</div>
+        <div class="sys-body">Reduce CAC, increase LTV, and build the unit economics that let you scale without burning through budget every quarter.</div>
+        <div class="sys-outcomes">
+          <div class="sys-outcome">Funnel diagnostics and conversion optimization</div>
+          <div class="sys-outcome">Sales enablement that accelerates cycles</div>
+          <div class="sys-outcome">Retention-driven growth loops</div>
+          <div class="sys-outcome">Metrics framework for sustainable scaling</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="section how-section">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
+      <div class="eyebrow" style="justify-content:center">The 4-Step Framework</div>
+      <h2 class="section-title" style="max-width:none">How growth alignment actually works.</h2>
+    </div>
+    <div class="steps-track reveal">
+      <div class="step-item">
+        <div class="step-num-bg">01</div>
+        <div class="step-title">Diagnose</div>
+        <div class="step-body">Deep audit of your GTM system — messaging, pipeline, funnel, ICP, and competitive positioning. Find the actual constraint, not the symptoms.</div>
+        <div class="step-week">Week 1–2</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num-bg">02</div>
+        <div class="step-title">Align</div>
+        <div class="step-body">Realign positioning, messaging, and sales narrative around the real buyer story. Get sales and marketing speaking the same language.</div>
+        <div class="step-week">Week 3–4</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num-bg">03</div>
+        <div class="step-title">Activate</div>
+        <div class="step-body">Launch the demand engine — channels, content, sequences, campaigns — built on the aligned foundation. A system, not a one-off tactic.</div>
+        <div class="step-week">Week 5–8</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num-bg">04</div>
+        <div class="step-title">Scale</div>
+        <div class="step-body">Measure what matters, double down on what works, eliminate what doesn't. Build the compounding engine that grows without proportional spend.</div>
+        <div class="step-week">Week 9+</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:40px;">
+      <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-outline-dark btn-lg btn-arrow reveal">Start With a GTM Breakdown</a>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY PREVIEW -->
+<section id="case-studies" class="section cases-preview">
+  <div class="wrap">
+    <div class="reveal" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; margin-bottom:52px;">
+      <div>
+        <div class="eyebrow">Case Studies</div>
+        <h2 class="section-title light" style="margin-bottom:0">Real systems.<br><em>Real numbers.</em></h2>
+      </div>
+      <a href="growthclarity-cases.html" class="btn btn-outline-white btn-md btn-arrow">View Full Deep Dives</a>
+    </div>
+    <div class="cases-grid">
+      <a href="growthclarity-cases.html#case1" class="case-preview-card reveal">
+        <div class="case-preview-top">
+          <span class="case-preview-tag">Product Marketing · Conversion Lift</span>
+          <div class="case-preview-title">1.2% → 3.8% trial-to-paid conversion in 4 months</div>
+          <div class="case-preview-desc">Series A DevOps SaaS. Strong trial volume. Zero conversion. The problem wasn't the product — it was the wrong audience being targeted with the wrong message.</div>
+        </div>
+        <div class="case-preview-metrics">
+          <div class="cpm">
+            <div class="cpm-num">3.2×</div>
+            <div class="cpm-lbl">Conversion Lift</div>
+          </div>
+          <div class="cpm">
+            <div class="cpm-num">$1.1M</div>
+            <div class="cpm-lbl">ARR Added</div>
+          </div>
+          <div class="cpm">
+            <div class="cpm-num">−28%</div>
+            <div class="cpm-lbl">Sales Cycle</div>
+          </div>
+        </div>
+        <div class="case-preview-link">
+          <span>Read Full Case Study</span>
+          <span>→</span>
+        </div>
+      </a>
+      <a href="growthclarity-cases.html#case2" class="case-preview-card reveal">
+        <div class="case-preview-top">
+          <span class="case-preview-tag">Demand Generation · Pipeline Growth</span>
+          <div class="case-preview-title">0 → 70% inbound pipeline share in 6 months</div>
+          <div class="case-preview-desc">$3M ARR HR-tech SaaS. 90% of revenue came from founder referrals. No repeatable demand channel. Built one from scratch.</div>
+        </div>
+        <div class="case-preview-metrics">
+          <div class="cpm">
+            <div class="cpm-num">3×</div>
+            <div class="cpm-lbl">Pipeline Growth</div>
+          </div>
+          <div class="cpm">
+            <div class="cpm-num">+60%</div>
+            <div class="cpm-lbl">Organic Traffic</div>
+          </div>
+          <div class="cpm">
+            <div class="cpm-num">4,200</div>
+            <div class="cpm-lbl">Newsletter Subs</div>
+          </div>
+        </div>
+        <div class="case-preview-link">
+          <span>Read Full Case Study</span>
+          <span>→</span>
+        </div>
+      </a>
+      <a href="growthclarity-cases.html#case3" class="case-preview-card reveal">
+        <div class="case-preview-top">
+          <span class="case-preview-tag">Growth Optimization · CAC Reduction</span>
+          <div class="case-preview-title">41% CAC reduction without reducing pipeline volume</div>
+          <div class="case-preview-desc">$12M ARR FinTech SaaS. CAC doubled in 18 months. LTV:CAC below 3×. Unsustainable unit economics fixed by narrowing ICP, not cutting spend.</div>
+        </div>
+        <div class="case-preview-metrics">
+          <div class="cpm">
+            <div class="cpm-num">−41%</div>
+            <div class="cpm-lbl">CAC Reduction</div>
+          </div>
+          <div class="cpm">
+            <div class="cpm-num">6.1×</div>
+            <div class="cpm-lbl">LTV:CAC Ratio</div>
+          </div>
+          <div class="cpm">
+            <div class="cpm-num">+38%</div>
+            <div class="cpm-lbl">Win Rate</div>
+          </div>
+        </div>
+        <div class="case-preview-link">
+          <span>Read Full Case Study</span>
+          <span>→</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section results-section">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
+      <div class="eyebrow" style="justify-content:center">Results</div>
+      <h2 class="section-title light">Numbers that matter.</h2>
+      <p class="section-body light" style="margin:0 auto">Systems outperform tactics every time. Here's what that looks like in practice.</p>
+    </div>
+    <div class="metrics-grid reveal">
+      <div class="metric-card">
+        <div class="metric-big">+30%</div>
+        <div class="metric-lbl">Average qualified demo booking increase</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-big">+20%</div>
+        <div class="metric-lbl">Conversion rate improvement across funnel</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-big">3×</div>
+        <div class="metric-lbl">Pipeline growth without proportional spend</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-big">60%</div>
+        <div class="metric-lbl">Organic channel growth through owned channels</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-big">↓40%</div>
+        <div class="metric-lbl">Average customer acquisition cost reduction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VS TABLE -->
+<section class="section vs-section">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Why Not An Agency?</div>
+      <h2 class="section-title">This is <em>not</em> an agency model.</h2>
+      <p class="section-body">Agencies execute. I diagnose, architect, and build the system that makes execution predictable. Here's the difference.</p>
+    </div>
+    <div class="vs-container reveal">
+      <div class="vs-header">
+        <div class="vs-header-cell topic">Dimension</div>
+        <div class="vs-header-cell agency">Typical Agency</div>
+        <div class="vs-header-cell us">GrowthClarity Co.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell topic">Engagement model</div>
+        <div class="vs-cell agency">Retainer for execution</div>
+        <div class="vs-cell us">System architect + operator</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell topic">Starting point</div>
+        <div class="vs-cell agency">Jump straight to tactics</div>
+        <div class="vs-cell us">Diagnose root cause first</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell topic">What they optimize for</div>
+        <div class="vs-cell agency">Activity & deliverables</div>
+        <div class="vs-cell us">Revenue & system outcomes</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell topic">ICP & positioning work</div>
+        <div class="vs-cell agency">Rarely touched</div>
+        <div class="vs-cell us">Foundation of everything</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell topic">Sales + marketing alignment</div>
+        <div class="vs-cell agency">Not their problem</div>
+        <div class="vs-cell us">Core to the engagement</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell topic">Result when you stop paying</div>
+        <div class="vs-cell agency">Everything stops</div>
+        <div class="vs-cell us">System keeps running</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRARIAN THINKING -->
+<section class="section contrarian-section">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Contrarian Thinking</div>
+      <h2 class="section-title">What 9 years of B2B SaaS<br>actually teaches you.</h2>
+      <p class="section-body">Most growth advice is optimized for shares, not revenue. Here's what I actually believe.</p>
+    </div>
+    <div class="contrarian-grid">
+      <div class="contrarian-card reveal">
+        <div class="contrarian-quote">More leads ≠ <em>more revenue.</em></div>
+        <div class="contrarian-body">The fastest path to growth is almost never more top-of-funnel. It's fixing the leaks in the funnel you already have. Most companies are sitting on 2–3× revenue potential in existing pipeline — they just can't see it because they're too focused on acquisition.</div>
+      </div>
+      <div class="contrarian-card reveal">
+        <div class="contrarian-quote">CAC problems are <em>messaging problems.</em></div>
+        <div class="contrarian-body">When your CAC keeps rising, the instinct is to test new channels. But 80% of the time, the root cause is that your messaging doesn't create self-service demand. Fix the message, and every channel gets more efficient simultaneously.</div>
+      </div>
+      <div class="contrarian-card reveal">
+        <div class="contrarian-quote">Growth is a <em>system,</em> not a tactic.</div>
+        <div class="contrarian-body">Companies that achieve durable growth aren't running better campaigns. They've built a system where positioning, demand generation, and sales enablement compound together. Individual tactics deteriorate. Systems improve over time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="section newsletter-section">
+  <div class="newsletter-inner reveal">
+    <div class="eyebrow" style="justify-content:center">Weekly Newsletter</div>
+    <h2>Stay Ahead of the <em>Growth Curve</em></h2>
+    <p>Weekly frameworks, case studies, and contrarian thinking on B2B SaaS growth — for founders and GTM leaders who want systems that compound, not hacks that fade.</p>
+    <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-green btn-xl btn-arrow">Subscribe on LinkedIn</a>
+    <div class="newsletter-perks">
+      <div class="perk">GTM teardowns</div>
+      <div class="perk">Positioning frameworks</div>
+      <div class="perk">Revenue case studies</div>
+      <div class="perk">No fluff. No filler.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section about-strip">
+  <div class="about-inner-grid">
+    <div class="founder-card reveal">
+      <div class="founder-avatar">👤</div>
+      <div class="founder-name">Jithin George</div>
+      <div class="founder-role">GTM System Architect · B2B SaaS</div>
+      <p class="founder-quote">"Most SaaS companies don't need more marketing. They need clarity on what's broken — and someone who can both diagnose it and fix it."</p>
+      <div class="founder-stats">
+        <div>
+          <span class="fstat-num">9+</span>
+          <span class="fstat-lbl">Years in SaaS</span>
+        </div>
+        <div>
+          <span class="fstat-num">$50M+</span>
+          <span class="fstat-lbl">Pipeline Influenced</span>
+        </div>
+        <div>
+          <span class="fstat-num">20+</span>
+          <span class="fstat-lbl">GTM Engagements</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-content-right reveal">
+      <div class="eyebrow">About Jithin</div>
+      <h2>Product. Demand. Growth. <em>All in one system.</em></h2>
+      <p>I'm a product, demand, and growth marketing consultant with 9+ years inside B2B SaaS companies — from scrappy Series As to scaling Series Bs. I've worked across the full GTM stack, not as a specialist in one lane, but as someone who understands how all of it compounds together.</p>
+      <p>I started GrowthClarity Co. because most B2B SaaS companies don't need more marketing. They need clarity on what's broken in their system — and someone who can both diagnose it and fix it without the overhead of an agency or the limitations of a single hire.</p>
+      <div class="about-skills">
+        <div class="skill-tag">GTM Strategy & Architecture</div>
+        <div class="skill-tag">Product Marketing</div>
+        <div class="skill-tag">Demand Generation</div>
+        <div class="skill-tag">Funnel Optimization</div>
+        <div class="skill-tag">Positioning & Messaging</div>
+        <div class="skill-tag">Revenue Growth</div>
+        <div class="skill-tag">Sales Enablement</div>
+        <div class="skill-tag">CAC / LTV Optimization</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="section cta-section">
+  <div class="cta-inner reveal">
+    <div class="eyebrow" style="justify-content:center">Ready to Align?</div>
+    <h2>This is not a service.<br>This is a <em>growth system.</em></h2>
+    <p>If your pipeline is inconsistent, your CAC is rising, or your GTM feels misaligned — let's find the constraint and fix it. Start with a GTM Breakdown: a focused conversation about where your system is leaking revenue.</p>
+    <div class="cta-btns">
+      <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-green btn-xl btn-arrow">Get Your GTM Breakdown</a>
+      <a href="https://linkedin.com/in/jithin-george" target="_blank" class="btn btn-outline-white btn-xl">Subscribe to Newsletter</a>
+    </div>
+    <p class="cta-microcopy">Available for Series A–B B2B SaaS · $1M–$20M ARR only</p>
+  </div>
+  <div class="cta-gfx"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Growth<span>Clarity</span> Co.</div>
+      <div class="footer-brand-blurb">Revenue Growth Partner for B2B SaaS. GTM System Architect for companies that want predictable growth, not random campaigns.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Navigation</div>
+      <div class="footer-col-links">
+        <a href="#systems">Systems</a>
+        <a href="#how-it-works">Framework</a>
+        <a href="#case-studies">Case Studies</a>
+        <a href="#about">About</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Work</div>
+      <div class="footer-col-links">
+        <a href="growthclarity-cases.html#case1">Product Marketing</a>
+        <a href="growthclarity-cases.html#case2">Demand Generation</a>
+        <a href="growthclarity-cases.html#case3">Growth Optimization</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <div class="footer-col-links">
+        <a href="https://linkedin.com/in/jithin-george" target="_blank">LinkedIn</a>
+        <a href="https://linkedin.com/in/jithin-george" target="_blank">Newsletter</a>
+        <a href="https://linkedin.com/in/jithin-george" target="_blank">GTM Breakdown →</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 GrowthClarity Co. All rights reserved.</span>
+    <span>Jithin George · GTM System Architect · B2B SaaS</span>
+  </div>
+</footer>
+
+<script>
+// Scroll Reveal
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 60);
+      revealObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.07 });
+revealEls.forEach(el => revealObs.observe(el));
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  nav.style.borderBottomColor = window.scrollY > 20
+    ? 'rgba(0,230,118,.12)'
+    : 'rgba(255,255,255,.07)';
+});
+</script>
+</body>
+</html>
