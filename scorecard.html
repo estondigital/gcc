@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Growth Scorecard — GrowthClarity Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0B1F3A; --navy-2:#0d2444; --navy-3:#112d52;
+  --ink:#060f1c; --white:#FFFFFF; --off-white:#F5F7FA;
+  --green:#00E676; --green-2:#00c960; --green-glow:rgba(0,230,118,.18);
+  --green-soft:rgba(0,230,118,.08);
+  --red:#ff5050; --red-soft:rgba(255,80,80,.1);
+  --amber:#ffaa00; --amber-soft:rgba(255,170,0,.1);
+  --muted:#8296b0; --muted-2:#4d6480;
+  --border-dark:rgba(255,255,255,.07); --border:rgba(0,0,0,.08);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{font-family:'Instrument Sans',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4,h5,h6{font-family:'Bricolage Grotesque',sans-serif;line-height:1.1;letter-spacing:-.03em;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--ink);}
+::-webkit-scrollbar-thumb{background:var(--navy-3);border-radius:3px;}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:9999;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(6,15,28,.94);backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid var(--border-dark);}
+.nav-brand{display:flex;align-items:center;gap:10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;color:var(--white);cursor:pointer;}
+.nav-brand span{color:var(--green);}
+.nav-pulse{width:9px;height:9px;border-radius:50%;background:var(--green);animation:navpulse 2.5s infinite;}
+@keyframes navpulse{0%{box-shadow:0 0 0 0 var(--green-glow);}60%{box-shadow:0 0 0 10px rgba(0,230,118,0);}100%{box-shadow:0 0 0 0 rgba(0,230,118,0);}}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{padding:8px 16px;border-radius:6px;font-size:14px;font-weight:500;color:rgba(255,255,255,.55);transition:color .2s,background .2s;}
+.nav-links a:hover{color:var(--white);background:rgba(255,255,255,.06);}
+.nav-cta{background:var(--green)!important;color:var(--ink)!important;padding:10px 22px!important;border-radius:8px!important;font-weight:700!important;font-size:13px!important;}
+.nav-cta:hover{background:var(--green-2)!important;transform:translateY(-1px);}
+
+/* PAGE HERO */
+.page-hero{padding:140px 48px 80px;text-align:center;position:relative;overflow:hidden;}
+.page-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,230,118,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,118,.025) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;}
+.hero-glow{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:700px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,230,118,.1),transparent 65%);pointer-events:none;}
+.page-hero-inner{position:relative;z-index:2;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:18px;}
+.eyebrow::before{content:'';display:block;width:24px;height:2px;background:var(--green);}
+.page-title{font-size:clamp(38px,6vw,72px);font-weight:800;color:var(--white);margin-bottom:20px;line-height:1.05;}
+.page-title em{font-style:normal;color:var(--green);}
+.page-sub{font-size:18px;color:rgba(255,255,255,.5);line-height:1.7;max-width:600px;margin:0 auto 20px;}
+
+/* SCORECARD WRAPPER */
+.scorecard-wrap{max-width:780px;margin:0 auto;padding:0 24px 120px;}
+
+/* STEPS */
+.step-indicator{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:48px;}
+.step-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:800;border:2px solid rgba(255,255,255,.1);color:rgba(255,255,255,.3);background:rgba(255,255,255,.03);transition:all .4s var(--ease);}
+.step-dot.active{border-color:var(--green);color:var(--green);background:var(--green-soft);}
+.step-dot.done{border-color:var(--green);color:var(--ink);background:var(--green);}
+.step-line{width:48px;height:2px;background:rgba(255,255,255,.07);transition:background .4s;}
+.step-line.done{background:var(--green);}
+
+/* QUESTION CARD */
+.q-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:48px;position:relative;overflow:hidden;transition:all .4s var(--ease);}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);}
+.q-progress-bar{height:3px;background:rgba(255,255,255,.06);border-radius:3px;margin-bottom:36px;overflow:hidden;}
+.q-progress-fill{height:100%;background:var(--green);border-radius:3px;transition:width .5s var(--ease);}
+.q-num{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:16px;}
+.q-text{font-size:clamp(20px,3vw,26px);font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.35;}
+.q-hint{font-size:14px;color:rgba(255,255,255,.35);margin-bottom:32px;line-height:1.5;}
+
+/* ANSWER OPTIONS */
+.options-grid{display:flex;flex-direction:column;gap:10px;}
+.opt{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 20px;border-radius:12px;
+  border:1.5px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  cursor:pointer;transition:all .25s var(--ease);
+  text-align:left;color:rgba(255,255,255,.65);
+  font-size:15px;
+}
+.opt:hover{border-color:rgba(0,230,118,.35);background:rgba(0,230,118,.06);color:var(--white);}
+.opt.selected{border-color:var(--green);background:rgba(0,230,118,.1);color:var(--white);}
+.opt-letter{width:28px;height:28px;border-radius:8px;border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:12px;font-weight:800;flex-shrink:0;color:rgba(255,255,255,.4);transition:all .25s;}
+.opt.selected .opt-letter{border-color:var(--green);background:var(--green);color:var(--ink);}
+
+/* NAV BUTTONS */
+.q-nav{display:flex;align-items:center;justify-content:space-between;margin-top:32px;}
+.btn-back{padding:12px 22px;border-radius:9px;border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.45);font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14px;transition:all .2s;background:transparent;}
+.btn-back:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.75);}
+.btn-next{padding:14px 32px;border-radius:9px;background:var(--green);color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:15px;transition:all .25s var(--ease);display:flex;align-items:center;gap:8px;}
+.btn-next:hover{background:var(--green-2);transform:translateY(-2px);box-shadow:0 12px 32px var(--green-glow);}
+.btn-next:disabled{opacity:.3;pointer-events:none;}
+
+/* LEAD FORM */
+.lead-form{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:48px;position:relative;overflow:hidden;}
+.lead-form::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);}
+.form-title{font-size:26px;font-weight:800;color:var(--white);margin-bottom:8px;}
+.form-sub{font-size:15px;color:rgba(255,255,255,.45);margin-bottom:32px;line-height:1.6;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.form-input{padding:14px 16px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--white);font-family:'Instrument Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:rgba(0,230,118,.4);}
+.form-input::placeholder{color:rgba(255,255,255,.2);}
+.form-select{padding:14px 16px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:rgba(20,35,60,.9);color:rgba(255,255,255,.7);font-family:'Instrument Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s;appearance:none;}
+.form-select:focus{border-color:rgba(0,230,118,.4);}
+.form-select option{background:#0d2444;color:var(--white);}
+.privacy-note{font-size:12px;color:rgba(255,255,255,.25);margin-top:16px;display:flex;align-items:center;gap:6px;}
+.btn-submit{width:100%;padding:18px;border-radius:12px;background:var(--green);color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;margin-top:24px;transition:all .25s var(--ease);display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-submit:hover{background:var(--green-2);transform:translateY(-3px);box-shadow:0 20px 50px var(--green-glow);}
+
+/* LOADING */
+.loading-state{text-align:center;padding:60px 20px;}
+.loading-spinner{width:56px;height:56px;border:3px solid rgba(0,230,118,.15);border-top-color:var(--green);border-radius:50%;margin:0 auto 28px;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:var(--white);margin-bottom:8px;}
+.loading-sub{font-size:14px;color:rgba(255,255,255,.35);}
+.loading-steps{margin-top:24px;display:flex;flex-direction:column;gap:8px;text-align:left;max-width:340px;margin-left:auto;margin-right:auto;}
+.lstep{font-size:13px;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:10px;transition:color .4s;}
+.lstep.active{color:var(--green);}
+.lstep.done{color:rgba(255,255,255,.4);}
+.lstep::before{content:'○';font-size:11px;}
+.lstep.active::before{content:'◉';}
+.lstep.done::before{content:'●';}
+
+/* RESULTS */
+.results-state{display:none;}
+.score-hero{text-align:center;padding:40px 0 48px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:40px;}
+.score-ring-wrap{position:relative;width:160px;height:160px;margin:0 auto 24px;}
+.score-ring-svg{transform:rotate(-90deg);}
+.score-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-big{font-family:'Bricolage Grotesque',sans-serif;font-size:48px;font-weight:800;color:var(--white);line-height:1;}
+.score-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.score-grade{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:100px;font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;margin-bottom:12px;}
+.grade-strong{background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.3);color:var(--green);}
+.grade-moderate{background:rgba(255,170,0,.15);border:1px solid rgba(255,170,0,.3);color:var(--amber);}
+.grade-at-risk{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.3);color:var(--red);}
+.score-headline{font-size:clamp(22px,3vw,30px);font-weight:800;color:var(--white);margin-bottom:10px;}
+.score-sub{font-size:15px;color:rgba(255,255,255,.45);line-height:1.6;}
+
+/* METRIC BREAKDOWN */
+.metric-breakdown{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px;}
+.metric-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;}
+.metric-item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.metric-item-name{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.metric-item-score{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;}
+.metric-item-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;}
+.metric-item-fill{height:100%;border-radius:2px;transition:width 1s var(--ease);}
+.score-green{color:var(--green);}
+.score-amber{color:var(--amber);}
+.score-red{color:var(--red);}
+.fill-green{background:var(--green);}
+.fill-amber{background:var(--amber);}
+.fill-red{background:var(--red);}
+
+/* BOTTLENECK */
+.bottleneck-card{background:rgba(255,80,80,.06);border:1px solid rgba(255,80,80,.18);border-radius:16px;padding:28px;margin-bottom:24px;}
+.bottleneck-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.bottleneck-label::before{content:'⚠';font-size:13px;}
+.bottleneck-title{font-size:20px;font-weight:800;color:var(--white);margin-bottom:8px;}
+.bottleneck-body{font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;}
+
+/* ACTIONS */
+.actions-section{margin-bottom:40px;}
+.actions-title{font-size:18px;font-weight:800;color:var(--white);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.actions-title::before{content:'→';color:var(--green);}
+.action-item{display:flex;align-items:flex-start;gap:16px;padding:20px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);margin-bottom:10px;transition:border-color .2s;}
+.action-item:hover{border-color:rgba(0,230,118,.2);}
+.action-num{width:28px;height:28px;border-radius:8px;background:var(--green-soft);border:1px solid rgba(0,230,118,.2);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:800;color:var(--green);flex-shrink:0;margin-top:2px;}
+.action-content{flex:1;}
+.action-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.action-body{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;}
+.action-priority{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-top:6px;}
+
+/* FINAL CTA */
+.result-cta{background:linear-gradient(135deg,var(--navy-2),var(--navy-3));border:1px solid rgba(0,230,118,.15);border-radius:20px;padding:40px;text-align:center;margin-top:40px;}
+.result-cta h3{font-size:24px;font-weight:800;color:var(--white);margin-bottom:12px;}
+.result-cta p{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:28px;line-height:1.6;}
+.btn-cta-final{display:inline-flex;align-items:center;gap:10px;padding:17px 36px;border-radius:10px;background:var(--green);color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:16px;transition:all .25s var(--ease);}
+.btn-cta-final:hover{background:var(--green-2);transform:translateY(-3px);box-shadow:0 20px 50px var(--green-glow);}
+
+/* HIDDEN */
+.hidden{display:none!important;}
+
+/* AI INSIGHTS BOX */
+.ai-insights{background:rgba(0,230,118,.04);border:1px solid rgba(0,230,118,.15);border-radius:16px;padding:24px;margin-bottom:24px;}
+.ai-insights-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.ai-insights-body{font-size:14px;color:rgba(255,255,255,.6);line-height:1.75;}
+.ai-insights-body p{margin-bottom:10px;}
+.ai-insights-body p:last-child{margin-bottom:0;}
+
+@media(max-width:600px){
+  .form-row{grid-template-columns:1fr;}
+  .metric-breakdown{grid-template-columns:1fr;}
+  #nav{padding:0 20px;}
+  .page-hero{padding:120px 20px 60px;}
+  .scorecard-wrap{padding:0 16px 80px;}
+  .q-card,.lead-form{padding:28px 20px;}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-pulse"></div>
+    Growth<span>Clarity</span>&nbsp;Co.
+  </a>
+  <div class="nav-links">
+    <a href="index.html#systems">Systems</a>
+    <a href="index.html#case-studies">Case Studies</a>
+    <a href="scorecard.html" style="color:var(--green)">Growth Scorecard</a>
+    <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" class="nav-cta">Get a Revenue Growth Audit →</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-glow"></div>
+  <div class="page-hero-inner">
+    <div class="eyebrow">Free Tool · 3 minutes</div>
+    <h1 class="page-title">SaaS <em>Growth</em> Scorecard</h1>
+    <p class="page-sub">Answer 10 questions about your growth metrics. Get your growth score, biggest bottleneck, and AI-powered recommended actions — instantly.</p>
+  </div>
+</div>
+
+<div class="scorecard-wrap">
+
+  <!-- STEP INDICATOR -->
+  <div class="step-indicator" id="stepIndicator">
+    <!-- generated by JS -->
+  </div>
+
+  <!-- QUESTION CARD -->
+  <div class="q-card" id="questionCard">
+    <div class="q-progress-bar"><div class="q-progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="q-num" id="qNum">Question 1 of 10</div>
+    <div class="q-text" id="qText"></div>
+    <div class="q-hint" id="qHint"></div>
+    <div class="options-grid" id="optionsGrid"></div>
+    <div class="q-nav">
+      <button class="btn-back" id="btnBack" onclick="goBack()">← Back</button>
+      <button class="btn-next" id="btnNext" onclick="goNext()" disabled>Continue →</button>
+    </div>
+  </div>
+
+  <!-- LEAD FORM -->
+  <div class="lead-form hidden" id="leadForm">
+    <div class="form-title">Almost there — where should we send your report?</div>
+    <div class="form-sub">Your personalised Growth Score, bottleneck analysis, and recommended actions are being generated. Enter your details to receive the full report.</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">First Name</label>
+        <input class="form-input" id="firstName" type="text" placeholder="Alex">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Work Email</label>
+        <input class="form-input" id="workEmail" type="email" placeholder="alex@company.com">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Company Name</label>
+        <input class="form-input" id="companyName" type="text" placeholder="Acme SaaS">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Role</label>
+        <input class="form-input" id="userRole" type="text" placeholder="CEO / Head of Growth">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group full">
+        <label class="form-label">SaaS Vertical</label>
+        <select class="form-select" id="saasVertical">
+          <option value="">Select your vertical</option>
+          <option value="HR SaaS">HR SaaS</option>
+          <option value="Fintech SaaS">Fintech SaaS</option>
+          <option value="EdTech SaaS">EdTech SaaS</option>
+          <option value="Healthcare SaaS">Healthcare SaaS</option>
+          <option value="AI SaaS">AI SaaS</option>
+          <option value="Other B2B SaaS">Other B2B SaaS</option>
+        </select>
+      </div>
+    </div>
+    <div class="privacy-note">🔒 Zero spam. Your data is used only to personalise your Growth Score report.</div>
+    <button class="btn-submit" onclick="submitForm()">
+      <span>Generate My Growth Score</span>
+      <span>✦</span>
+    </button>
+  </div>
+
+  <!-- LOADING STATE -->
+  <div class="loading-state hidden" id="loadingState">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Analysing your growth metrics…</div>
+    <div class="loading-sub">Our AI is scoring your SaaS growth system</div>
+    <div class="loading-steps" id="loadingSteps">
+      <div class="lstep" id="ls1">Scoring your 10 growth dimensions</div>
+      <div class="lstep" id="ls2">Identifying your primary bottleneck</div>
+      <div class="lstep" id="ls3">Generating recommended actions</div>
+      <div class="lstep" id="ls4">Building your personalised report</div>
+    </div>
+  </div>
+
+  <!-- RESULTS STATE -->
+  <div class="results-state hidden" id="resultsState">
+    <div class="q-card" style="padding:0;overflow:hidden;">
+      <div style="padding:40px 40px 0;">
+        <div class="score-hero">
+          <div class="score-ring-wrap">
+            <svg class="score-ring-svg" viewBox="0 0 160 160" width="160" height="160">
+              <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="10"/>
+              <circle id="scoreRingFill" cx="80" cy="80" r="68" fill="none" stroke="var(--green)" stroke-width="10" stroke-linecap="round" stroke-dasharray="427" stroke-dashoffset="427" style="transition:stroke-dashoffset 1.5s cubic-bezier(.16,1,.3,1)"/>
+            </svg>
+            <div class="score-num">
+              <div class="score-big" id="scoreBig">0</div>
+              <div class="score-label">/ 100</div>
+            </div>
+          </div>
+          <div class="score-grade" id="scoreGrade"></div>
+          <h2 class="score-headline" id="scoreHeadline"></h2>
+          <p class="score-sub" id="scoreSub"></p>
+        </div>
+
+        <div class="metric-breakdown" id="metricBreakdown"></div>
+
+        <div class="bottleneck-card" id="bottleneckCard">
+          <div class="bottleneck-label">Primary Bottleneck</div>
+          <div class="bottleneck-title" id="bottleneckTitle"></div>
+          <div class="bottleneck-body" id="bottleneckBody"></div>
+        </div>
+
+        <div class="ai-insights hidden" id="aiInsights">
+          <div class="ai-insights-label">✦ AI-Powered Insight</div>
+          <div class="ai-insights-body" id="aiInsightsBody"></div>
+        </div>
+
+        <div class="actions-section">
+          <div class="actions-title">Recommended Actions</div>
+          <div id="actionsList"></div>
+        </div>
+      </div>
+
+      <div class="result-cta">
+        <h3>Want a deeper diagnosis?</h3>
+        <p id="resultCtaBody">Your Growth Score reveals the surface. A Revenue Growth Audit uncovers the root cause — and gives you a precise fix plan built around your stage, market, and team.</p>
+        <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" class="btn-cta-final">Book a Revenue Growth Audit →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// QUESTIONS DATA
+// ══════════════════════════════════════════════
+const questions = [
+  {
+    id: 'arr',
+    text: 'What is your current Annual Recurring Revenue (ARR)?',
+    hint: 'This sets the baseline for evaluating your growth trajectory and benchmarking your metrics.',
+    options: [
+      { label: 'Pre-revenue / < $100K', score: 1 },
+      { label: '$100K – $500K', score: 2 },
+      { label: '$500K – $1M', score: 3 },
+      { label: '$1M – $5M', score: 4 },
+      { label: '$5M – $20M', score: 5 },
+      { label: '$20M+', score: 5 }
+    ]
+  },
+  {
+    id: 'arrGrowth',
+    text: 'What is your month-over-month ARR growth rate?',
+    hint: 'Healthy B2B SaaS at Series A should target 15–20% MoM. Series B: 10–15%.',
+    options: [
+      { label: 'Declining or flat', score: 1 },
+      { label: '1–5% MoM', score: 2 },
+      { label: '5–10% MoM', score: 3 },
+      { label: '10–20% MoM', score: 4 },
+      { label: '20%+ MoM', score: 5 }
+    ]
+  },
+  {
+    id: 'cac',
+    text: 'How confident are you in your Customer Acquisition Cost (CAC)?',
+    hint: 'CAC clarity is a proxy for pipeline predictability and channel efficiency.',
+    options: [
+      { label: "We don't track CAC accurately", score: 1 },
+      { label: 'We have a rough estimate', score: 2 },
+      { label: 'We know CAC by channel', score: 3 },
+      { label: 'CAC tracked, trending down', score: 4 },
+      { label: 'CAC optimised, LTV:CAC > 4×', score: 5 }
+    ]
+  },
+  {
+    id: 'winRate',
+    text: 'What is your average sales win rate (deals won ÷ deals entered)?',
+    hint: 'B2B SaaS benchmark: 20–30%. Below 15% signals positioning or ICP issues.',
+    options: [
+      { label: 'Below 10%', score: 1 },
+      { label: '10–15%', score: 2 },
+      { label: '15–25%', score: 3 },
+      { label: '25–35%', score: 4 },
+      { label: '35%+', score: 5 }
+    ]
+  },
+  {
+    id: 'salesCycle',
+    text: 'What is your average sales cycle length?',
+    hint: 'Longer cycles usually signal unclear value prop, wrong buyer, or weak enablement.',
+    options: [
+      { label: '> 6 months', score: 1 },
+      { label: '3–6 months', score: 2 },
+      { label: '1–3 months', score: 3 },
+      { label: '2–4 weeks', score: 4 },
+      { label: '< 2 weeks (self-serve)', score: 5 }
+    ]
+  },
+  {
+    id: 'churn',
+    text: 'What is your net revenue retention (NRR)?',
+    hint: 'NRR > 100% means expansion outpaces churn. Elite SaaS: 120%+.',
+    options: [
+      { label: 'NRR < 80% (high churn)', score: 1 },
+      { label: 'NRR 80–90%', score: 2 },
+      { label: 'NRR 90–100%', score: 3 },
+      { label: 'NRR 100–115%', score: 4 },
+      { label: 'NRR 115%+ (strong expansion)', score: 5 }
+    ]
+  },
+  {
+    id: 'icpClarity',
+    text: 'How well-defined is your Ideal Customer Profile (ICP)?',
+    hint: 'Strong ICP clarity shortens sales cycles, improves win rates, and lowers CAC simultaneously.',
+    options: [
+      { label: "We sell to anyone who'll buy", score: 1 },
+      { label: 'Broad vertical, no firmographic focus', score: 2 },
+      { label: 'Industry + size defined', score: 3 },
+      { label: 'ICP with buyer persona defined', score: 4 },
+      { label: 'Validated ICP with trigger events', score: 5 }
+    ]
+  },
+  {
+    id: 'messagingConfidence',
+    text: 'How confident are you in your core messaging and positioning?',
+    hint: 'Messaging confidence predicts CAC efficiency. If reps pitch differently, messaging is broken.',
+    options: [
+      { label: 'No consistent messaging', score: 1 },
+      { label: 'We have a pitch but it feels generic', score: 2 },
+      { label: 'Messaging exists but inconsistently used', score: 3 },
+      { label: 'Consistent messaging, decent conversion', score: 4 },
+      { label: 'Sharp differentiated positioning, wins deals', score: 5 }
+    ]
+  },
+  {
+    id: 'pipelineHealth',
+    text: 'How would you describe the health of your sales pipeline?',
+    hint: 'Healthy pipeline = 3–5× coverage, qualified deals, predictable close rates.',
+    options: [
+      { label: 'Pipeline is thin and unpredictable', score: 1 },
+      { label: 'Pipeline exists but mostly unqualified', score: 2 },
+      { label: 'Decent pipeline, inconsistent close', score: 3 },
+      { label: '3× coverage, moderate consistency', score: 4 },
+      { label: '4–5× coverage, highly predictable', score: 5 }
+    ]
+  },
+  {
+    id: 'salesMarketing',
+    text: 'How aligned are your sales and marketing teams?',
+    hint: 'Misalignment between sales and marketing is the #1 driver of wasted CAC spend.',
+    options: [
+      { label: 'No coordination — separate goals', score: 1 },
+      { label: 'Some collaboration, mostly siloed', score: 2 },
+      { label: 'Shared targets, occasional friction', score: 3 },
+      { label: 'Aligned on ICP, messaging, pipeline', score: 4 },
+      { label: 'Fully integrated GTM system', score: 5 }
+    ]
+  }
+];
+
+let answers = {};
+let currentQ = 0;
+const TOTAL = questions.length;
+
+// ══════════════════════════════════════════════
+// STEP INDICATOR
+// ══════════════════════════════════════════════
+function buildStepIndicator() {
+  const el = document.getElementById('stepIndicator');
+  let html = '';
+  questions.forEach((q, i) => {
+    if (i > 0) html += `<div class="step-line" id="sline${i}"></div>`;
+    html += `<div class="step-dot" id="sdot${i}">${i+1}</div>`;
+  });
+  el.innerHTML = html;
+  updateStepIndicator();
+}
+
+function updateStepIndicator() {
+  questions.forEach((q, i) => {
+    const dot = document.getElementById(`sdot${i}`);
+    const line = document.getElementById(`sline${i}`);
+    dot.className = 'step-dot' + (i === currentQ ? ' active' : '') + (answers[questions[i].id] !== undefined ? ' done' : '');
+    if (line && i > 0 && answers[questions[i-1].id] !== undefined) line.className = 'step-line done';
+  });
+}
+
+// ══════════════════════════════════════════════
+// RENDER QUESTION
+// ══════════════════════════════════════════════
+function renderQuestion() {
+  const q = questions[currentQ];
+  const pct = (currentQ / TOTAL) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('qNum').textContent = `Question ${currentQ + 1} of ${TOTAL}`;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('qHint').textContent = q.hint;
+
+  const letters = ['A','B','C','D','E','F'];
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = q.options.map((opt, i) => `
+    <button class="opt${answers[q.id] === i ? ' selected' : ''}" onclick="selectOption(${i})">
+      <span class="opt-letter">${letters[i]}</span>
+      <span>${opt.label}</span>
+    </button>
+  `).join('');
+
+  document.getElementById('btnBack').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
+  document.getElementById('btnNext').disabled = answers[q.id] === undefined;
+  updateStepIndicator();
+}
+
+function selectOption(idx) {
+  const q = questions[currentQ];
+  answers[q.id] = idx;
+  document.querySelectorAll('.opt').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('btnNext').disabled = false;
+}
+
+function goNext() {
+  if (answers[questions[currentQ].id] === undefined) return;
+  if (currentQ < TOTAL - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showLeadForm();
+  }
+}
+
+function goBack() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+  }
+}
+
+// ══════════════════════════════════════════════
+// LEAD FORM
+// ══════════════════════════════════════════════
+function showLeadForm() {
+  document.getElementById('questionCard').classList.add('hidden');
+  document.getElementById('stepIndicator').classList.add('hidden');
+  document.getElementById('leadForm').classList.remove('hidden');
+}
+
+async function submitForm() {
+  const name = document.getElementById('firstName').value.trim();
+  const email = document.getElementById('workEmail').value.trim();
+  const company = document.getElementById('companyName').value.trim();
+  const vertical = document.getElementById('saasVertical').value;
+
+  if (!name || !email) {
+    document.getElementById('firstName').style.borderColor = name ? '' : 'var(--red)';
+    document.getElementById('workEmail').style.borderColor = email ? '' : 'var(--red)';
+    return;
+  }
+
+  document.getElementById('leadForm').classList.add('hidden');
+  document.getElementById('loadingState').classList.remove('hidden');
+  runLoadingAnimation();
+  await generateResults(name, email, company, vertical);
+}
+
+function runLoadingAnimation() {
+  const steps = ['ls1','ls2','ls3','ls4'];
+  steps.forEach((id, i) => {
+    setTimeout(() => {
+      if (i > 0) document.getElementById(steps[i-1]).className = 'lstep done';
+      document.getElementById(id).className = 'lstep active';
+    }, i * 1200);
+  });
+}
+
+// ══════════════════════════════════════════════
+// SCORE CALCULATION
+// ══════════════════════════════════════════════
+function calculateScores() {
+  const rawScores = {};
+  let total = 0;
+  questions.forEach(q => {
+    const idx = answers[q.id] ?? 0;
+    const score = q.options[idx].score;
+    rawScores[q.id] = score;
+    total += score;
+  });
+  const normalized = Math.round((total / (TOTAL * 5)) * 100);
+  return { rawScores, total, normalized };
+}
+
+function getBottleneck(rawScores) {
+  const labels = {
+    arr: 'ARR Baseline', arrGrowth: 'Growth Momentum', cac: 'CAC Efficiency',
+    winRate: 'Win Rate', salesCycle: 'Sales Cycle', churn: 'Net Revenue Retention',
+    icpClarity: 'ICP Clarity', messagingConfidence: 'Messaging & Positioning',
+    pipelineHealth: 'Pipeline Health', salesMarketing: 'Sales-Marketing Alignment'
+  };
+  let lowest = 5, lowestId = null;
+  Object.entries(rawScores).forEach(([id, score]) => {
+    if (score < lowest) { lowest = score; lowestId = id; }
+  });
+  return { id: lowestId, label: labels[lowestId], score: lowest };
+}
+
+// ══════════════════════════════════════════════
+// AI RESULTS GENERATION
+// ══════════════════════════════════════════════
+async function generateResults(name, email, company, vertical) {
+  const { rawScores, normalized } = calculateScores();
+  const bottleneck = getBottleneck(rawScores);
+  const scoreData = JSON.stringify(
+    questions.map(q => ({
+      metric: q.id,
+      question: q.text.substring(0, 60),
+      selected: q.options[answers[q.id] ?? 0].label,
+      score: rawScores[q.id]
+    }))
+  );
+
+  const prompt = `You are a B2B SaaS growth consultant. A ${vertical || 'B2B SaaS'} company named "${company || 'the company'}" completed a Growth Scorecard. Here are their scores (1-5):
+
+${scoreData}
+
+Overall score: ${normalized}/100. Primary bottleneck: ${bottleneck.label} (score: ${bottleneck.score}/5).
+
+Return ONLY valid JSON (no markdown, no backticks) in this exact format:
+{
+  "headline": "2-5 word punchy diagnosis title",
+  "summary": "2-sentence personalised diagnosis referencing their vertical and key weak spots",
+  "bottleneckTitle": "specific bottleneck name (5-7 words)",
+  "bottleneckBody": "2-3 sentences explaining why this is costing them revenue right now, specific to their scores",
+  "aiInsight": "1-2 paragraphs of sharp strategic insight about their growth system, referencing 2-3 specific score patterns",
+  "actions": [
+    {"title": "action title", "body": "specific tactic to implement in next 30 days", "priority": "Priority 1"},
+    {"title": "action title", "body": "specific tactic to implement in 30-60 days", "priority": "Priority 2"},
+    {"title": "action title", "body": "longer-term system fix", "priority": "Priority 3"}
+  ]
+}`;
+
+  let aiData = null;
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.find(b => b.type === 'text')?.text || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    aiData = JSON.parse(clean);
+  } catch(e) {
+    // Fallback
+    aiData = generateFallback(normalized, bottleneck, vertical);
+  }
+
+  setTimeout(() => showResults(name, normalized, rawScores, bottleneck, aiData), 800);
+}
+
+function generateFallback(score, bottleneck, vertical) {
+  const grade = score >= 70 ? 'Strong Foundation' : score >= 45 ? 'Growth Gaps Present' : 'System Rebuild Needed';
+  return {
+    headline: grade,
+    summary: `Your ${vertical || 'SaaS'} business shows a score of ${score}/100, with ${bottleneck.label} as the primary constraint holding back revenue growth.`,
+    bottleneckTitle: `${bottleneck.label} Is Costing You Pipeline`,
+    bottleneckBody: `Your ${bottleneck.label} score signals a systemic issue that compounds across every other growth metric. Until this is addressed, incremental improvements elsewhere will underperform.`,
+    aiInsight: `Your scorecard pattern reveals a growth system that needs strategic realignment. The gap between your strongest and weakest dimensions indicates that tactical fixes won't move the needle — you need a system-level intervention that addresses the root cause.`,
+    actions: [
+      { title: `Audit your ${bottleneck.label}`, body: 'Map the current state in detail. Identify where the biggest drop-off occurs and quantify the revenue impact.', priority: 'Priority 1' },
+      { title: 'ICP and messaging alignment sprint', body: 'Run a 2-week sprint to tighten ICP definition and update sales messaging to reflect the right buyer pain points.', priority: 'Priority 2' },
+      { title: 'Build a GTM accountability system', body: 'Implement a shared revenue dashboard that aligns sales and marketing around pipeline quality, not just volume.', priority: 'Priority 3' }
+    ]
+  };
+}
+
+// ══════════════════════════════════════════════
+// RENDER RESULTS
+// ══════════════════════════════════════════════
+function showResults(name, score, rawScores, bottleneck, ai) {
+  document.getElementById('loadingState').classList.add('hidden');
+  document.getElementById('resultsState').classList.remove('hidden');
+
+  // Score ring animation
+  const circumference = 427;
+  const offset = circumference - (score / 100) * circumference;
+  const ring = document.getElementById('scoreRingFill');
+  if (score < 45) ring.style.stroke = 'var(--red)';
+  else if (score < 70) ring.style.stroke = 'var(--amber)';
+
+  setTimeout(() => { ring.style.strokeDashoffset = offset; }, 100);
+
+  // Animate number
+  let n = 0;
+  const interval = setInterval(() => {
+    n = Math.min(n + 2, score);
+    document.getElementById('scoreBig').textContent = n;
+    if (n >= score) clearInterval(interval);
+  }, 30);
+
+  // Grade
+  let gradeClass, gradeText;
+  if (score >= 70) { gradeClass = 'grade-strong'; gradeText = '✦ Strong Foundation'; }
+  else if (score >= 45) { gradeClass = 'grade-moderate'; gradeText = '⚠ Growth Gaps Present'; }
+  else { gradeClass = 'grade-at-risk'; gradeText = '⚡ System Rebuild Needed'; }
+  document.getElementById('scoreGrade').className = `score-grade ${gradeClass}`;
+  document.getElementById('scoreGrade').textContent = gradeText;
+  document.getElementById('scoreHeadline').textContent = ai.headline || 'Your Growth Diagnosis';
+  document.getElementById('scoreSub').textContent = ai.summary;
+
+  // Metric breakdown
+  const metricLabels = {
+    arr: 'ARR Baseline', arrGrowth: 'Growth Rate', cac: 'CAC Efficiency',
+    winRate: 'Win Rate', salesCycle: 'Sales Cycle', churn: 'Net Retention',
+    icpClarity: 'ICP Clarity', messagingConfidence: 'Messaging', pipelineHealth: 'Pipeline', salesMarketing: 'GTM Alignment'
+  };
+  let mbHtml = '';
+  Object.entries(rawScores).forEach(([id, s]) => {
+    const pct = (s / 5) * 100;
+    const cls = s >= 4 ? 'score-green fill-green' : s >= 3 ? 'score-amber fill-amber' : 'score-red fill-red';
+    const [scoreCls, fillCls] = cls.split(' ');
+    mbHtml += `<div class="metric-item">
+      <div class="metric-item-header">
+        <span class="metric-item-name">${metricLabels[id]}</span>
+        <span class="metric-item-score ${scoreCls}">${s}/5</span>
+      </div>
+      <div class="metric-item-bar"><div class="metric-item-fill ${fillCls}" style="width:0%" data-width="${pct}%"></div></div>
+    </div>`;
+  });
+  document.getElementById('metricBreakdown').innerHTML = mbHtml;
+  setTimeout(() => {
+    document.querySelectorAll('.metric-item-fill').forEach(el => {
+      el.style.width = el.dataset.width;
+    });
+  }, 200);
+
+  // Bottleneck
+  document.getElementById('bottleneckTitle').textContent = ai.bottleneckTitle;
+  document.getElementById('bottleneckBody').textContent = ai.bottleneckBody;
+
+  // AI Insights
+  if (ai.aiInsight) {
+    const insightEl = document.getElementById('aiInsights');
+    insightEl.classList.remove('hidden');
+    document.getElementById('aiInsightsBody').innerHTML = ai.aiInsight.split('\n').filter(Boolean).map(p => `<p>${p}</p>`).join('');
+  }
+
+  // Actions
+  let actionsHtml = '';
+  (ai.actions || []).forEach((a, i) => {
+    actionsHtml += `<div class="action-item">
+      <div class="action-num">${i+1}</div>
+      <div class="action-content">
+        <div class="action-title">${a.title}</div>
+        <div class="action-body">${a.body}</div>
+        <div class="action-priority">${a.priority}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('actionsList').innerHTML = actionsHtml;
+
+  document.getElementById('resultCtaBody').textContent =
+    `${name ? name + ', your' : 'Your'} Growth Score reveals the surface. A Revenue Growth Audit uncovers the root cause — and gives you a precise fix plan built around your ${document.getElementById('saasVertical')?.value || 'SaaS'} stage, market, and team.`;
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+buildStepIndicator();
+renderQuestion();
+</script>
+</body>
+</html>
