@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OG Image Template — GrowthClarity Co.</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@800&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1200px;
+  height: 630px;
+  background: #060f1c;
+  font-family: 'Instrument Sans', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+.grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,230,118,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,230,118,.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+.glow {
+  position: absolute;
+  top: -100px; right: -80px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,230,118,.12), transparent 65%);
+}
+.glow2 {
+  position: absolute;
+  bottom: -150px; left: -60px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,80,220,.07), transparent 65%);
+}
+.inner {
+  position: relative; z-index: 2;
+  padding: 72px 88px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: 'Geist', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+.logo .star { color: #1FE07A; margin-right: 10px; font-size: 18px; }
+.logo .w-growth { color: #F4F5F1; margin-right: 6px; }
+.logo .w-clarity, .logo .w-co { color: #1FE07A; margin-right: 6px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 100px;
+  background: rgba(0,230,118,.1); border: 1px solid rgba(0,230,118,.25);
+  font-size: 13px; font-weight: 600; color: #00E676;
+  letter-spacing: .07em; text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #00E676; }
+.headline {
+  font-family: 'Geist', sans-serif;
+  font-size: 64px; font-weight: 800;
+  color: #ffffff;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin-bottom: 20px;
+}
+.headline em { color: #00E676; font-style: normal; }
+.sub {
+  font-size: 20px; color: rgba(255,255,255,.5);
+  line-height: 1.6; max-width: 700px;
+}
+.bottom-row {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.stats {
+  display: flex; align-items: center; gap: 40px;
+}
+.stat-num {
+  font-family: 'Geist', sans-serif;
+  font-size: 32px; font-weight: 800; color: #fff; line-height: 1;
+}
+.stat-num em { color: #00E676; font-style: normal; }
+.stat-lbl { font-size: 12px; color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: .07em; margin-top: 3px; }
+.stat-div { width: 1px; height: 36px; background: rgba(255,255,255,.08); }
+.cta-pill {
+  padding: 14px 28px; border-radius: 10px;
+  background: #00E676; color: #060f1c;
+  font-family: 'Geist', sans-serif;
+  font-size: 16px; font-weight: 800;
+}
+/* Instructions overlay - remove when screenshotting */
+.instructions {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,.85);
+  color: #fff; font-size: 13px; padding: 10px 20px;
+  text-align: center; z-index: 999;
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="glow"></div>
+<div class="glow2"></div>
+<div class="inner">
+  <div class="logo">
+    <span class="star">✦</span>
+    <span class="w-growth">Growth</span>
+    <span class="w-clarity">Clarity</span>
+    <span class="w-co">Co.</span>
+  </div>
+  <div>
+    <div class="badge"><div class="badge-dot"></div>B2B SaaS · GTM Consulting</div>
+    <div class="headline">Revenue Growth<br>for <em>B2B SaaS.</em></div>
+    <div class="sub">We help Series A–C companies find growth clarity, accelerate pipeline, and increase revenue.</div>
+  </div>
+  <div class="bottom-row">
+    <div class="stats">
+      <div><div class="stat-num">3<em>×</em></div><div class="stat-lbl">Pipeline Growth</div></div>
+      <div class="stat-div"></div>
+      <div><div class="stat-num">↓40<em>%</em></div><div class="stat-lbl">CAC Reduction</div></div>
+      <div class="stat-div"></div>
+      <div><div class="stat-num">35<em>%</em></div><div class="stat-lbl">Demo-to-Close</div></div>
+    </div>
+    <div class="cta-pill">growthclarityco.com</div>
+  </div>
+</div>
+<div class="instructions">
+  📸 TO CREATE og-image.png: Open this file in Chrome → Right-click → Inspect → Device toolbar → Set 1200×630 → Screenshot. Save as <strong>og-image.png</strong> in your site root.
+</div>
+</body>
+</html>
