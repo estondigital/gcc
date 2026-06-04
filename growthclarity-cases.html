@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="google-site-verification" content="BZaehdUMtDn8GaeGaJG_dnE0JmNZFg01HHL9Pn88Ju8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Case Studies — GrowthClarity Co.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -531,15 +532,95 @@ footer { background:#050d19; padding:52px 48px 28px; border-top:1px solid var(--
   .results-metrics-row { grid-template-columns:1fr 1fr; }
   .cic-body { grid-template-columns:1fr; }
 }
+
+/* ── GCC LOGO ── */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@800&display=swap');
+.gcc-logo {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+}
+.gcc-logo .star {
+  font-size: 18px;
+  color: #1FE07A;
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px #1FE07Acc);
+  animation: logospin 60s linear infinite;
+  transform-origin: center;
+}
+@keyframes logospin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.gcc-logo .w-growth {
+  font-family: 'Geist', 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #F4F5F1;
+  letter-spacing: -0.035em;
+  margin-right: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.gcc-logo .w-clarity {
+  font-family: 'Geist', 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #1FE07A;
+  letter-spacing: -0.035em;
+  margin-right: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.gcc-logo .w-co {
+  font-family: 'Geist', 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #1FE07A;
+  letter-spacing: -0.035em;
+  position: relative;
+  overflow: hidden;
+}
+.gcc-logo .w-growth::after,
+.gcc-logo .w-clarity::after,
+.gcc-logo .w-co::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.28) 50%, transparent 80%);
+  animation: logoshine 60s linear infinite;
+  pointer-events: none;
+}
+.gcc-logo .w-clarity::after { animation-delay: 0.15s; }
+.gcc-logo .w-co::after      { animation-delay: 0.28s; }
+@keyframes logoshine {
+  0%    { left: -100%; opacity: 0; }
+  0.1%  { opacity: 1; }
+  0.6%  { left: 140%; opacity: 0; }
+  0.61% { left: -100%; opacity: 0; }
+  100%  { left: -100%; opacity: 0; }
+}
+
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="index.html" class="nav-brand">
-    <div class="nav-pulse"></div>
-    Growth<span>Clarity</span>&nbsp;Co.
+  <a href="index.html" class="gcc-logo">
+    <span class="star">✦</span>
+    <span class="w-growth">Growth</span>
+    <span class="w-clarity">Clarity</span>
+    <span class="w-co">Co.</span>
   </a>
   <div class="nav-links">
     <a href="index.html">Home</a>

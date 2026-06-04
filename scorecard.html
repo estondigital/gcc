@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="google-site-verification" content="BZaehdUMtDn8GaeGaJG_dnE0JmNZFg01HHL9Pn88Ju8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SaaS Growth Scorecard — GrowthClarity Co.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 :root {
   --navy:#0B1F3A; --navy-2:#0d2444; --navy-3:#112d52;
@@ -202,14 +205,154 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
   .scorecard-wrap{padding:0 16px 80px;}
   .q-card,.lead-form{padding:28px 20px;}
 }
+/* TOAST */
+.toast{
+  position:fixed;bottom:28px;right:28px;z-index:99999;
+  background:var(--navy-2);border:1px solid rgba(0,230,118,.25);
+  border-radius:12px;padding:16px 20px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  transform:translateY(80px);opacity:0;
+  transition:all .4s var(--ease);
+  max-width:340px;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast-icon{font-size:20px;flex-shrink:0;}
+.toast-text{font-size:14px;color:rgba(255,255,255,.7);line-height:1.5;}
+.toast-text strong{color:var(--white);display:block;margin-bottom:2px;}
+
+/* ── GCC LOGO ── */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@800&display=swap');
+.gcc-logo {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+}
+.gcc-logo .star {
+  font-size: 18px;
+  color: #1FE07A;
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px #1FE07Acc);
+  animation: logospin 60s linear infinite;
+  transform-origin: center;
+}
+@keyframes logospin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.gcc-logo .w-growth {
+  font-family: 'Geist', 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #F4F5F1;
+  letter-spacing: -0.035em;
+  margin-right: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.gcc-logo .w-clarity {
+  font-family: 'Geist', 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #1FE07A;
+  letter-spacing: -0.035em;
+  margin-right: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.gcc-logo .w-co {
+  font-family: 'Geist', 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: #1FE07A;
+  letter-spacing: -0.035em;
+  position: relative;
+  overflow: hidden;
+}
+.gcc-logo .w-growth::after,
+.gcc-logo .w-clarity::after,
+.gcc-logo .w-co::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.28) 50%, transparent 80%);
+  animation: logoshine 60s linear infinite;
+  pointer-events: none;
+}
+.gcc-logo .w-clarity::after { animation-delay: 0.15s; }
+.gcc-logo .w-co::after      { animation-delay: 0.28s; }
+@keyframes logoshine {
+  0%    { left: -100%; opacity: 0; }
+  0.1%  { opacity: 1; }
+  0.6%  { left: 140%; opacity: 0; }
+  0.61% { left: -100%; opacity: 0; }
+  100%  { left: -100%; opacity: 0; }
+}
+
 </style>
 </head>
 <body>
 
+<!--
+══════════════════════════════════════════════════════════
+  LEAD CAPTURE SETUP — 3 steps, ~10 minutes
+══════════════════════════════════════════════════════════
+
+STEP 1 — EMAILJS (free, 200 emails/month)
+  1. Go to https://www.emailjs.com → sign up free
+  2. Add Email Service → connect Gmail or any SMTP
+     → copy the Service ID  →  paste into CONFIG.emailjs_service_id
+  3. Account → API Keys → copy Public Key
+     → paste into CONFIG.emailjs_public_key
+  4. Create Template 1 — "template_lead_report"  (report to lead)
+     Subject: Your GrowthClarity Growth Score — {{score}}/100
+     Body (use HTML template in EmailJS editor):
+       Hi {{to_name}}, your {{vertical}} growth score is {{score}}/100 ({{grade}}).
+       Primary bottleneck: {{bottleneck}}
+       Priority Actions:
+       1. {{action1}}
+       2. {{action2}}
+       3. {{action3}}
+       Book a Revenue Growth Audit: {{audit_link}}
+  5. Create Template 2 — "template_notify_owner"  (alert to you)
+     Subject: 🔔 New Lead — {{company}} scored {{score}}/100
+     Body: Name: {{lead_name}} | Email: {{lead_email}} | Company: {{company}}
+           Vertical: {{vertical}} | Role: {{role}} | Score: {{score}} | Grade: {{grade}}
+           Bottleneck: {{bottleneck}} | Submitted: {{submitted_at}}
+
+STEP 2 — FORMSPREE (free, 50 submissions/month — backup log)
+  1. Go to https://formspree.io → sign up free
+  2. New Form → name it "GrowthClarity Scorecard Leads"
+  3. Copy the endpoint URL  →  paste into CONFIG.formspree_endpoint
+     e.g.  https://formspree.io/f/xpwzabcd
+  4. Formspree dashboard shows every submission + can export to CSV
+
+STEP 3 — UPDATE CONFIG object in the <script> block below
+  emailjs_public_key:      from EmailJS Account → API Keys
+  emailjs_service_id:      from EmailJS Email Services tab
+  emailjs_lead_template:   'template_lead_report'   (must match exactly)
+  emailjs_notify_template: 'template_notify_owner'  (must match exactly)
+  formspree_endpoint:      https://formspree.io/f/YOUR_ID
+  owner_email:             your real email address
+
+══════════════════════════════════════════════════════════
+-->
+
 <nav id="nav">
-  <a href="index.html" class="nav-brand">
-    <div class="nav-pulse"></div>
-    Growth<span>Clarity</span>&nbsp;Co.
+  <a href="index.html" class="gcc-logo">
+    <span class="star">✦</span>
+    <span class="w-growth">Growth</span>
+    <span class="w-clarity">Clarity</span>
+    <span class="w-co">Co.</span>
   </a>
   <div class="nav-links">
     <a href="index.html#systems">Systems</a>
@@ -353,6 +496,15 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
     </div>
   </div>
 
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="emailToast">
+  <span class="toast-icon">📬</span>
+  <div class="toast-text">
+    <strong>Report sent to your inbox!</strong>
+    Check your email for your full Growth Score report.
+  </div>
 </div>
 
 <script>
@@ -562,6 +714,39 @@ function goBack() {
 }
 
 // ══════════════════════════════════════════════
+// CONFIG — replace with your real keys
+// ══════════════════════════════════════════════
+const CONFIG = {
+  // ① EmailJS — https://www.emailjs.com
+  //   Create a free account → Add Email Service → Create two templates (see README below)
+  emailjs_public_key:  'YOUR_EMAILJS_PUBLIC_KEY',   // Account → API Keys
+  emailjs_service_id:  'YOUR_EMAILJS_SERVICE_ID',   // Email Services tab
+  emailjs_lead_template:   'template_lead_report',   // template that sends report to lead
+  emailjs_notify_template: 'template_notify_owner',  // template that notifies you
+
+  // ② Formspree — https://formspree.io
+  //   Create free account → New Form → copy the endpoint URL
+  formspree_endpoint: 'https://formspree.io/f/YOUR_FORM_ID',
+
+  // ③ Your email (used in notify template)
+  owner_email: 'jithin@growthclarityco.com',
+};
+
+/* ── EmailJS README ────────────────────────────────────────────
+  TEMPLATE 1 — template_lead_report  (sent to the lead)
+  Subject: Your GrowthClarity Growth Score — {{score}}/100
+  Variables: {{to_name}}, {{to_email}}, {{score}}, {{grade}},
+             {{company}}, {{vertical}}, {{bottleneck}},
+             {{action1}}, {{action2}}, {{action3}}, {{audit_link}}
+
+  TEMPLATE 2 — template_notify_owner  (sent to you)
+  Subject: 🔔 New Scorecard Lead — {{company}} ({{score}}/100)
+  Variables: {{lead_name}}, {{lead_email}}, {{company}},
+             {{vertical}}, {{role}}, {{score}}, {{grade}},
+             {{bottleneck}}, {{submitted_at}}
+─────────────────────────────────────────────────────────────── */
+
+// ══════════════════════════════════════════════
 // LEAD FORM
 // ══════════════════════════════════════════════
 function showLeadForm() {
@@ -571,16 +756,22 @@ function showLeadForm() {
 }
 
 async function submitForm() {
-  const name = document.getElementById('firstName').value.trim();
-  const email = document.getElementById('workEmail').value.trim();
-  const company = document.getElementById('companyName').value.trim();
+  const name     = document.getElementById('firstName').value.trim();
+  const email    = document.getElementById('workEmail').value.trim();
+  const company  = document.getElementById('companyName').value.trim();
+  const role     = document.getElementById('userRole').value.trim();
   const vertical = document.getElementById('saasVertical').value;
 
-  if (!name || !email) {
-    document.getElementById('firstName').style.borderColor = name ? '' : 'var(--red)';
-    document.getElementById('workEmail').style.borderColor = email ? '' : 'var(--red)';
-    return;
-  }
+  // Basic validation
+  let valid = true;
+  if (!name)  { document.getElementById('firstName').style.borderColor  = 'var(--red)'; valid = false; }
+  else          document.getElementById('firstName').style.borderColor  = '';
+  if (!email) { document.getElementById('workEmail').style.borderColor  = 'var(--red)'; valid = false; }
+  else          document.getElementById('workEmail').style.borderColor  = '';
+  if (!valid) return;
+
+  // Store lead data globally so email functions can access it
+  window._leadData = { name, email, company, role, vertical };
 
   document.getElementById('leadForm').classList.add('hidden');
   document.getElementById('loadingState').classList.remove('hidden');
@@ -679,11 +870,106 @@ Return ONLY valid JSON (no markdown, no backticks) in this exact format:
     const clean = text.replace(/```json|```/g, '').trim();
     aiData = JSON.parse(clean);
   } catch(e) {
-    // Fallback
     aiData = generateFallback(normalized, bottleneck, vertical);
   }
 
+  // Grade label
+  const grade = normalized >= 70 ? 'Strong Foundation' : normalized >= 45 ? 'Growth Gaps Present' : 'System Rebuild Needed';
+
+  // ── Fire & forget: Formspree + EmailJS (don't block UI) ──────
+  const leadPayload = {
+    name, email, company, vertical,
+    role:       window._leadData?.role || '',
+    score:      normalized,
+    grade,
+    bottleneck: aiData.bottleneckTitle || bottleneck.label,
+    action1:    aiData.actions?.[0] ? `${aiData.actions[0].title}: ${aiData.actions[0].body}` : '',
+    action2:    aiData.actions?.[1] ? `${aiData.actions[1].title}: ${aiData.actions[1].body}` : '',
+    action3:    aiData.actions?.[2] ? `${aiData.actions[2].title}: ${aiData.actions[2].body}` : '',
+    submitted_at: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+    audit_link: 'https://www.linkedin.com/in/jithingeorge-marketing-strategist/',
+    scorecard_url: window.location.href,
+  };
+
+  sendLeadNotification(leadPayload);   // notify you
+  sendLeadReport(leadPayload);         // send report to lead
+  submitToFormspree(leadPayload);      // backup log in Formspree
+
   setTimeout(() => showResults(name, normalized, rawScores, bottleneck, aiData), 800);
+}
+
+// ══════════════════════════════════════════════
+// FORMSPREE — backup lead log
+// ══════════════════════════════════════════════
+async function submitToFormspree(data) {
+  if (CONFIG.formspree_endpoint.includes('YOUR_FORM_ID')) return; // not configured yet
+  try {
+    await fetch(CONFIG.formspree_endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name:       data.name,
+        email:      data.email,
+        company:    data.company,
+        role:       data.role,
+        vertical:   data.vertical,
+        score:      `${data.score}/100`,
+        grade:      data.grade,
+        bottleneck: data.bottleneck,
+        action_1:   data.action1,
+        action_2:   data.action2,
+        action_3:   data.action3,
+        submitted:  data.submitted_at,
+        source:     'GrowthClarity Scorecard',
+      })
+    });
+  } catch(e) { /* silent fail — EmailJS is the primary channel */ }
+}
+
+// ══════════════════════════════════════════════
+// EMAILJS — notify you of new lead
+// ══════════════════════════════════════════════
+async function sendLeadNotification(data) {
+  if (CONFIG.emailjs_public_key.includes('YOUR_')) return;
+  try {
+    emailjs.init({ publicKey: CONFIG.emailjs_public_key });
+    await emailjs.send(CONFIG.emailjs_service_id, CONFIG.emailjs_notify_template, {
+      to_email:     CONFIG.owner_email,
+      lead_name:    data.name,
+      lead_email:   data.email,
+      company:      data.company || '(not provided)',
+      vertical:     data.vertical || '(not provided)',
+      role:         data.role || '(not provided)',
+      score:        `${data.score}/100`,
+      grade:        data.grade,
+      bottleneck:   data.bottleneck,
+      submitted_at: data.submitted_at,
+      scorecard_url: data.scorecard_url,
+    });
+  } catch(e) { /* silent fail */ }
+}
+
+// ══════════════════════════════════════════════
+// EMAILJS — send personalised report to lead
+// ══════════════════════════════════════════════
+async function sendLeadReport(data) {
+  if (CONFIG.emailjs_public_key.includes('YOUR_')) return;
+  try {
+    emailjs.init({ publicKey: CONFIG.emailjs_public_key });
+    await emailjs.send(CONFIG.emailjs_service_id, CONFIG.emailjs_lead_template, {
+      to_name:    data.name,
+      to_email:   data.email,
+      company:    data.company || 'your company',
+      vertical:   data.vertical || 'B2B SaaS',
+      score:      `${data.score}/100`,
+      grade:      data.grade,
+      bottleneck: data.bottleneck,
+      action1:    data.action1,
+      action2:    data.action2,
+      action3:    data.action3,
+      audit_link: data.audit_link,
+    });
+  } catch(e) { /* silent fail */ }
 }
 
 function generateFallback(score, bottleneck, vertical) {
@@ -708,6 +994,13 @@ function generateFallback(score, bottleneck, vertical) {
 function showResults(name, score, rawScores, bottleneck, ai) {
   document.getElementById('loadingState').classList.add('hidden');
   document.getElementById('resultsState').classList.remove('hidden');
+
+  // Show email toast
+  setTimeout(() => {
+    const toast = document.getElementById('emailToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 5000);
+  }, 1800);
 
   // Score ring animation
   const circumference = 427;
