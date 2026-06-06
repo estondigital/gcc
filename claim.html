@@ -445,7 +445,7 @@ footer{background:var(--ink);border-top:1px solid var(--border-dark);padding:56p
         </div>
 
         <!-- FORMSPREE FORM (real lead capture) -->
-        <form id="real-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:none;">
+        <form id="real-form" action="https://formspree.io/f/mwvjvroa" method="POST" style="display:none;">
           <input type="hidden" name="Name" id="hid-name">
           <input type="hidden" name="WhatsApp" id="hid-phone">
           <input type="hidden" name="Email" id="hid-email">
@@ -654,7 +654,7 @@ function submitForm() {
 
   // Submit to Formspree asynchronously
   const formData=new FormData(document.getElementById('real-form'));
-  fetch('https://formspree.io/f/YOUR_FORM_ID',{method:'POST',body:formData,headers:{'Accept':'application/json'}})
+  fetch('https://formspree.io/f/mwvjvroa',{method:'POST',body:formData,headers:{'Accept':'application/json'}})
     .then(r=>r.json()).then(()=>{console.log('Lead sent to Formspree');})
     .catch(()=>{console.log('Formspree offline — lead logged locally');});
 
