@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTM Revenue Diagnostic — GrowthClarity Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#060f1c;--navy:#0B1F3A;--navy2:#0d2444;
+  --white:#fff;
+  --green:#00E676;--green2:#00c960;--green-glow:rgba(0,230,118,.15);
+  --border-d:rgba(255,255,255,.07);
+  --ease:cubic-bezier(.16,1,.3,1);
+  --red:#ff5050;--amber:#f0a500;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--ink);color:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.03em;line-height:1.1}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--green);transition:width .4s var(--ease);z-index:9999;width:0%}
+
+nav{position:fixed;top:0;left:0;right:0;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(6,15,28,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-d);z-index:999}
+.nav-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;display:flex;align-items:center;gap:6px}
+.nav-logo .star{color:var(--green)}
+.nav-logo .c{color:var(--green)}
+.nav-back{font-size:13px;color:rgba(255,255,255,.5);transition:color .2s}
+.nav-back:hover{color:var(--white)}
+
+main{min-height:100vh;padding-top:60px}
+
+/* ── INTRO ── */
+#screen-intro{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 24px;position:relative;overflow:hidden}
+#screen-intro::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,230,118,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,118,.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.intro-glow{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,230,118,.1),transparent 60%);pointer-events:none}
+.intro-inner{position:relative;z-index:2;max-width:680px}
+.intro-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.25);border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:28px}
+.intro-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.intro-inner h1{font-size:clamp(36px,6vw,72px);margin-bottom:20px;font-weight:800}
+.intro-inner h1 em{font-style:normal;color:var(--green)}
+.intro-inner p{font-size:17px;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto}
+.intro-meta{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:40px}
+.intro-meta-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.4)}
+.intro-meta-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.btn-start{display:inline-flex;align-items:center;gap:10px;background:var(--green);color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;padding:18px 40px;border-radius:12px;border:none;cursor:pointer;transition:all .25s var(--ease)}
+.btn-start:hover{background:var(--green2);transform:translateY(-3px);box-shadow:0 20px 50px var(--green-glow)}
+.btn-start::after{content:'→';display:inline-block;transition:transform .2s}
+.btn-start:hover::after{transform:translateX(4px)}
+
+/* ── PHASE BANNER ── */
+.phase-banner{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding:10px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;font-size:12px;color:rgba(255,255,255,.4)}
+.phase-dots{display:flex;gap:4px}
+.phase-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.12)}
+.phase-dot.active{background:var(--green)}
+.phase-dot.done{background:rgba(0,230,118,.4)}
+.phase-name{font-weight:700;color:rgba(255,255,255,.6);font-size:12px}
+
+/* ── QUESTION SCREENS ── */
+.q-screen{display:none;min-height:calc(100vh - 60px);padding:80px 24px 80px;max-width:760px;margin:0 auto}
+.q-screen.active{display:block}
+.q-step{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.q-category{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.q-text{font-size:clamp(22px,4vw,34px);font-weight:800;margin-bottom:8px;line-height:1.2}
+.q-sub{font-size:15px;color:rgba(255,255,255,.45);margin-bottom:36px;line-height:1.65}
+
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:36px}
+@media(max-width:500px){.options-grid{grid-template-columns:1fr}}
+.opt{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 18px;cursor:pointer;transition:all .2s var(--ease);text-align:left;display:flex;align-items:flex-start;gap:12px}
+.opt:hover{border-color:rgba(0,230,118,.4);background:rgba(0,230,118,.06)}
+.opt.selected{border-color:var(--green);background:rgba(0,230,118,.1)}
+.opt-radio{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.opt.selected .opt-radio{border-color:var(--green);background:var(--green)}
+.opt.selected .opt-radio::after{content:'✓';font-size:11px;color:var(--ink);font-weight:800}
+.opt-title{font-size:15px;font-weight:600;margin-bottom:3px;line-height:1.3}
+.opt-desc{font-size:12px;color:rgba(255,255,255,.4);line-height:1.5}
+
+.v-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:36px}
+@media(max-width:500px){.v-grid{grid-template-columns:1fr 1fr}}
+.v-opt{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;text-align:center}
+.v-opt:hover{border-color:rgba(0,230,118,.4);background:rgba(0,230,118,.05)}
+.v-opt.selected{border-color:var(--green);background:rgba(0,230,118,.1)}
+.v-opt-icon{font-size:24px;margin-bottom:6px}
+.v-opt-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.v-opt-sub{font-size:11px;color:rgba(255,255,255,.35)}
+
+.q-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.btn-prev{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:13px 24px;border-radius:9px;font-size:14px;font-weight:600;transition:all .2s}
+.btn-prev:hover{border-color:rgba(255,255,255,.3);color:var(--white)}
+.btn-next{background:var(--green);color:var(--ink);padding:13px 32px;border-radius:9px;font-size:15px;font-weight:700;border:none;transition:all .2s var(--ease)}
+.btn-next:hover{background:var(--green2);transform:translateY(-2px);box-shadow:0 10px 30px var(--green-glow)}
+.btn-next:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.3);cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── SCORE PREVIEW SCREEN ── */
+#screen-preview{display:none;padding:80px 24px 80px}
+.preview-inner{max-width:820px;margin:0 auto}
+.preview-hero{text-align:center;margin-bottom:48px}
+.preview-hero h2{font-size:clamp(28px,4vw,48px);font-weight:800;margin-bottom:12px}
+.preview-hero h2 em{font-style:normal;color:var(--green)}
+.preview-hero p{font-size:16px;color:rgba(255,255,255,.45);max-width:520px;margin:0 auto;line-height:1.7}
+
+.score-ring-wrap{display:flex;flex-direction:column;align-items:center;margin:36px 0}
+.score-ring-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:12px}
+.score-ring-svg{position:relative;display:inline-block}
+.score-ring-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.score-ring-num span{font-family:'Bricolage Grotesque',sans-serif;font-size:52px;font-weight:800;display:block;line-height:1}
+.score-ring-num small{font-size:14px;color:rgba(255,255,255,.4)}
+.score-verdict{font-size:17px;font-weight:700;margin-top:14px}
+
+.cat-bars{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:40px}
+@media(max-width:600px){.cat-bars{grid-template-columns:1fr 1fr}}
+.cat-bar-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px;text-align:center}
+.cat-bar-card .cb-label{font-size:11px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.cat-bar-card .cb-val{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;margin-bottom:6px}
+.cat-bar-card .cb-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}
+.cat-bar-card .cb-fill{height:100%;border-radius:2px}
+
+/* Top 3 brief findings on preview */
+.brief-findings{margin-bottom:48px}
+.brief-findings h3{font-size:19px;font-weight:700;margin-bottom:16px}
+.brief-finding{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;margin-bottom:8px}
+.bf-sev{width:6px;border-radius:3px;flex-shrink:0;align-self:stretch}
+.bf-title{font-size:14px;font-weight:700;margin-bottom:3px}
+.bf-fix{font-size:12px;color:var(--green);font-weight:600}
+
+/* ── REPORT REQUEST BLOCK ── */
+.report-request{background:var(--navy2);border:1px solid rgba(0,230,118,.2);border-radius:20px;padding:44px 40px;position:relative;overflow:hidden;margin-bottom:32px}
+@media(max-width:600px){.report-request{padding:28px 20px}}
+.report-request::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:400px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,230,118,.1),transparent 60%);pointer-events:none}
+.rr-inner{position:relative;z-index:1}
+.rr-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.25);border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:20px}
+.rr-title{font-size:clamp(22px,3vw,32px);font-weight:800;margin-bottom:12px;line-height:1.2}
+.rr-title em{font-style:normal;color:var(--green)}
+.rr-desc{font-size:15px;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:28px;max-width:560px}
+.rr-what{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+@media(max-width:500px){.rr-what{grid-template-columns:1fr}}
+.rr-what-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.07)}
+.rr-what-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.rr-what-text{font-size:13px;color:rgba(255,255,255,.65);line-height:1.5}
+.rr-what-text strong{display:block;font-size:13px;color:var(--white);font-weight:700;margin-bottom:2px}
+
+/* Lead form inside report request */
+.lead-form{display:flex;flex-direction:column;gap:12px}
+.lead-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.lead-row{grid-template-columns:1fr}}
+.lead-input{background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:14px 18px;font-size:15px;color:var(--white);font-family:'Instrument Sans',sans-serif;outline:none;transition:border-color .2s}
+.lead-input::placeholder{color:rgba(255,255,255,.3)}
+.lead-input:focus{border-color:var(--green)}
+.btn-report{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--green);color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:16px;padding:17px;border-radius:10px;border:none;cursor:pointer;transition:all .25s var(--ease)}
+.btn-report:hover{background:var(--green2);transform:translateY(-2px);box-shadow:0 16px 40px var(--green-glow)}
+.btn-report:disabled{background:rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:not-allowed;transform:none;box-shadow:none}
+.form-privacy{font-size:12px;color:rgba(255,255,255,.25);text-align:center;margin-top:8px}
+
+/* ── SENDING OVERLAY ── */
+#sending-overlay{display:none;position:fixed;inset:0;background:rgba(6,15,28,.92);z-index:9998;align-items:center;justify-content:center;flex-direction:column;gap:18px}
+#sending-overlay.active{display:flex}
+.sending-spinner{width:48px;height:48px;border:3px solid rgba(0,230,118,.2);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sending-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--white)}
+.sending-sub{font-size:14px;color:rgba(255,255,255,.4)}
+
+/* ── CONFIRMATION SCREEN ── */
+#screen-confirm{display:none;min-height:calc(100vh - 60px);align-items:center;justify-content:center;padding:60px 24px}
+#screen-confirm.active{display:flex}
+.confirm-inner{max-width:700px;width:100%;text-align:center}
+.confirm-check{width:72px;height:72px;border-radius:50%;background:rgba(0,230,118,.12);border:2px solid rgba(0,230,118,.3);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 28px}
+.confirm-inner h2{font-size:clamp(26px,4vw,40px);font-weight:800;margin-bottom:14px}
+.confirm-inner h2 em{font-style:normal;color:var(--green)}
+.confirm-inner p{font-size:15px;color:rgba(255,255,255,.45);line-height:1.75;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto}
+.confirm-timeline{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:48px;flex-wrap:wrap}
+.ct-step{text-align:center;padding:0 20px}
+.ct-num{width:36px;height:36px;border-radius:50%;background:rgba(0,230,118,.12);border:1.5px solid rgba(0,230,118,.3);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;color:var(--green);margin:0 auto 10px}
+.ct-label{font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px}
+.ct-desc{font-size:11px;color:rgba(255,255,255,.35)}
+.ct-line{width:40px;height:1px;background:rgba(255,255,255,.1);margin-top:-18px}
+@media(max-width:500px){.ct-line{display:none}.ct-step{padding:0 10px}}
+
+/* 3-way CTA on confirm */
+.cta-section-header{text-align:center;margin-bottom:24px}
+.cta-section-header h3{font-size:clamp(20px,3vw,28px);font-weight:800;margin-bottom:8px}
+.cta-section-header h3 em{font-style:normal;color:var(--green)}
+.cta-section-header p{font-size:14px;color:rgba(255,255,255,.4);max-width:440px;margin:0 auto}
+.cta-options{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:680px){.cta-options{grid-template-columns:1fr}}
+.cta-option{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.09);border-radius:16px;padding:22px 18px;text-align:left;position:relative;overflow:hidden;transition:all .25s var(--ease);cursor:pointer;display:block}
+.cta-option:hover{border-color:rgba(0,230,118,.4);background:rgba(0,230,118,.06);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.cta-option.featured{border-color:var(--green);background:rgba(0,230,118,.07)}
+.cta-option.featured::before{content:'Recommended';position:absolute;top:12px;right:12px;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:var(--green);padding:3px 8px;border-radius:100px}
+.cta-num{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,230,118,.5);margin-bottom:12px}
+.cta-icon{font-size:24px;margin-bottom:12px}
+.cta-title{font-size:16px;font-weight:800;margin-bottom:4px;line-height:1.2}
+.cta-subtitle{font-size:11px;color:var(--green);font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
+.cta-desc{font-size:12px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:14px}
+.cta-link{font-size:12px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:5px;transition:gap .2s}
+.cta-option:hover .cta-link{gap:9px}
+.btn-restart{background:transparent;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);padding:11px 22px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s}
+.btn-restart:hover{border-color:rgba(255,255,255,.3);color:var(--white)}
+
+/* ── KPI EDUCATION (on preview screen, collapsed) ── */
+.kpi-education{margin-bottom:40px}
+.kpi-education>h3{font-size:19px;font-weight:700;margin-bottom:8px}
+.kpi-education>p{font-size:14px;color:rgba(255,255,255,.4);margin-bottom:18px;line-height:1.6}
+.kpi-grid{display:grid;gap:8px}
+.kpi-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden}
+.kpi-card-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:12px;transition:background .2s}
+.kpi-card-header:hover{background:rgba(255,255,255,.02)}
+.kpi-card-header-left{display:flex;align-items:center;gap:10px}
+.kpi-badge{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px}
+.kpi-badge.red{background:rgba(255,80,80,.15);color:#ff5050;border:1px solid rgba(255,80,80,.25)}
+.kpi-badge.amber{background:rgba(240,165,0,.12);color:#f0a500;border:1px solid rgba(240,165,0,.2)}
+.kpi-badge.green{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2)}
+.kpi-card-title{font-size:14px;font-weight:700}
+.kpi-card-score{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;flex-shrink:0}
+.kpi-chevron{color:rgba(255,255,255,.3);font-size:11px;flex-shrink:0;transition:transform .3s}
+.kpi-card.open .kpi-chevron{transform:rotate(180deg)}
+.kpi-card-body{display:none;padding:0 18px 18px}
+.kpi-card.open .kpi-card-body{display:block}
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:500px){.kpi-row{grid-template-columns:1fr}}
+.kpi-meta-item{background:rgba(255,255,255,.04);border-radius:8px;padding:10px 12px}
+.kpi-meta-label{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-bottom:4px;font-weight:700}
+.kpi-meta-val{font-size:12px;color:rgba(255,255,255,.7);line-height:1.5;font-weight:600}
+.kpi-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:12px}
+.kpi-fix{font-size:12px;color:var(--green);background:rgba(0,230,118,.06);border-radius:8px;padding:9px 12px;line-height:1.6}
+.kpi-fix strong{font-weight:700}
+
+/* Situation signals strip */
+.qual-strip{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:22px;margin-bottom:40px}
+.qual-strip h3{font-size:16px;font-weight:800;margin-bottom:14px}
+.qual-signals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:600px){.qual-signals{grid-template-columns:1fr}}
+.qs-item{padding:10px 12px;border-radius:8px;border:1px solid}
+.qs-item.green{background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.2)}
+.qs-item.amber{background:rgba(240,165,0,.07);border-color:rgba(240,165,0,.2)}
+.qs-item.red{background:rgba(255,80,80,.07);border-color:rgba(255,80,80,.2)}
+.qs-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;opacity:.55}
+.qs-val{font-size:12px;font-weight:700;line-height:1.4}
+
+.lead-quality-banner{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;margin-bottom:32px;border:1px solid}
+.lead-quality-banner.hot{background:rgba(0,230,118,.08);border-color:rgba(0,230,118,.2)}
+.lead-quality-banner.warm{background:rgba(240,165,0,.08);border-color:rgba(240,165,0,.2)}
+.lead-quality-banner.cool{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.09)}
+.lq-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.lq-body strong{display:block;font-size:14px;font-weight:800;margin-bottom:2px}
+.lq-body span{font-size:12px;color:rgba(255,255,255,.45)}
+
+.prescription-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:40px}
+@media(max-width:600px){.prescription-grid{grid-template-columns:1fr}}
+.rx-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;position:relative;overflow:hidden}
+.rx-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green)}
+.rx-num{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,230,118,.5);margin-bottom:7px}
+.rx-title{font-size:15px;font-weight:800;margin-bottom:7px;line-height:1.3}
+.rx-desc{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6}
+.rx-timeline{font-size:10px;color:var(--green);font-weight:700;margin-top:10px;text-transform:uppercase;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<div id="sending-overlay">
+  <div class="sending-spinner"></div>
+  <div class="sending-title">Submitting your diagnostic…</div>
+  <div class="sending-sub">Saving to our system — takes about 5 seconds</div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="star">✦</span><span style="color:#f4f5f1">Growth</span><span class="c">Clarity Co.</span></a>
+  <a href="index.html" class="nav-back">← Back to site</a>
+</nav>
+
+<main>
+
+<!-- ══ INTRO ══ -->
+<section id="screen-intro">
+  <div class="intro-glow"></div>
+  <div class="intro-inner">
+    <div class="intro-pill"><span class="intro-pill-dot"></span>Free GTM Diagnostic · 7 Minutes</div>
+    <h1>Find Your<br><em>Revenue Leak.</em></h1>
+    <p>28 questions across your GTM system. We'll score your revenue health, identify your biggest bottlenecks, and build you a personalised prescription — calibrated to your stage, vertical, and situation.</p>
+    <div class="intro-meta">
+      <span class="intro-meta-item">28 questions</span>
+      <span class="intro-meta-item">7 minutes</span>
+      <span class="intro-meta-item">Free score — instantly</span>
+      <span class="intro-meta-item">Full AI + expert report in 1–2 days</span>
+    </div>
+    <button class="btn-start" onclick="startDiagnostic()">Start the Diagnostic</button>
+  </div>
+</section>
+
+<!-- ══ QUESTIONS ══ -->
+<div id="questions-wrap"></div>
+
+<!-- ══ SCORE PREVIEW + LEAD FORM ══ -->
+<section id="screen-preview">
+  <div class="preview-inner">
+
+    <div class="preview-hero">
+      <h2>Your GTM <em>Revenue Diagnostic</em></h2>
+      <p id="preview-greeting">Here's your score and your top bottlenecks. Fill in your details below to receive your full AI-analysed report.</p>
+    </div>
+
+    <!-- Lead quality banner -->
+    <div id="lq-banner" class="lead-quality-banner warm" style="display:none">
+      <div class="lq-dot" id="lq-dot"></div>
+      <div class="lq-body"><strong id="lq-title"></strong><span id="lq-desc"></span></div>
+    </div>
+
+    <!-- Score ring -->
+    <div class="score-ring-wrap">
+      <div class="score-ring-label">Overall GTM Health Score</div>
+      <div class="score-ring-svg">
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="78" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="12"/>
+          <circle id="ring-progress" cx="90" cy="90" r="78" fill="none" stroke="#00E676" stroke-width="12" stroke-linecap="round" stroke-dasharray="490" stroke-dashoffset="490" transform="rotate(-90 90 90)" style="transition:stroke-dashoffset 1.2s ease"/>
+        </svg>
+        <div class="score-ring-num"><span id="score-num">0</span><small>/100</small></div>
+      </div>
+      <div id="score-verdict" class="score-verdict"></div>
+    </div>
+
+    <!-- Category bars -->
+    <div class="cat-bars" id="cat-bars"></div>
+
+    <!-- Top 3 brief bottlenecks -->
+    <div class="brief-findings">
+      <h3>Your top 3 bottlenecks</h3>
+      <div id="brief-findings-list"></div>
+    </div>
+
+    <!-- Situation profile -->
+    <div class="qual-strip" id="qual-strip" style="display:none">
+      <h3>Your situation profile</h3>
+      <div class="qual-signals" id="qual-signals"></div>
+    </div>
+
+    <!-- KPI education accordion -->
+    <div class="kpi-education">
+      <h3>Understanding your GTM scores</h3>
+      <p>Each category: what it means, who owns it, how to track it, and the benchmark. Click to expand.</p>
+      <div class="kpi-grid" id="kpi-grid"></div>
+    </div>
+
+    <!-- 90-day prescription -->
+    <div style="margin-bottom:40px">
+      <h3 style="font-size:19px;font-weight:700;margin-bottom:16px">Your 90-day prescription</h3>
+      <div class="prescription-grid" id="prescription-grid"></div>
+    </div>
+
+    <!-- REPORT REQUEST FORM -->
+    <div class="report-request">
+      <div class="rr-inner">
+        <div class="rr-eyebrow">✦ Free personalised report</div>
+        <h2 class="rr-title">Get your full <em>AI + expert GTM report</em><br>delivered to your inbox</h2>
+        <p class="rr-desc">Your score shows where you are. The full report tells you <strong style="color:rgba(255,255,255,.8)">exactly what to do and in what order</strong> — with context specific to your vertical, stage, and situation. A human review layer means the advice is actionable, not generic.</p>
+        <div class="rr-what">
+          <div class="rr-what-item"><div class="rr-what-icon">📊</div><div class="rr-what-text"><strong>Full scored breakdown</strong>All 8 GTM categories with benchmarks, gaps, and priority ranking</div></div>
+          <div class="rr-what-item"><div class="rr-what-icon">🎯</div><div class="rr-what-text"><strong>Your 90-day GTM roadmap</strong>Sequenced by impact — not generic advice, calibrated to your answers</div></div>
+          <div class="rr-what-item"><div class="rr-what-icon">🔍</div><div class="rr-what-text"><strong>Root cause analysis</strong>Why the problem exists, not just what the symptom is</div></div>
+          <div class="rr-what-item"><div class="rr-what-icon">✍️</div><div class="rr-what-text"><strong>Human-reviewed layer</strong>Jithin adds context and a personal note before sending</div></div>
+        </div>
+
+        <div class="lead-form">
+          <div class="lead-row">
+            <input class="lead-input" type="text" id="lead-name" placeholder="First name" autocomplete="given-name" required>
+            <input class="lead-input" type="text" id="lead-company" placeholder="Company name" autocomplete="organization" required>
+          </div>
+          <input class="lead-input" type="email" id="lead-email" placeholder="Work email — we'll send the report here" autocomplete="email" required>
+          <input class="lead-input" type="text" id="lead-role" placeholder="Your role (e.g. CEO, VP Growth, CMO)" autocomplete="organization-title" required>
+          <input class="lead-input" type="url" id="lead-website" placeholder="Company website (optional)" autocomplete="url">
+          <button class="btn-report" id="btn-report" onclick="submitLead()">
+            <span>Send Me My Full GTM Report</span>
+            <span style="font-size:18px">→</span>
+          </button>
+        </div>
+        <div class="form-privacy">🔒 Confidential. Your data is never shared or sold. Unsubscribe any time.</div>
+        <div style="margin-top:16px;text-align:center;font-size:13px;color:rgba(255,255,255,.3)">Typically delivered within 1–2 business days</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn-restart" onclick="restartDiagnostic()">Restart Diagnostic</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONFIRMATION ══ -->
+<section id="screen-confirm">
+  <div class="confirm-inner">
+    <div class="confirm-check">✓</div>
+    <h2>Report request <em>received.</em></h2>
+    <p id="confirm-msg">Your diagnostic has been saved. Jithin will review your results and send your full personalised GTM report within 1–2 business days.</p>
+
+    <div class="confirm-timeline">
+      <div class="ct-step">
+        <div class="ct-num">1</div>
+        <div class="ct-label">Now</div>
+        <div class="ct-desc">Results saved to our system</div>
+      </div>
+      <div class="ct-line"></div>
+      <div class="ct-step">
+        <div class="ct-num">2</div>
+        <div class="ct-label">Day 1</div>
+        <div class="ct-desc">AI analysis + report generated</div>
+      </div>
+      <div class="ct-line"></div>
+      <div class="ct-step">
+        <div class="ct-num">3</div>
+        <div class="ct-label">1–2 Days</div>
+        <div class="ct-desc">Human review + personal note added</div>
+      </div>
+      <div class="ct-line"></div>
+      <div class="ct-step">
+        <div class="ct-num">4</div>
+        <div class="ct-label">Delivered</div>
+        <div class="ct-desc">Full report in your inbox</div>
+      </div>
+    </div>
+
+    <div class="cta-section-header" style="margin-bottom:24px">
+      <h3>While you wait — <em>explore your options</em></h3>
+      <p>No commitment required. Start with a conversation.</p>
+    </div>
+    <div class="cta-options" id="confirm-cta-grid"></div>
+
+    <div style="margin-top:20px">
+      <button class="btn-restart" onclick="restartDiagnostic()">Run another diagnostic</button>
+    </div>
+  </div>
+</section>
+
+</main>
+<script>
+// ─────────────────────────────────────────────────
+// CONFIG — paste your deployed Apps Script URL here
+// ─────────────────────────────────────────────────
+const GAS_ENDPOINT = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+
+const PHASES = [
+  {id:'context',    label:'Your Business'},
+  {id:'gtm',        label:'GTM Health'},
+  {id:'qualify',    label:'Your Situation'},
+  {id:'meddpicc',   label:'Working Together'},
+  {id:'challenger', label:'Root Cause'},
+];
+
+const QUESTIONS = [
+  // ── CONTEXT (3) ──
+  {id:'vertical',phase:'context',category:'About Your Business',type:'vertical',
+   text:'What industry is your SaaS company in?',
+   sub:'This shapes the specific bottlenecks and benchmarks we use.',
+   options:[
+     {icon:'🏥',name:'Healthcare SaaS',sub:'RCM, EHR, clinical ops',val:'healthcare'},
+     {icon:'💼',name:'HR Tech SaaS',sub:'HCM, payroll, workforce',val:'hrtech'},
+     {icon:'🎓',name:'EdTech SaaS',sub:'LMS, assessments, upskilling',val:'edtech'},
+     {icon:'💳',name:'Fintech SaaS',sub:'Payments, lending, compliance',val:'fintech'},
+     {icon:'🤖',name:'AI SaaS',sub:'LLM tools, automation, copilots',val:'ai'},
+     {icon:'✦',name:'Enterprise SaaS',sub:'Complex sales, multi-stakeholder',val:'enterprise'},
+   ]},
+  {id:'stage',phase:'context',category:'About Your Business',type:'options',
+   text:'What is your current ARR?',sub:'Your stage defines which GTM bottlenecks are most predictable right now.',
+   options:[
+     {title:'Pre-revenue / Early',desc:'Still finding product-market fit',val:0,score:0},
+     {title:'$100K – $1M ARR',desc:'First customers, building the motion',val:1,score:0},
+     {title:'$1M – $5M ARR (Series A)',desc:'Proving GTM repeatability',val:2,score:0},
+     {title:'$5M – $20M ARR (Series B)',desc:'Scaling the engine',val:3,score:0},
+     {title:'$20M+ ARR (Growth)',desc:'Building the expansion moat',val:4,score:0},
+   ]},
+  {id:'team_size',phase:'context',category:'About Your Business',type:'options',
+   text:'How large is your go-to-market team?',sub:'Team size determines what GTM plays are even executable right now.',
+   options:[
+     {title:'Founder-only or 1–2 people',desc:'GTM is founder-led, no dedicated team',val:1,score:0},
+     {title:'3–5 people',desc:'Small team covering multiple functions',val:2,score:0},
+     {title:'6–15 people',desc:'Dedicated sales + marketing functions',val:3,score:0},
+     {title:'15+ people',desc:'Full GTM organisation with specialists',val:4,score:0},
+   ]},
+
+  // ── GTM HEALTH (15) ──
+  {id:'pmf',phase:'gtm',category:'Product & PMF',type:'options',cat:'PMF',
+   text:'If your product disappeared tomorrow, how would your best customers feel?',
+   sub:'Sean Ellis PMF benchmark: 40%+ "very disappointed" = confirmed product-market fit.',
+   options:[
+     {title:'Most would be very disappointed',desc:'They have no real alternative — we own the workflow',val:4,score:100},
+     {title:'Some would be disappointed',desc:'A few love it deeply, others are indifferent',val:3,score:65},
+     {title:'They would find an alternative',desc:'We are useful but not essential',val:2,score:35},
+     {title:'They would barely notice',desc:'Nice-to-have, not a must-have',val:1,score:10},
+   ]},
+  {id:'icp',phase:'gtm',category:'Positioning & ICP',type:'options',cat:'Positioning',
+   text:'How clearly defined is your Ideal Customer Profile?',
+   sub:'If five people in your company each describe your ICP, do they give the same answer?',
+   options:[
+     {title:'Locked and specific',desc:'Firmographics, pain triggers, buyer role — documented and shared',val:4,score:100},
+     {title:'Mostly agreed on',desc:'We know who we target but it\'s not fully documented',val:3,score:70},
+     {title:'Loosely defined',desc:'Different people describe the ICP differently',val:2,score:35},
+     {title:'Not defined',desc:'We sell to anyone who can pay',val:1,score:10},
+   ]},
+  {id:'positioning',phase:'gtm',category:'Positioning & ICP',type:'options',cat:'Positioning',
+   text:'When a prospect asks "why you over the alternatives?", what happens?',
+   sub:'40% of B2B deals are lost to "no decision" — not a competitor. Weak positioning is why.',
+   options:[
+     {title:'We have a sharp, distinctive answer',desc:'Our point of view is clear and buyers engage with it',val:4,score:100},
+     {title:'We have an answer but it\'s generic',desc:'We say things like "easier to use" or "better support"',val:3,score:55},
+     {title:'It varies by who answers',desc:'Sales says one thing, marketing says another',val:2,score:25},
+     {title:'We don\'t have a consistent answer',desc:'Mostly feature-level comparison',val:1,score:5},
+   ]},
+  {id:'pipeline',phase:'gtm',category:'Demand Generation',type:'options',cat:'Demand Gen',
+   text:'How would you describe your inbound pipeline?',
+   sub:'Healthy demand gen produces a predictable, repeatable flow — not feast-and-famine months.',
+   options:[
+     {title:'Consistent and predictable',desc:'Pipeline is reliable month to month',val:4,score:100},
+     {title:'Growing but lumpy',desc:'Good months and bad, trending upward',val:3,score:65},
+     {title:'Feast-and-famine',desc:'Unpredictable — some months great, most are thin',val:2,score:30},
+     {title:'Almost entirely founder/referral driven',desc:'No repeatable demand channel yet',val:1,score:5},
+   ]},
+  {id:'channels',phase:'gtm',category:'Demand Generation',type:'options',cat:'Demand Gen',
+   text:'Do you know which channels produce paying customers — not just leads?',
+   sub:'Most companies track MQL source. Very few know revenue source.',
+   options:[
+     {title:'Yes — channel-level attribution to revenue',desc:'We know CAC and ROI by channel',val:4,score:100},
+     {title:'Partially — we track to MQL/SQL',desc:'We know lead channels, not necessarily customer channels',val:3,score:60},
+     {title:'Not really — we track vanity metrics',desc:'Traffic and leads but not customer source',val:2,score:25},
+     {title:'No tracking at all',desc:'We don\'t know where customers come from',val:1,score:5},
+   ]},
+  {id:'lead_response',phase:'gtm',category:'Funnel & Conversion',type:'options',cat:'Funnel',
+   text:'How quickly does your team respond to an inbound demo request?',
+   sub:'MIT study: responding within 5 minutes = 21× more likely to qualify vs waiting 30 minutes.',
+   options:[
+     {title:'Under 5 minutes (automated + human)',desc:'Routing is instant, rep follows up within minutes',val:4,score:100},
+     {title:'Within 1 hour',desc:'Same-day response, usually within the hour',val:3,score:70},
+     {title:'Within 24 hours',desc:'We get back the same day or next day',val:2,score:35},
+     {title:'24+ hours or inconsistent',desc:'Response time varies — sometimes days',val:1,score:5},
+   ]},
+  {id:'conversion',phase:'gtm',category:'Funnel & Conversion',type:'options',cat:'Funnel',
+   text:'What does your MQL → Closed-Won conversion feel like?',
+   sub:'Benchmarks: MQL→SQL 25–40% · SQL→Opp 30–50% · Opp→Won 15–30%.',
+   options:[
+     {title:'Strong across the funnel',desc:'Conversion at each stage is at or above benchmark',val:4,score:100},
+     {title:'Top strong, mid/bottom weak',desc:'Lots of leads, deals stall or ghost mid-pipeline',val:2,score:35},
+     {title:'Bottom strong, top weak',desc:'When we reach demo, we close — not enough demos',val:3,score:55},
+     {title:'Leaking everywhere',desc:'Can\'t pinpoint exactly where — just know it\'s broken',val:1,score:10},
+   ]},
+  {id:'nrr',phase:'gtm',category:'Retention & NRR',type:'options',cat:'Retention',
+   text:'What is your Net Revenue Retention (NRR)?',
+   sub:'NRR = (Starting ARR + Expansion − Contraction − Churn) ÷ Starting ARR. Median 2025: 101%.',
+   options:[
+     {title:'120%+ (world class)',desc:'Expansion massively outpaces any churn',val:4,score:100},
+     {title:'105–120%',desc:'Healthy — existing base is growing',val:3,score:80},
+     {title:'90–105%',desc:'Roughly flat — expansion and churn roughly cancel',val:2,score:40},
+     {title:'Below 90% or unknown',desc:'Base is shrinking, or we don\'t track this',val:1,score:5},
+   ]},
+  {id:'churn',phase:'gtm',category:'Retention & NRR',type:'options',cat:'Retention',
+   text:'Do you know WHY customers churn?',
+   sub:'Involuntary churn (failed payments) is 20–40% of total churn and is usually 100% recoverable.',
+   options:[
+     {title:'Yes — documented with cohort data',desc:'We track churn reasons and address them systematically',val:4,score:100},
+     {title:'Exit interviews but inconsistently',desc:'We ask sometimes, but it\'s not systematic',val:3,score:60},
+     {title:'A sense but no data',desc:'We know the general reasons anecdotally',val:2,score:25},
+     {title:'We don\'t track churn reasons',desc:'We know churn happens but not why',val:1,score:5},
+   ]},
+  {id:'sales_enablement',phase:'gtm',category:'Sales Enablement',type:'options',cat:'Sales Enable.',
+   text:'How equipped is your sales team when they walk into a demo?',
+   sub:'Enablement compresses deal cycles by 15–20% and improves win rates.',
+   options:[
+     {title:'Very well equipped',desc:'Battle cards, objection guides, demo decks, competitive one-pagers — all current',val:4,score:100},
+     {title:'Somewhat equipped',desc:'Some assets exist but outdated or inconsistently used',val:3,score:60},
+     {title:'Minimally equipped',desc:'Basic deck but reps are mostly winging it',val:2,score:25},
+     {title:'Not equipped',desc:'No formal assets — every rep does their own thing',val:1,score:5},
+   ]},
+  {id:'abm',phase:'gtm',category:'ABM',type:'options',cat:'ABM',
+   text:'How targeted is your outbound / account-based approach?',
+   sub:'ABM targeting the wrong accounts inflates CAC faster than broad campaigns.',
+   options:[
+     {title:'ICP-matched ABM with intent signals',desc:'Firmographic + behavioural intent, coordinated across sales + marketing',val:4,score:100},
+     {title:'Targeted list-based outbound',desc:'We have an account list but no intent layer',val:3,score:65},
+     {title:'Spray and pray outbound',desc:'High volume, low targeting',val:2,score:25},
+     {title:'No outbound or ABM programme',desc:'We rely entirely on inbound',val:1,score:40},
+   ]},
+  {id:'cac',phase:'gtm',category:'Unit Economics',type:'options',cat:'Unit Econ.',
+   text:'Do you know your fully-loaded Customer Acquisition Cost?',
+   sub:'Fully-loaded = all S&M salaries + benefits + program spend ÷ new customers.',
+   options:[
+     {title:'Yes — by channel, fully loaded, quarterly',desc:'We know CAC by source and make budget decisions from it',val:4,score:100},
+     {title:'Yes — blended but not by channel',desc:'We know total CAC but not which channels are efficient',val:3,score:60},
+     {title:'Loosely estimated',desc:'Rough sense but not formally tracked',val:2,score:25},
+     {title:'We don\'t track CAC',desc:'No formal unit economics measurement',val:1,score:5},
+   ]},
+  {id:'data',phase:'gtm',category:'RevOps & Data',type:'options',cat:'Unit Econ.',
+   text:'How well does your team use data to make GTM decisions?',
+   sub:'Companies with strong RevOps infrastructure grow 19–35% faster than peers.',
+   options:[
+     {title:'Data-driven — dashboards, weekly reviews, clear owners',desc:'Every key decision is backed by real numbers',val:4,score:100},
+     {title:'Mostly data-informed',desc:'We look at data but decisions are often instinct-led',val:3,score:65},
+     {title:'Data incomplete or unreliable',desc:'We have dashboards but trust in the numbers is low',val:2,score:25},
+     {title:'No systematic data use',desc:'Mostly gut-feel decisions',val:1,score:5},
+   ]},
+  {id:'align',phase:'gtm',category:'GTM Alignment',type:'options',cat:'Positioning',
+   text:'How aligned are your sales and marketing teams on the buyer story?',
+   sub:'The #1 mid-funnel killer: sales and marketing describe the product differently to the same buyer.',
+   options:[
+     {title:'Fully aligned — same ICP, narrative, metrics',desc:'Joint planning, shared pipeline targets, one playbook',val:4,score:100},
+     {title:'Mostly aligned with occasional friction',desc:'Generally on the same page, some disconnects',val:3,score:70},
+     {title:'Significant misalignment',desc:'Marketing generates leads sales says are bad quality',val:2,score:25},
+     {title:'No sales team yet',desc:'Founder-led sales, no formal team',val:1,score:50},
+   ]},
+
+  // ── YOUR SITUATION (5) ──
+  {id:'situation_urgency',phase:'qualify',category:'Understanding Your Situation',type:'options',
+   framework:'sign',qual:true,
+   text:'What is the single biggest growth obstacle your team is trying to solve right now?',
+   sub:'Be honest — the answer shapes everything we recommend. There\'s no wrong answer here.',
+   options:[
+     {title:'We can\'t generate enough pipeline',desc:'Top-of-funnel is the binding constraint',val:'pipeline_gap',urgency:3},
+     {title:'Pipeline exists but deals stall or don\'t close',desc:'Mid-funnel conversion is the problem',val:'conversion_gap',urgency:4},
+     {title:'We close deals but customers churn too fast',desc:'Retention and expansion is broken',val:'retention_gap',urgency:4},
+     {title:'We don\'t know what\'s broken',desc:'Revenue is inconsistent and the root cause is unclear',val:'unknown_gap',urgency:5},
+   ]},
+  {id:'desired_state',phase:'qualify',category:'Your Growth Goal',type:'options',
+   framework:'gap',qual:true,
+   text:'If this problem was solved, what would that mean for your business in the next 12 months?',
+   sub:'Think about the business outcome — not the activity. What would actually change?',
+   options:[
+     {title:'We could hit our revenue target',desc:'This is the thing standing between us and plan',val:'hit_target',gap_size:5},
+     {title:'We could raise our next round',desc:'Solving this unlocks investor confidence or Series B metrics',val:'raise_round',gap_size:5},
+     {title:'We could stop the bleeding and stabilise',desc:'Right now we\'re in damage control mode',val:'stabilise',gap_size:4},
+     {title:'We could scale more confidently',desc:'The foundation is there — we just need the next layer',val:'scale',gap_size:3},
+   ]},
+  {id:'cost_inaction',phase:'qualify',category:'Risk of Inaction',type:'options',
+   framework:'gap',qual:true,
+   text:'What happens if this problem is NOT solved in the next 6 months?',
+   sub:'This helps us understand the urgency and tailor the right level of engagement for you.',
+   options:[
+     {title:'We miss our growth targets significantly',desc:'This is existential or near-existential',val:'miss_targets',coi:5},
+     {title:'We continue underperforming vs plan',desc:'Gradual erosion — painful but survivable',val:'underperform',coi:4},
+     {title:'The board / investors will apply pressure',desc:'External accountability is building',val:'board_pressure',coi:4},
+     {title:'Things stay roughly the same',desc:'No burning platform — this is growth optimisation',val:'status_quo',coi:2},
+   ]},
+  {id:'timeline',phase:'qualify',category:'Your Timeline',type:'options',
+   framework:'sign',qual:true,
+   text:'How quickly are you looking to move on solving this?',
+   sub:'No wrong answer — this helps us match the right type of support to where you are.',
+   options:[
+     {title:'We need to start in the next 2–4 weeks',desc:'Urgency is high — something is forcing this now',val:'immediate',timeline:5},
+     {title:'Next quarter — 1–3 months',desc:'Planned initiative, budget and team ready',val:'next_qtr',timeline:4},
+     {title:'Next 6 months',desc:'On the roadmap but not the top priority yet',val:'6mo',timeline:3},
+     {title:'Just exploring options right now',desc:'No committed timeline — early research phase',val:'exploring',timeline:1},
+   ]},
+  {id:'prev_attempts',phase:'qualify',category:'Previous Attempts',type:'options',
+   framework:'gap',qual:true,
+   text:'Have you tried to fix this problem before? What happened?',
+   sub:'This tells us where to start — not from scratch if you\'ve already made progress.',
+   options:[
+     {title:'Yes — we hired someone but it didn\'t work',desc:'The hire didn\'t have the right system or skills',val:'hired_failed',complexity:4},
+     {title:'Yes — we ran campaigns/initiatives but got no traction',desc:'Execution happened but results didn\'t follow',val:'executed_failed',complexity:4},
+     {title:'No — we haven\'t really tried to solve it yet',desc:'This is a first attempt',val:'first_attempt',complexity:2},
+     {title:'We\'re doing things but need expertise to accelerate',desc:'In progress but lacking framework or firepower',val:'in_progress',complexity:3},
+   ]},
+
+  // ── WORKING TOGETHER (3) ──
+  {id:'economic_buyer',phase:'meddpicc',category:'Decision & Budget',type:'options',
+   framework:'meddpicc',qual:true,
+   text:'Who holds the budget and final sign-off for a GTM initiative like this at your company?',
+   sub:'Understanding this helps us recommend the right engagement structure and timeline.',
+   options:[
+     {title:'I do — I own the budget and decision',desc:'You\'re the economic buyer',val:'self',eb:5},
+     {title:'I\'m the champion — my CEO/CFO has sign-off',desc:'You have influence but need executive approval',val:'champion',eb:4},
+     {title:'It would need board or investor approval',desc:'Multi-layer approval process',val:'board',eb:3},
+     {title:'Unclear — we haven\'t gotten to that conversation',desc:'Decision process is undefined',val:'unclear',eb:2},
+   ]},
+  {id:'decision_criteria',phase:'meddpicc',category:'How You Work With Experts',type:'options',
+   framework:'meddpicc',qual:true,
+   text:'How does your organisation typically evaluate and engage outside GTM expertise?',
+   sub:'This helps us structure a starting point that actually fits how your team makes decisions.',
+   options:[
+     {title:'We move fast — trial/POC and decide',desc:'Low friction, outcomes-first evaluation',val:'fast',dp:5},
+     {title:'We have a structured vendor review process',desc:'Proposal, reference check, then decision',val:'structured',dp:3},
+     {title:'We need internal alignment first',desc:'Multiple stakeholders need to agree',val:'consensus',dp:2},
+     {title:'We haven\'t defined the process yet',desc:'This is early-stage thinking',val:'undefined',dp:1},
+   ]},
+  {id:'success_metric',phase:'meddpicc',category:'Defining Success',type:'options',
+   framework:'meddpicc',qual:true,
+   text:'How would you define success for a GTM consulting or advisory engagement?',
+   sub:'The clearer the outcome, the faster we can show you the right path.',
+   options:[
+     {title:'Specific pipeline or revenue numbers',desc:'We need $X pipeline added or Y% increase in close rate',val:'pipeline_metric',clarity:5},
+     {title:'System and process outcomes',desc:'A functioning ABM engine, positioning doc, or RevOps stack',val:'system_metric',clarity:4},
+     {title:'Strategic clarity and direction',desc:'A clear GTM strategy and 90-day roadmap',val:'strategy_metric',clarity:3},
+     {title:'Hard to say right now',desc:'We\'d know it when we see it',val:'unclear_metric',clarity:1},
+   ]},
+
+  // ── ROOT CAUSE (2) ──
+  {id:'current_approach',phase:'challenger',category:'Your Current Approach',type:'options',
+   framework:'challenger',qual:true,
+   text:'Which of these best describes your current approach to fixing GTM problems?',
+   sub:'There\'s no right answer — this tells us where you are so we can meet you there.',
+   options:[
+     {title:'We hire more people and run more campaigns',desc:'Volume approach — add headcount and activity',val:'volume',ch_insight:1},
+     {title:'We look for tools and automation to solve it',desc:'Tech stack approach — better tooling will fix it',val:'tooling',ch_insight:2},
+     {title:'We\'re trying to build a systematic GTM process',desc:'System approach — structure before scale',val:'systematic',ch_insight:4},
+     {title:'We benchmark against competitors and copy what works',desc:'Pattern-matching approach',val:'benchmark',ch_insight:3},
+   ]},
+  {id:'biggest_belief',phase:'challenger',category:'Your Root Cause Hypothesis',type:'options',
+   framework:'challenger',qual:true,
+   text:'What\'s your current belief about why you\'re not hitting your GTM goals?',
+   sub:'We\'ll include a direct response to this in your report. Most GTM problems are misdiagnosed.',
+   options:[
+     {title:'We don\'t have enough leads / awareness',desc:'The problem is top-of-funnel volume',val:'tofu',ch_reframe:'Most companies with this belief have a conversion or positioning problem, not a volume problem.'},
+     {title:'Our product isn\'t quite ready for the market',desc:'The problem is product-market fit',val:'pmf',ch_reframe:'This is sometimes true — but often it\'s a messaging problem that creates the perception of poor PMF.'},
+     {title:'We need the right framework and system',desc:'The problem is structure and process',val:'structure',ch_reframe:'You\'re likely right. Most GTM failures are systems failures, not resource failures.'},
+     {title:'We need more budget and headcount',desc:'The problem is resource constraint',val:'resource',ch_reframe:'Adding resources to a broken system accelerates the dysfunction. Fix the system first.'},
+   ]},
+];
+
+const VERTICALS={
+  healthcare:{name:'Healthcare SaaS',issues:['Long compliance-gated sales cycles','EHR integration objections kill demos','ROI framing differs: clinical vs admin buyer','HIPAA/security reviews add 60–90 days']},
+  hrtech:{name:'HR Tech SaaS',issues:['Multi-stakeholder (HR + Finance + IT)','Implementation friction drives early churn','Champion change = deal at risk','Annual budget cycles slow pipeline']},
+  edtech:{name:'EdTech SaaS',issues:['Rigid academic year budget cycles','Admin buys but teacher must love it','Adoption is not actual usage after launch','LMS switching cost is emotional, not technical']},
+  fintech:{name:'Fintech SaaS',issues:['Compliance/security objections in every deal','CAC spikes in SMB segment','AML/KYC complexity extends time-to-value','Regulatory risk slows category education']},
+  ai:{name:'AI SaaS',issues:['"AI tourist" churn at 60–90 days','Gross margins 55–65% vs 75%+ SaaS norm','ROI proof gap kills expansion conversations','Positioning commoditises rapidly']},
+  enterprise:{name:'Enterprise SaaS',issues:['6–18 month sales cycles standard','Security reviews add 60–90 days','Procurement replaces champion post-demo','Renewal risk = multi-buyer relationship management']},
+};
+
+const CATEGORIES=['PMF','Positioning','Demand Gen','Funnel','Retention','Sales Enable.','ABM','Unit Econ.'];
+const CAT_COLORS={'PMF':'#00E676','Positioning':'#00E676','Demand Gen':'#f0a500','Funnel':'#f0a500','Retention':'#378ADD','Sales Enable.':'#AFA9EC','ABM':'#9FE1CB','Unit Econ.':'#EF9F27'};
+
+const KPI_DATA={
+  'PMF':{what:'Product-Market Fit (PMF) measures how strongly your target market depends on your product. Sean Ellis benchmark: 40%+ of active users "very disappointed" if you disappeared = confirmed PMF.',why:'Without PMF, every GTM dollar is amplifying a leaky bucket. Weak PMF is the root cause of high churn, low expansion, and inconsistent close rates.',who:'CEO and Head of Product. Informed by CS, Sales, and PMM.',how:'Run the Sean Ellis PMF survey to users with 2+ logins in last 14 days. Track cohort retention curves.',benchmark:'40%+ "very disappointed" = confirmed PMF. Under 25% = pre-PMF. Stop scaling GTM.',kpi:'PMF survey score · Logo churn rate · Feature adoption depth · D30/D60 cohort retention'},
+  'Positioning':{what:'Positioning defines why your product exists for a specific customer versus a specific alternative. Messaging is downstream of positioning — fix positioning first.',why:'Weak positioning is the largest single cause of "no decision" losses (40% of B2B deals).',who:'PMM (or Founder). Alignment required from Sales leadership and CEO.',how:'Run April Dunford\'s Competitive Alternatives exercise. Interview 10 recent won/lost customers.',benchmark:'Everyone in your company should give the same 30-second answer to "why you over [competitor]?"',kpi:'Win rate vs named alternatives · "No decision" loss rate · Sales cycle length'},
+  'Demand Gen':{what:'Demand generation is the system that produces predictable, repeatable pipeline. Not campaigns — a system with measurable input-output ratios by channel.',why:'Feast-and-famine pipeline forces reactive discounting, demoralises sales, and makes forecasting impossible.',who:'Head of Demand Gen/Marketing owns the system. RevOps owns attribution. Sales owns follow-up SLAs.',how:'Map every channel to pipeline and revenue. Implement UTM tracking and CRM source attribution.',benchmark:'Top SaaS: 3+ producing channels, 3–4x pipeline coverage ratio, MQL-to-SQL 25%+.',kpi:'Pipeline by source · MQL-to-SQL rate · Pipeline coverage ratio · Channel-level CAC'},
+  'Funnel':{what:'The B2B SaaS funnel: MQL to SQL to Opportunity to Closed-Won. Leaks at any stage compound.',why:'Most revenue is lost in the middle of the funnel — deals that ghost, stall, or die in procurement.',who:'Marketing owns MQL to SQL. Sales owns SQL to Won. RevOps owns the measurement.',how:'Instrument every stage in your CRM. Set SLA alerts for lead response. Run weekly pipeline reviews.',benchmark:'MQL to SQL 25-40% · SQL to Opp 30-50% · Opp to Won 15-30% · Lead response under 5 min.',kpi:'Stage conversion rates · Lead response time · Average deal age · Win rate'},
+  'Retention':{what:'Net Revenue Retention (NRR) = what percentage of last year\'s ARR you still have from existing customers after churn, contraction, and expansion.',why:'NRR below 100% means your base shrinks even before you acquire new customers.',who:'CS owns logo retention. Product owns adoption. Sales owns expansion. Finance tracks NRR monthly.',how:'Monthly cohort analysis in your CRM. Segment by acquisition channel, plan tier, and size.',benchmark:'Median B2B SaaS 2025: NRR ~101%. Top quartile: 120%+. Below 90% = structural crisis.',kpi:'NRR · GRR · Logo churn rate · Expansion ARR · Time-to-value (TTV)'},
+  'Sales Enable.':{what:'Sales enablement = assets, training, and processes that equip reps to have productive buyer conversations: battle cards, objection guides, demo flows, competitive one-pagers.',why:'Without enablement, every rep invents their own story. Inconsistent buyer experiences and lower win rates.',who:'PMM builds assets. Sales leadership defines process. RevOps trains and tracks usage.',how:'Audit existing assets. Build a minimum viable kit: 1 battle card per competitor, 1 objection guide, 1 demo flow, 1 case study per vertical.',benchmark:'Strong enablement: 15-20% shorter sales cycles, 10-15% higher win rates.',kpi:'Asset usage rate · Win rate by rep · Deal cycle length · Ramp time for new reps'},
+  'ABM':{what:'Account-Based Marketing (ABM) = coordinated sales + marketing targeting specific high-value accounts with personalised outreach. Intent signals make it precise.',why:'Outbound without ICP-matching inflates CAC and burns SDR teams. ABM targets the 3-7% of your market actively in-market.',who:'Marketing owns account list and content. Sales owns outreach. RevOps owns intent data and sequencing.',how:'Build Tier 1/2/3 account list from ICP criteria. Layer in G2 or Bombora intent signals.',benchmark:'ABM programmes with intent data: 3-5x higher pipeline efficiency vs broad outbound.',kpi:'Accounts engaged/month · Pipeline from ABM accounts · ABM win rate vs non-ABM'},
+  'Unit Econ.':{what:'Unit economics: whether acquiring and serving a customer is profitable. Key metrics: CAC, CAC Payback, LTV, and LTV:CAC ratio.',why:'Scaling GTM with broken unit economics accelerates cash burn. CAC payback above 24 months means you\'re spending capital faster than customers repay it.',who:'Finance builds the model. RevOps instruments data. CMO and CRO are accountable.',how:'Fully-loaded CAC = (all S&M salaries + program spend) divided by new customers. Break by channel.',benchmark:'LTV:CAC 3:1 or better · Payback 18 months or less · Top quartile: under 12 months.',kpi:'CAC by channel · CAC payback · LTV · LTV:CAC · Magic number'},
+};
+
+let current=0, answers={}, selectedVertical=null, computedScores=null, qualData={};
+
+// ── SCORING ──
+function computeScores(){
+  const catScores={},catCounts={};
+  CATEGORIES.forEach(c=>{catScores[c]=0;catCounts[c]=0});
+  QUESTIONS.forEach(q=>{
+    if(!q.cat||answers[q.id]===undefined)return;
+    const opt=q.options[answers[q.id]];
+    catScores[q.cat]=(catScores[q.cat]||0)+(opt.score||0);
+    catCounts[q.cat]=(catCounts[q.cat]||0)+1;
+  });
+  const averaged={};
+  CATEGORIES.forEach(c=>{averaged[c]=catCounts[c]>0?Math.round(catScores[c]/catCounts[c]):50});
+  const weights={'PMF':0.15,'Positioning':0.2,'Demand Gen':0.15,'Funnel':0.15,'Retention':0.15,'Sales Enable.':0.05,'ABM':0.05,'Unit Econ.':0.1};
+  let total=0;
+  CATEGORIES.forEach(c=>{total+=averaged[c]*(weights[c]||0.1)});
+  return{cats:averaged,total:Math.round(total)};
+}
+
+function computeQualScore(){
+  const tl=answers.timeline!==undefined?QUESTIONS.find(q=>q.id==='timeline').options[answers.timeline].timeline||0:0;
+  const co=answers.cost_inaction!==undefined?QUESTIONS.find(q=>q.id==='cost_inaction').options[answers.cost_inaction].coi||0:0;
+  const ur=answers.situation_urgency!==undefined?QUESTIONS.find(q=>q.id==='situation_urgency').options[answers.situation_urgency].urgency||0:0;
+  const urgencyScore=Math.round((tl+co+ur)/3);
+  const ebRaw=answers.economic_buyer!==undefined?QUESTIONS.find(q=>q.id==='economic_buyer').options[answers.economic_buyer].eb||0:0;
+  const dpRaw=answers.decision_criteria!==undefined?QUESTIONS.find(q=>q.id==='decision_criteria').options[answers.decision_criteria].dp||0:0;
+  const clRaw=answers.success_metric!==undefined?QUESTIONS.find(q=>q.id==='success_metric').options[answers.success_metric].clarity||0:0;
+  const gpRaw=answers.desired_state!==undefined?QUESTIONS.find(q=>q.id==='desired_state').options[answers.desired_state].gap_size||0:0;
+  const total=urgencyScore+ebRaw+dpRaw+clRaw+gpRaw;
+  return{urgencyScore,ebRaw,dpRaw,clRaw,gpRaw,total,pct:Math.round((total/25)*100)};
+}
+
+function getLeadTier(pct){return pct>=72?'hot':pct>=45?'warm':'cool'}
+
+// ── NAVIGATION ──
+function getPhaseDots(phase){
+  const phases=['context','gtm','qualify','meddpicc','challenger'];
+  const ci=phases.indexOf(phase);
+  return phases.map((p,i)=>`<div class="phase-dot ${i<ci?'done':i===ci?'active':''}"></div>`).join('');
+}
+function getPhaseName(phase){return(PHASES.find(x=>x.id===phase)||{label:''}).label}
+
+function startDiagnostic(){
+  // Restore from session if available
+  const saved=sessionStorage.getItem('gtm_answers');
+  const savedCur=sessionStorage.getItem('gtm_current');
+  const savedVert=sessionStorage.getItem('gtm_vertical');
+  if(saved&&savedCur){
+    try{
+      answers=JSON.parse(saved);
+      current=parseInt(savedCur);
+      selectedVertical=savedVert||null;
+    } catch(e){current=0;answers={};selectedVertical=null;}
+  }
+  document.getElementById('screen-intro').style.display='none';
+  renderQuestion(current);
+  updateProgress();
+}
+
+function renderQuestion(idx){
+  const wrap=document.getElementById('questions-wrap');
+  wrap.innerHTML='';
+  const q=QUESTIONS[idx];
+  const div=document.createElement('section');
+  div.className='q-screen active';
+  const total=QUESTIONS.length;
+
+  let html=`<div class="phase-banner">
+    <div class="phase-dots">${getPhaseDots(q.phase)}</div>
+    <span class="phase-name">${getPhaseName(q.phase)}</span>
+  </div>
+  <div class="q-step">Question ${idx+1} of ${total}</div>
+  <div class="q-category">${q.category}</div>
+  <div class="q-text">${q.text}</div>
+  <div class="q-sub">${q.sub}</div>`;
+
+  if(q.type==='vertical'){
+    html+=`<div class="v-grid">`;
+    q.options.forEach(o=>{
+      const sel=selectedVertical===o.val?'selected':'';
+      html+=`<div class="v-opt ${sel}" onclick="selectVertical('${o.val}',this)">
+        <div class="v-opt-icon">${o.icon}</div>
+        <div class="v-opt-name">${o.name}</div>
+        <div class="v-opt-sub">${o.sub}</div>
+      </div>`;
+    });
+    html+=`</div>`;
+  } else {
+    html+=`<div class="options-grid">`;
+    q.options.forEach((o,i)=>{
+      const sel=answers[q.id]===i?'selected':'';
+      html+=`<div class="opt ${sel}" onclick="selectOpt('${q.id}',${i},this)">
+        <div class="opt-radio"></div>
+        <div class="opt-body">
+          <div class="opt-title">${o.title}</div>
+          <div class="opt-desc">${o.desc}</div>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  const isLast=idx===total-1;
+  html+=`<div class="q-nav">
+    <button class="btn-prev" onclick="goBack()" ${idx===0?'disabled':''}>← Back</button>
+    <button class="btn-next" id="btn-next" onclick="goNext()" ${isAnswered(q)?'':'disabled'}>
+      ${isLast?'See My Score →':'Next →'}
+    </button>
+  </div>`;
+
+  div.innerHTML=html;
+  wrap.appendChild(div);
+}
+
+function isAnswered(q){
+  return q.type==='vertical'?selectedVertical!==null:answers[q.id]!==undefined;
+}
+
+function selectVertical(val,el){
+  selectedVertical=val;answers['vertical']=val;
+  document.querySelectorAll('.v-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btn-next').disabled=false;
+  saveProgress();
+}
+
+function selectOpt(qid,idx,el){
+  answers[qid]=idx;
+  document.querySelectorAll('.opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btn-next').disabled=false;
+  saveProgress();
+}
+
+function saveProgress(){
+  sessionStorage.setItem('gtm_answers',JSON.stringify(answers));
+  sessionStorage.setItem('gtm_current',current);
+  sessionStorage.setItem('gtm_vertical',selectedVertical||'');
+}
+
+function goNext(){
+  if(current<QUESTIONS.length-1){
+    current++;saveProgress();
+    renderQuestion(current);updateProgress();
+    window.scrollTo({top:60,behavior:'smooth'});
+  } else {
+    showPreview();
+  }
+}
+
+function goBack(){
+  if(current>0){
+    current--;saveProgress();
+    renderQuestion(current);updateProgress();
+    window.scrollTo({top:60,behavior:'smooth'});
+  }
+}
+
+function updateProgress(){
+  document.getElementById('progress-bar').style.width=((current+1)/QUESTIONS.length*100)+'%';
+}
+
+// ── SCORE PREVIEW SCREEN ──
+function showPreview(){
+  document.getElementById('questions-wrap').innerHTML='';
+  computedScores=computeScores();
+  qualData=computeQualScore();
+  const tier=getLeadTier(qualData.pct);
+  const {cats,total}=computedScores;
+
+  document.getElementById('screen-preview').style.display='block';
+  document.getElementById('progress-bar').style.width='100%';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  // Lead quality banner
+  const banner=document.getElementById('lq-banner');
+  const lqDot=document.getElementById('lq-dot');
+  banner.style.display='flex';
+  if(tier==='hot'){
+    banner.className='lead-quality-banner hot';
+    lqDot.style.background='#00E676';
+    document.getElementById('lq-title').textContent='Strong signal — you\'re ready to move';
+    document.getElementById('lq-desc').textContent='Your situation, timeline, and goals signal a clear growth initiative. Your full report will be prioritised.';
+  } else if(tier==='warm'){
+    banner.className='lead-quality-banner warm';
+    lqDot.style.background='#f0a500';
+    document.getElementById('lq-title').textContent='Qualified growth initiative identified';
+    document.getElementById('lq-desc').textContent='You have a clear problem and a realistic outcome. Your report will map the path from here.';
+  } else {
+    banner.className='lead-quality-banner cool';
+    lqDot.style.background='#8296b0';
+    document.getElementById('lq-title').textContent='Early-stage exploration';
+    document.getElementById('lq-desc').textContent='Good place to start. Your report will give you the clarity to move forward with confidence.';
+  }
+
+  // Score ring animation
+  setTimeout(()=>{
+    const offset=490-(total/100)*490;
+    document.getElementById('ring-progress').style.strokeDashoffset=offset;
+    const color=total>=75?'#00E676':total>=50?'#f0a500':'#ff5050';
+    document.getElementById('ring-progress').style.stroke=color;
+    let n=0;
+    const iv=setInterval(()=>{n=Math.min(n+2,total);document.getElementById('score-num').textContent=n;if(n>=total)clearInterval(iv);},20);
+    document.getElementById('score-verdict').textContent=
+      total>=80?'Strong GTM foundation — optimise and scale':
+      total>=65?'Solid base — clear bottlenecks to fix':
+      total>=45?'Revenue leaks identified — structural fixes needed':
+      'Significant GTM misalignment — start with positioning + PMF';
+    document.getElementById('score-verdict').style.color=color;
+  },300);
+
+  // Category bars
+  document.getElementById('cat-bars').innerHTML=CATEGORIES.map(c=>{
+    const v=cats[c];
+    const col=v>=75?CAT_COLORS[c]:v>=50?CAT_COLORS[c]:'#ff5050';
+    return `<div class="cat-bar-card">
+      <div class="cb-label">${c}</div>
+      <div class="cb-val" style="color:${col}">${v}</div>
+      <div class="cb-bar"><div class="cb-fill" style="width:${v}%;background:${col}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Brief top 3 findings
+  const findings={
+    'PMF':{title:'PMF signal is weak — scaling now will amplify churn',fix:'Run the Sean Ellis survey. Target 40%+ "very disappointed" before increasing acquisition spend.'},
+    'Positioning':{title:'Positioning gap is causing "no decision" losses',fix:'Run April Dunford\'s competitive alternatives exercise with your C-suite. One ICP, one story.'},
+    'Demand Gen':{title:'Demand generation is unpredictable',fix:'Identify your 1–2 producing channels. Kill the rest. Build one compounding loop.'},
+    'Funnel':{title:'Mid-funnel conversion is leaking revenue',fix:'Fix lead response time to under 5 minutes. Audit each funnel stage vs benchmark.'},
+    'Retention':{title:'Retention is compressing your growth ceiling',fix:'Cohort analysis first. Recover involuntary churn — 20–40% of churn is usually failed payments.'},
+    'Sales Enable.':{title:'Sales team lacks the assets to win consistently',fix:'Build minimum viable enablement kit: battle cards, objection guides, demo flow, 1 case study per vertical.'},
+    'ABM':{title:'Account-based targeting is underdeveloped',fix:'Layer intent signals (G2, Bombora) onto your ICP list. Coordinate sequences across sales + marketing.'},
+    'Unit Econ.':{title:'Unit economics need attention before you scale',fix:'Break CAC by channel. Kill anything with payback over 24 months. Double down on sub-12-month channels.'},
+  };
+  const sorted=Object.entries(cats).sort((a,b)=>a[1]-b[1]);
+  document.getElementById('brief-findings-list').innerHTML=sorted.slice(0,3).map(([cat,score])=>{
+    const f=findings[cat]||{title:cat,fix:'Review and improve.'};
+    const sev=score<40?'#ff5050':score<65?'#f0a500':'#00E676';
+    return `<div class="brief-finding">
+      <div class="bf-sev" style="background:${sev}"></div>
+      <div>
+        <div class="bf-title">${f.title} <span style="font-size:12px;font-weight:500;color:${sev}">(${score}/100)</span></div>
+        <div class="bf-fix">→ ${f.fix}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Qualifier signals strip
+  if(answers.situation_urgency!==undefined){
+    document.getElementById('qual-strip').style.display='block';
+    const situAns=QUESTIONS.find(q=>q.id==='situation_urgency').options[answers.situation_urgency].title;
+    const desiredAns=answers.desired_state!==undefined?QUESTIONS.find(q=>q.id==='desired_state').options[answers.desired_state].title:'—';
+    const coiAns=answers.cost_inaction!==undefined?QUESTIONS.find(q=>q.id==='cost_inaction').options[answers.cost_inaction].title:'—';
+    const tlAns=answers.timeline!==undefined?QUESTIONS.find(q=>q.id==='timeline').options[answers.timeline].title:'—';
+    const ebAns=answers.economic_buyer!==undefined?QUESTIONS.find(q=>q.id==='economic_buyer').options[answers.economic_buyer].title:'—';
+    const mAns=answers.success_metric!==undefined?QUESTIONS.find(q=>q.id==='success_metric').options[answers.success_metric].title:'—';
+    const signals=[
+      {label:'Core obstacle',val:situAns,score:qualData.urgencyScore},
+      {label:'Desired outcome',val:desiredAns,score:qualData.gpRaw},
+      {label:'Risk if unsolved',val:coiAns,score:qualData.gpRaw},
+      {label:'Timeline',val:tlAns,score:qualData.urgencyScore},
+      {label:'Decision authority',val:ebAns,score:qualData.ebRaw},
+      {label:'Success definition',val:mAns,score:qualData.clRaw},
+    ];
+    document.getElementById('qual-signals').innerHTML=signals.map(s=>{
+      const cls=s.score>=4?'green':s.score>=2?'amber':'red';
+      return `<div class="qs-item ${cls}"><div class="qs-label">${s.label}</div><div class="qs-val">${s.val}</div></div>`;
+    }).join('');
+  }
+
+  // KPI education
+  buildKpiSection(cats);
+
+  // Prescription
+  const prescriptions=[
+    {num:'01',title:'Fix your binding constraint first',desc:`Your lowest-scoring area is <strong>${sorted[0][0]}</strong> at ${sorted[0][1]}/100. Theory of constraints: improving a non-binding stage moves nothing. Start here.`,time:'Week 1–2'},
+    {num:'02',title:'Speed-to-lead audit',desc:'If inbound leads aren\'t followed up within 5 minutes, fix routing and automation this week. Highest-ICE single fix available.',time:'This week'},
+    {num:'03',title:'ICP and positioning alignment',desc:'Get your C-suite aligned on one ICP, one competitive alternative, one core value prop. Without this, every downstream fix is less effective.',time:'Week 2–3'},
+    {num:'04',title:'Retention cohort analysis',desc:'Pull monthly cohort retention data. If the curve is still declining at month 6, you have a value problem, not just an onboarding problem.',time:'Week 3–4'},
+    {num:'05',title:'Channel-level CAC breakdown',desc:'Rebuild your CAC from fully-loaded costs. Break by channel. Kill anything with payback above 24 months.',time:'Month 2'},
+    {num:'06',title:'Pricing value-metric review',desc:'If your pricing hasn\'t been revisited in 18+ months, you\'re leaving expansion ARR on the table.',time:'Month 2–3'},
+  ];
+  document.getElementById('prescription-grid').innerHTML=prescriptions.map(p=>
+    `<div class="rx-card"><div class="rx-num">Step ${p.num}</div><div class="rx-title">${p.title}</div><div class="rx-desc">${p.desc}</div><div class="rx-timeline">${p.time}</div></div>`
+  ).join('');
+}
+
+function buildKpiSection(cats){
+  const sorted=Object.entries(cats).sort((a,b)=>a[1]-b[1]);
+  document.getElementById('kpi-grid').innerHTML=sorted.map(([cat,score])=>{
+    const kpi=KPI_DATA[cat];if(!kpi)return'';
+    const badgeClass=score<40?'red':score<70?'amber':'green';
+    const badgeLabel=score<40?'Urgent fix needed':score<70?'Improvement needed':'On track';
+    const color=score<40?'#ff5050':score<70?'#f0a500':'#00E676';
+    return `<div class="kpi-card" id="kpi-${cat.replace(/[^a-z]/gi,'_')}">
+      <div class="kpi-card-header" onclick="this.closest('.kpi-card').classList.toggle('open')">
+        <div class="kpi-card-header-left">
+          <span class="kpi-badge ${badgeClass}">${badgeLabel}</span>
+          <span class="kpi-card-title">${cat}</span>
+        </div>
+        <span class="kpi-card-score" style="color:${color}">${score}/100</span>
+        <span class="kpi-chevron">▼</span>
+      </div>
+      <div class="kpi-card-body">
+        <p class="kpi-desc">${kpi.what}</p>
+        <div class="kpi-row">
+          <div class="kpi-meta-item"><div class="kpi-meta-label">Why it matters</div><div class="kpi-meta-val">${kpi.why}</div></div>
+          <div class="kpi-meta-item"><div class="kpi-meta-label">Who owns it</div><div class="kpi-meta-val">${kpi.who}</div></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi-meta-item"><div class="kpi-meta-label">How to track it</div><div class="kpi-meta-val">${kpi.how}</div></div>
+          <div class="kpi-meta-item"><div class="kpi-meta-label">Benchmark</div><div class="kpi-meta-val">${kpi.benchmark}</div></div>
+        </div>
+        <div class="kpi-fix"><strong>Key KPIs to instrument:</strong> ${kpi.kpi}</div>
+      </div>
+    </div>`;
+  }).join('');
+  // Auto-open worst
+  const worst=sorted[0][0].replace(/[^a-z]/gi,'_');
+  const el=document.getElementById('kpi-'+worst);
+  if(el)el.classList.add('open');
+}
+
+// ── LEAD FORM SUBMIT → GOOGLE APPS SCRIPT ──
+async function submitLead(){
+  const name=document.getElementById('lead-name').value.trim();
+  const company=document.getElementById('lead-company').value.trim();
+  const email=document.getElementById('lead-email').value.trim();
+  const role=document.getElementById('lead-role').value.trim();
+  const website=document.getElementById('lead-website').value.trim();
+  if(!name||!company||!email||!role){
+    alert('Please fill in your name, company, email, and role to request your report.');
+    return;
+  }
+  const emailRx=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRx.test(email)){
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  const btn=document.getElementById('btn-report');
+  btn.disabled=true;btn.querySelector('span').textContent='Submitting…';
+
+  const {cats,total}=computedScores;
+  const qs=qualData;
+  const tier=getLeadTier(qs.pct);
+  const vertName=selectedVertical&&VERTICALS[selectedVertical]?VERTICALS[selectedVertical].name:'Not specified';
+  const sorted=Object.entries(cats).sort((a,b)=>a[1]-b[1]);
+
+  // Helper to get answer title safely
+  const getAns=(id)=>{
+    if(answers[id]===undefined)return'N/A';
+    const q=QUESTIONS.find(q=>q.id===id);
+    return q?q.options[answers[id]].title:'N/A';
+  };
+
+  // Build full answers dump for the sheet
+  const allAnswers={};
+  QUESTIONS.forEach(q=>{
+    if(q.type==='vertical'){allAnswers[q.id]=selectedVertical||'N/A';}
+    else if(answers[q.id]!==undefined){allAnswers[q.id]=q.options[answers[q.id]].title;}
+  });
+
+  const payload={
+    // Lead info
+    name,company,email,role,website,
+    submitted_at:new Date().toISOString(),
+    vertical:vertName,
+    // Scores
+    gtm_score:total,
+    lead_tier:tier,
+    qual_pct:qs.pct,
+    // Category scores
+    cat_pmf:cats['PMF'],
+    cat_positioning:cats['Positioning'],
+    cat_demand_gen:cats['Demand Gen'],
+    cat_funnel:cats['Funnel'],
+    cat_retention:cats['Retention'],
+    cat_sales_enable:cats['Sales Enable.'],
+    cat_abm:cats['ABM'],
+    cat_unit_econ:cats['Unit Econ.'],
+    // Top bottlenecks
+    bottleneck_1:sorted[0]?sorted[0][0]+' ('+sorted[0][1]+'/100)':'',
+    bottleneck_2:sorted[1]?sorted[1][0]+' ('+sorted[1][1]+'/100)':'',
+    bottleneck_3:sorted[2]?sorted[2][0]+' ('+sorted[2][1]+'/100)':'',
+    // Qual answers
+    situation:getAns('situation_urgency'),
+    desired_outcome:getAns('desired_state'),
+    cost_of_inaction:getAns('cost_inaction'),
+    timeline:getAns('timeline'),
+    prev_attempts:getAns('prev_attempts'),
+    economic_buyer:getAns('economic_buyer'),
+    decision_process:getAns('decision_criteria'),
+    success_metric:getAns('success_metric'),
+    current_approach:getAns('current_approach'),
+    belief_root_cause:getAns('biggest_belief'),
+    // Full answers JSON for Doc generation
+    all_answers_json:JSON.stringify(allAnswers),
+  };
+
+  document.getElementById('sending-overlay').classList.add('active');
+
+  try{
+    await fetch(GAS_ENDPOINT,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify(payload),
+    });
+  } catch(e){
+    console.warn('Submission error:',e);
+    // Still show confirmation — session data is enough for recovery
+  }
+
+  document.getElementById('sending-overlay').classList.remove('active');
+  sessionStorage.clear(); // Clear saved progress
+  showConfirmation(name,company,tier);
+}
+
+// ── CONFIRMATION SCREEN ──
+function showConfirmation(name,company,tier){
+  document.getElementById('screen-preview').style.display='none';
+  const confirm=document.getElementById('screen-confirm');
+  confirm.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  document.getElementById('confirm-msg').textContent=
+    `${name}, your diagnostic for ${company} has been saved. Jithin will review your results and send your full personalised GTM report within 1–2 business days.`;
+
+  // Dynamic 3-way CTA based on lead tier
+  const ctas=[
+    {num:'Option 01',icon:'🧭',title:'Book a Consultation',subtitle:'45-min revenue audit',
+     desc:'Walk through your results with Jithin before the full report arrives. Leave with a prioritised action plan you can move on this week.',
+     link:'Book a free session →',href:'https://calendly.com/jithin-growthclarityco'},
+    {num:'Option 02',icon:'🚀',title:'Hire Me Directly',subtitle:'Fractional GTM / Demand Gen Lead',
+     desc:'Embed me as your GTM system architect or Head of Demand Gen. I own the pipeline, build the system, and run the plays — without full-time cost.',
+     link:'View my profile →',href:'https://www.linkedin.com/in/jithingeorge-marketing-strategist/'},
+    {num:'Option 03',icon:'🏢',title:'Engage GrowthClarity',subtitle:'Full GTM consulting partnership',
+     desc:'GrowthClarity Co. as your embedded GTM partner — positioning, demand gen, ABM, RevOps, and sales enablement end to end.',
+     link:'Explore the practice →',href:'https://growthclarityco.com'},
+  ];
+  const featuredIdx=tier==='hot'?0:tier==='warm'?1:2;
+  document.getElementById('confirm-cta-grid').innerHTML=ctas.map((c,i)=>{
+    const featured=i===featuredIdx?'featured':'';
+    return `<a class="cta-option ${featured}" href="${c.href}" target="_blank">
+      <div class="cta-num">${c.num}</div>
+      <div class="cta-icon">${c.icon}</div>
+      <div class="cta-title">${c.title}</div>
+      <div class="cta-subtitle">${c.subtitle}</div>
+      <div class="cta-desc">${c.desc}</div>
+      <div class="cta-link">${c.link} →</div>
+    </a>`;
+  }).join('');
+}
+
+function restartDiagnostic(){
+  current=0;answers={};selectedVertical=null;computedScores=null;qualData={};
+  sessionStorage.clear();
+  document.getElementById('screen-preview').style.display='none';
+  document.getElementById('screen-confirm').classList.remove('active');
+  document.getElementById('screen-intro').style.display='flex';
+  document.getElementById('progress-bar').style.width='0%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
