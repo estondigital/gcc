@@ -155,7 +155,6 @@ a{text-decoration:none;color:inherit;}
   border:none;
   background:transparent;
   /* Invert and re-apply dark styles to the iframe */
-  filter:invert(1) hue-rotate(180deg);
 }
 /* Overlay to darken the form slightly for contrast */
 .gform-placeholder{
@@ -352,29 +351,13 @@ footer{background:var(--ink);border-top:1px solid var(--border-dark);padding:52p
 
       <div class="gform-wrapper" id="formWrapper">
 
-        <!-- ▼▼▼ PLACEHOLDER shown until you add your real form URL ▼▼▼ -->
-        <div class="gform-placeholder" id="formPlaceholder">
-          <div class="gform-placeholder-icon">📋</div>
-          <div class="gform-placeholder-title">Form Setup Required</div>
-          <div class="gform-placeholder-sub">
-            Run the <strong>GrowthClarity_Form_Creator.gs</strong> script in Google Apps Script,
-            then paste your form's embed URL into this page.<br><br>
-            <em style="font-size:12px;color:rgba(255,255,255,.25);">See instructions below ↓</em>
-          </div>
-          <a href="https://docs.google.com/forms" target="_blank" class="btn-form-open">
-            Open Google Forms →
-          </a>
-        </div>
-
-        <!-- ▼▼▼ REAL EMBED: uncomment and replace URL once form is live ▼▼▼
         <iframe
-          src="YOUR_GOOGLE_FORM_EMBED_URL"
+          src="https://docs.google.com/forms/d/e/1FAIpQLSfTQmq1cIU14BUzpvupZ9XBjg2PPuZR92exI9RGDhctxiAHzA/viewform?embedded=true"
           width="100%"
           style="min-height:2800px;border:none;display:block;"
           title="Revenue Growth Audit Request Form">
-          Loading form…
+          Loading form...
         </iframe>
-        ▲▲▲ -->
 
       </div>
     </div>
