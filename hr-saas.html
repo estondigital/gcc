@@ -61,11 +61,59 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 .gcc-logo .wg{font-family:'Geist',sans-serif;font-weight:800;font-size:19px;color:#F4F5F1;letter-spacing:-.035em;margin-right:5px;}
 .gcc-logo .wc{font-family:'Geist',sans-serif;font-weight:800;font-size:19px;color:var(--green);letter-spacing:-.035em;margin-right:5px;}
 .gcc-logo .wo{font-family:'Geist',sans-serif;font-weight:800;font-size:19px;color:var(--green);letter-spacing:-.035em;}
+/* ── NAV ── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:9999;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(6,15,28,.94);backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid var(--border-dark);transition:border-color .3s;}
+.gcc-logo{display:flex;align-items:center;gap:0;line-height:1;text-decoration:none;cursor:pointer;}
+.gcc-logo .star{font-size:18px;color:#1FE07A;margin-right:10px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;filter:drop-shadow(0 0 4px #1FE07Acc);animation:logospin 60s linear infinite;transform-origin:center;}
+@keyframes logospin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.gcc-logo .w-growth{font-family:'Geist','Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:#F4F5F1;letter-spacing:-0.035em;margin-right:6px;}
+.gcc-logo .w-clarity{font-family:'Geist','Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:#1FE07A;letter-spacing:-0.035em;margin-right:6px;}
+.gcc-logo .w-co{font-family:'Geist','Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:#1FE07A;letter-spacing:-0.035em;}
 .nav-links{display:flex;align-items:center;gap:2px;}
-.nav-links a{padding:8px 18px;border-radius:7px;font-size:14px;font-weight:500;color:rgba(255,255,255,.52);transition:color .2s,background .2s;letter-spacing:.01em;}
-.nav-links a:hover{color:var(--white);background:rgba(255,255,255,.07);}
-.nav-cta{background:var(--green)!important;color:#060f1c!important;padding:10px 24px!important;border-radius:8px!important;font-weight:700!important;font-size:13px!important;letter-spacing:.02em!important;transition:all .2s!important;}
+.nav-links>a{padding:8px 14px;border-radius:6px;font-size:14px;font-weight:500;color:rgba(255,255,255,.55);transition:color .2s,background .2s;display:block;}
+.nav-links>a:hover{color:var(--white);background:rgba(255,255,255,.06);}
+.nav-links>a.active{color:var(--white);}
+.nav-cta{background:var(--green)!important;color:var(--ink)!important;padding:10px 22px!important;border-radius:8px!important;font-weight:700!important;font-size:13px!important;transition:all .2s!important;margin-left:6px;}
 .nav-cta:hover{background:var(--green-2)!important;transform:translateY(-1px);box-shadow:0 8px 24px var(--green-glow)!important;}
+.nav-dropdown{position:relative;}
+.nav-dropdown>.nav-trigger{display:flex;align-items:center;gap:5px;padding:8px 14px;border-radius:6px;font-size:14px;font-weight:500;color:rgba(255,255,255,.55);cursor:pointer;transition:color .2s,background .2s;user-select:none;}
+.nav-dropdown:hover>.nav-trigger,.nav-dropdown>.nav-trigger:hover{color:var(--white);background:rgba(255,255,255,.06);}
+.nav-trigger-chevron{font-size:9px;opacity:.45;transition:transform .25s,opacity .2s;}
+.nav-dropdown:hover .nav-trigger-chevron{transform:rotate(180deg);opacity:.85;}
+.nav-panel{visibility:hidden;opacity:0;position:absolute;top:calc(100% + 8px);left:0;background:#0c1e38;border:1px solid rgba(255,255,255,.1);border-top:2px solid var(--green);border-radius:0 14px 14px 14px;padding:20px;min-width:480px;z-index:9998;box-shadow:0 32px 80px rgba(0,0,0,.6);transition:opacity .2s,visibility .2s,transform .2s;transform:translateY(6px);}
+.nav-panel.narrow{min-width:260px;}
+.nav-panel.wide{min-width:580px;}
+.nav-dropdown:hover .nav-panel{visibility:visible;opacity:1;transform:translateY(0);}
+.nav-panel::before{content:'';position:absolute;top:-10px;left:0;right:0;height:10px;}
+.ndp-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06);}
+.ndp-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.ndp-grid.three{grid-template-columns:1fr 1fr 1fr;}
+.ndp-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;text-decoration:none;transition:background .15s;}
+.ndp-item:hover{background:rgba(255,255,255,.05);}
+.ndp-icon{width:34px;height:34px;border-radius:9px;flex-shrink:0;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:15px;}
+.ndp-icon.dim{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:rgba(255,255,255,.4);}
+.ndp-title{font-size:13px;font-weight:600;color:rgba(255,255,255,.88);margin-bottom:2px;line-height:1.25;}
+.ndp-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.45;}
+.ndp-badge{font-size:9px;font-weight:700;background:rgba(0,230,118,.15);color:var(--green);border:1px solid rgba(0,230,118,.3);border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:middle;}
+.ndp-footer{margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;}
+.ndp-footer-link{font-size:12px;color:var(--green);font-weight:600;}
+.ndp-footer-note{font-size:11px;color:rgba(255,255,255,.22);}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border-radius:6px;transition:background .2s;}
+.nav-hamburger:hover{background:rgba(255,255,255,.06);}
+.nav-hamburger span{display:block;width:22px;height:2px;background:rgba(255,255,255,.6);border-radius:2px;transition:all .3s;}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.nav-mobile-panel{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;background:rgba(6,15,28,.98);backdrop-filter:blur(20px);overflow-y:auto;z-index:9997;padding:24px;border-top:1px solid rgba(255,255,255,.07);}
+.nav-mobile-panel.open{display:block;}
+.mobile-section{margin-bottom:28px;}
+.mobile-section-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:10px;}
+.mobile-link{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;margin-bottom:4px;font-size:15px;font-weight:500;color:rgba(255,255,255,.7);text-decoration:none;transition:all .2s;}
+.mobile-link:hover,.mobile-link:active{background:rgba(255,255,255,.05);color:var(--white);}
+.mobile-link-icon{width:34px;height:34px;border-radius:8px;flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.mobile-link-icon.green{background:rgba(0,230,118,.1);border-color:rgba(0,230,118,.2);color:var(--green);}
+.mobile-cta-btn{display:block;text-align:center;margin-top:20px;background:var(--green);color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;padding:16px;border-radius:10px;text-decoration:none;}
+@media(max-width:960px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
 
 /* ═══ LAYOUT ═══ */
 .wrap{max-width:1180px;margin:0 auto;padding:0 52px;}
@@ -183,17 +231,99 @@ footer{background:var(--ink);border-top:1px solid var(--border-dark);padding:56p
 </head>
 <body>
 
+<!-- ══ NAV ══ -->
 <nav id="nav">
   <a href="index.html" class="gcc-logo">
     <span class="star">✦</span>
-    <span class="wg">Growth</span><span class="wc">Clarity</span><span class="wo">Co.</span>
+    <span class="w-growth">Growth</span>
+    <span class="w-clarity">Clarity</span>
+    <span class="w-co">Co.</span>
   </a>
   <div class="nav-links">
-    <a href="index.html">Home</a>
+
+    <!-- Services ▾ -->
+    <div class="nav-dropdown">
+      <div class="nav-trigger">Services <span class="nav-trigger-chevron">▾</span></div>
+      <div class="nav-panel">
+        <div class="ndp-label">What we build for you</div>
+        <div class="ndp-grid">
+          <a href="index.html#systems" class="ndp-item"><div class="ndp-icon">🎯</div><div><div class="ndp-title">GTM Strategy</div><div class="ndp-desc">Positioning, ICP, and go-to-market architecture</div></div></a>
+          <a href="index.html#systems" class="ndp-item"><div class="ndp-icon">📈</div><div><div class="ndp-title">Demand Generation</div><div class="ndp-desc">Multi-channel pipeline engine built from scratch</div></div></a>
+          <a href="index.html#systems" class="ndp-item"><div class="ndp-icon">📦</div><div><div class="ndp-title">Product Marketing</div><div class="ndp-desc">Launches, adoption systems, NRR growth</div></div></a>
+          <a href="index.html#systems" class="ndp-item"><div class="ndp-icon dim">👥</div><div><div class="ndp-title">Sales Enablement</div><div class="ndp-desc">Playbooks, battlecards, deal velocity</div></div></a>
+          <a href="index.html#systems" class="ndp-item"><div class="ndp-icon dim">📣</div><div><div class="ndp-title">ABM Programs</div><div class="ndp-desc">Account-based motions for enterprise pipeline</div></div></a>
+          <a href="index.html#systems" class="ndp-item"><div class="ndp-icon dim">⚙️</div><div><div class="ndp-title">Funnel Optimization</div><div class="ndp-desc">CAC reduction, LTV lift, conversion fixes</div></div></a>
+        </div>
+        <div class="ndp-footer">
+          <a href="index.html#systems" class="ndp-footer-link">→ See all systems</a>
+          <span class="ndp-footer-note">Series A–C · $1M–$20M ARR only</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verticals ▾ -->
+    <div class="nav-dropdown">
+      <div class="nav-trigger">Verticals <span class="nav-trigger-chevron">▾</span></div>
+      <div class="nav-panel wide">
+        <div class="ndp-label">Industries we've driven results in</div>
+        <div class="ndp-grid three">
+          <a href="healthcare-saas.html" class="ndp-item"><div class="ndp-icon dim">🏥</div><div><div class="ndp-title">Healthcare SaaS</div><div class="ndp-desc">RCM, EHR, clinical ops</div></div></a>
+          <a href="hr-saas.html" class="ndp-item"><div class="ndp-icon dim">💼</div><div><div class="ndp-title">HR Tech SaaS</div><div class="ndp-desc">HCM, payroll, workforce</div></div></a>
+          <a href="edtech-saas.html" class="ndp-item"><div class="ndp-icon dim">🎓</div><div><div class="ndp-title">EdTech SaaS</div><div class="ndp-desc">LMS, assessments, upskilling</div></div></a>
+          <a href="fintech-saas.html" class="ndp-item"><div class="ndp-icon dim">💳</div><div><div class="ndp-title">Fintech SaaS</div><div class="ndp-desc">Payments, lending, compliance</div></div></a>
+          <a href="ai-saas.html" class="ndp-item"><div class="ndp-icon dim">🤖</div><div><div class="ndp-title">AI SaaS</div><div class="ndp-desc">LLM tools, automation, copilots</div></div></a>
+          <a href="enterprise-saas.html" class="ndp-item"><div class="ndp-icon">✦</div><div><div class="ndp-title">Enterprise SaaS <span class="ndp-badge">New</span></div><div class="ndp-desc">Complex sales, multi-stakeholder GTM</div></div></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case Studies -->
     <a href="growthclarity-cases.html">Case Studies</a>
-    <a href="diagnostic.html" class="nav-cta">Run GTM Diagnostic ✦</a>
+
+    <!-- GTM Diagnostic -->
+    <a href="diagnostic.html">GTM Diagnostic ✦</a>
+
+    <!-- About -->
+    <a href="index.html#about">About</a>
+
+    <!-- CTA -->
+    <a href="contact.html" class="nav-cta">Book a Revenue Audit →</a>
+
+  </div>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu">
+    <span></span><span></span><span></span>
   </div>
 </nav>
+
+<!-- Mobile Nav -->
+<div class="nav-mobile-panel" id="mobileNav">
+  <div class="mobile-section">
+    <div class="mobile-section-title">Services</div>
+    <a href="index.html#systems" class="mobile-link"><div class="mobile-link-icon green">🎯</div>GTM Strategy</a>
+    <a href="index.html#systems" class="mobile-link"><div class="mobile-link-icon green">📈</div>Demand Generation</a>
+    <a href="index.html#systems" class="mobile-link"><div class="mobile-link-icon green">📦</div>Product Marketing</a>
+    <a href="index.html#systems" class="mobile-link"><div class="mobile-link-icon">👥</div>Sales Enablement</a>
+    <a href="index.html#systems" class="mobile-link"><div class="mobile-link-icon">📣</div>ABM Programs</a>
+    <a href="index.html#systems" class="mobile-link"><div class="mobile-link-icon">⚙️</div>Funnel Optimization</a>
+  </div>
+  <div class="mobile-section">
+    <div class="mobile-section-title">Verticals</div>
+    <a href="healthcare-saas.html" class="mobile-link"><div class="mobile-link-icon">🏥</div>Healthcare SaaS</a>
+    <a href="hr-saas.html" class="mobile-link"><div class="mobile-link-icon">💼</div>HR Tech SaaS</a>
+    <a href="edtech-saas.html" class="mobile-link"><div class="mobile-link-icon">🎓</div>EdTech SaaS</a>
+    <a href="fintech-saas.html" class="mobile-link"><div class="mobile-link-icon">💳</div>Fintech SaaS</a>
+    <a href="ai-saas.html" class="mobile-link"><div class="mobile-link-icon">🤖</div>AI SaaS</a>
+    <a href="enterprise-saas.html" class="mobile-link"><div class="mobile-link-icon">✦</div>Enterprise SaaS</a>
+  </div>
+  <div class="mobile-section">
+    <div class="mobile-section-title">Resources</div>
+    <a href="diagnostic.html" class="mobile-link"><div class="mobile-link-icon green">🔬</div>GTM Diagnostic — Free</a>
+    <a href="growthclarity-cases.html" class="mobile-link"><div class="mobile-link-icon">📄</div>Case Studies</a>
+    <a href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7415340728588926976" target="_blank" class="mobile-link"><div class="mobile-link-icon">📬</div>Newsletter</a>
+    <a href="index.html#about" class="mobile-link"><div class="mobile-link-icon" style="font-size:11px;font-weight:700;color:var(--green);background:rgba(0,230,118,.1);border-color:rgba(0,230,118,.2);">JG</div>About Jithin</a>
+  </div>
+  <a href="diagnostic.html" class="mobile-cta-btn">Run GTM Diagnostic ✦</a>
+</div>
 
 <!-- HERO -->
 <section class="page-hero">
@@ -320,7 +450,7 @@ footer{background:var(--ink);border-top:1px solid var(--border-dark);padding:56p
     <h2>What's your <em>HR SaaS</em><br>growth score?</h2>
     <p>Answer 10 questions about your ARR, CAC, win rate, churn, and ICP clarity. Get your score, biggest bottleneck, and recommended actions — instantly.</p>
     <div class="scorecard-btns">
-      <a href="scorecard.html" class="btn-primary">Take the Growth Scorecard ✦</a>
+      <a href="diagnostic.html" class="btn-primary">Run Your GTM Diagnostic ✦</a>
       <a href="contact.html" class="btn-ghost">Book a Revenue Audit</a>
     </div>
   </div>
@@ -348,7 +478,7 @@ footer{background:var(--ink);border-top:1px solid var(--border-dark);padding:56p
       <div class="footer-col-links">
         <a href="index.html">Home</a>
         <a href="growthclarity-cases.html">Case Studies</a>
-        <a href="scorecard.html">Growth Scorecard ✦</a>
+        <a href="diagnostic.html">GTM Diagnostic ✦</a>
         <a href="diagnostic.html">GTM Diagnostic ✦</a>
         <a href="contact.html">Book Audit</a>
         <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank">LinkedIn</a>
