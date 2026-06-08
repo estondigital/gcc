@@ -9,13 +9,14 @@
     <priority>1.0</priority>
   </url>
 
-  <url>
-    <loc>https://growthclarityco.com/scorecard.html</loc>
+ <url>
+    <loc>https://growthclarityco.com/index.html</loc>
     <lastmod>2025-06-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
   </url>
-
+        
+ 
   <url>
     <loc>https://growthclarityco.com/growthclarity-cases.html</loc>
     <lastmod>2025-06-04</lastmod>
