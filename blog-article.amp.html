@@ -1,0 +1,882 @@
+<!doctype html>
+<html ⚡ lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Why Your ICP Is the Root Cause of Rising CAC — Growth Clarity Co.</title>
+
+  <!-- ═══════════════════════════════════════════
+       CANONICAL — point this at the non-AMP URL
+       ═══════════════════════════════════════════ -->
+  <link rel="canonical" href="https://growthclarityco.com/blog/icp-cac-root-cause">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+
+  <!-- ═══════════════════════════════════
+       GEO / AI-VISIBILITY SCHEMA
+       Structured data that LLMs and answer
+       engines parse to cite your content
+       ═══════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Why Your ICP Is the Root Cause of Rising CAC",
+    "description": "Most B2B SaaS teams treat rising CAC as a channel problem. The root cause is almost always upstream — ICP drift and positioning decay that no amount of bidding optimization can fix.",
+    "datePublished": "2025-06-01T08:00:00+05:30",
+    "dateModified": "2025-06-20T10:00:00+05:30",
+    "author": {
+      "@type": "Person",
+      "name": "Jithin George",
+      "jobTitle": "Founder, Growth Clarity Co.",
+      "url": "https://growthclarityco.com/about"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Growth Clarity Co.",
+      "url": "https://growthclarityco.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://growthclarityco.com/img/gcc-logo.png",
+        "width": 200,
+        "height": 60
+      }
+    },
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://growthclarityco.com/blog/img/icp-cac-cover.jpg",
+      "width": 1200,
+      "height": 630
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://growthclarityco.com/blog/icp-cac-root-cause"
+    },
+    "keywords": ["ICP", "CAC", "B2B SaaS GTM", "positioning", "demand generation", "pipeline"],
+    "articleSection": "GTM Strategy",
+    "inLanguage": "en",
+    "about": [
+      { "@type": "Thing", "name": "Customer Acquisition Cost" },
+      { "@type": "Thing", "name": "Ideal Customer Profile" },
+      { "@type": "Thing", "name": "Go-to-Market Strategy" }
+    ]
+  }
+  </script>
+
+  <!-- Breadcrumb schema for search/AI snippet context -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://growthclarityco.com" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://growthclarityco.com/blog" },
+      { "@type": "ListItem", "position": 3, "name": "Why Your ICP Is the Root Cause of Rising CAC" }
+    ]
+  }
+  </script>
+
+  <!-- ═══════════════════════════════
+       AMP BOILERPLATE (do not edit)
+       ═══════════════════════════════ -->
+  <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style>
+  <noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+
+  <!-- AMP components used in this article -->
+  <script async custom-element="amp-sidebar"      src="https://cdn.ampproject.org/v0/amp-sidebar-0.1.js"></script>
+  <script async custom-element="amp-social-share" src="https://cdn.ampproject.org/v0/amp-social-share-0.1.js"></script>
+  <script async custom-element="amp-analytics"    src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+
+  <!-- ═══════════════════════════════════════
+       DESIGN SYSTEM — GrowthClarity palette
+       ═══════════════════════════════════════
+       Tokens inlined because AMP forbids
+       external stylesheets (except fonts).
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <style amp-custom>
+    /* ── TOKENS ──────────────────────────────── */
+    :root {
+      --bg:          #0D1117;
+      --bg-2:        #161B22;
+      --bg-3:        #1C2128;
+      --green:       #4ADE80;
+      --green-dim:   #22C55E;
+      --green-2:     #86EFAC;
+      --text:        #E6EDF3;
+      --muted:       #8B949E;
+      --muted-2:     #6E7681;
+      --border:      #21262D;
+      --border-mid:  #30363D;
+      --white:       #ffffff;
+      --font-display:'Bricolage Grotesque', sans-serif;
+      --font-body:   'Instrument Sans', sans-serif;
+    }
+
+    /* ── RESET ───────────────────────────────── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;-webkit-text-size-adjust:100%}
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:var(--font-body);
+      font-size:1rem;
+      line-height:1.7;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:var(--green);text-decoration:none}
+    a:hover{text-decoration:underline}
+    p{margin-bottom:1.25rem}
+    h1,h2,h3,h4{
+      font-family:var(--font-display);
+      font-weight:700;
+      line-height:1.2;
+      letter-spacing:-0.01em;
+    }
+    img{border-style:none;max-width:100%}
+
+    /* ── LAYOUT ──────────────────────────────── */
+    .wrap{
+      max-width:680px;
+      margin:0 auto;
+      padding:0 20px;
+    }
+    .wrap--wide{
+      max-width:860px;
+      margin:0 auto;
+      padding:0 20px;
+    }
+
+    /* ── HEADER / NAV ────────────────────────── */
+    .gcc-header{
+      position:fixed;
+      top:0;left:0;right:0;
+      height:56px;
+      background:rgba(13,17,23,0.92);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 20px;
+      z-index:9999;
+    }
+    .gcc-logo{
+      font-family:var(--font-display);
+      font-size:14px;
+      font-weight:700;
+      color:var(--text);
+      letter-spacing:-0.01em;
+      text-decoration:none;
+    }
+    .gcc-logo span{color:var(--green)}
+    .nav-links{
+      display:none;
+      gap:24px;
+      list-style:none;
+    }
+    .nav-links a{
+      font-size:13px;
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:500;
+      transition:color 0.15s;
+    }
+    .nav-links a:hover{color:var(--text)}
+    .nav-cta{
+      font-size:12px;
+      font-weight:600;
+      color:var(--bg);
+      background:var(--green);
+      padding:7px 14px;
+      border-radius:3px;
+      text-decoration:none;
+      white-space:nowrap;
+    }
+    .hamburger{
+      background:none;
+      border:none;
+      cursor:pointer;
+      padding:4px;
+      color:var(--text);
+      font-size:22px;
+      line-height:1;
+    }
+    @media(min-width:640px){
+      .nav-links{display:flex}
+      .hamburger{display:none}
+    }
+
+    /* ── SIDEBAR ─────────────────────────────── */
+    amp-sidebar{
+      background:var(--bg-2);
+      width:280px;
+    }
+    .sidebar-inner{padding:24px 20px}
+    .sidebar-close{
+      background:none;border:none;
+      color:var(--muted);font-size:22px;
+      cursor:pointer;margin-bottom:24px;
+      display:block;
+    }
+    .sidebar-nav{list-style:none}
+    .sidebar-nav li{border-bottom:1px solid var(--border);padding:14px 0}
+    .sidebar-nav a{
+      color:var(--text);font-size:15px;font-weight:500;
+      text-decoration:none;font-family:var(--font-display);
+    }
+    .sidebar-cta{
+      margin-top:28px;
+      display:block;
+      text-align:center;
+      padding:12px;
+      background:var(--green);
+      color:var(--bg);
+      font-weight:700;
+      font-size:14px;
+      border-radius:3px;
+    }
+
+    /* ── ARTICLE HERO ────────────────────────── */
+    .art-hero{
+      padding-top:88px; /* header offset */
+      padding-bottom:0;
+      border-bottom:1px solid var(--border);
+    }
+    .art-meta-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:20px;
+    }
+    .art-tag{
+      font-size:11px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      color:var(--bg);
+      background:var(--green);
+      padding:3px 8px;
+      border-radius:2px;
+    }
+    .art-section{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      color:var(--muted);
+      font-weight:600;
+    }
+    .art-hero h1{
+      font-size:clamp(26px, 5vw, 40px);
+      line-height:1.18;
+      letter-spacing:-0.02em;
+      margin-bottom:18px;
+      color:var(--white);
+    }
+    .art-hero h1 em{
+      font-style:normal;
+      color:var(--green);
+    }
+    .art-deck{
+      font-size:1.08rem;
+      color:var(--muted);
+      line-height:1.65;
+      margin-bottom:24px;
+      max-width:620px;
+    }
+    .art-byline{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:20px 0;
+      border-top:1px solid var(--border);
+    }
+    .art-byline-avatar{
+      width:36px;height:36px;
+      border-radius:50%;
+      background:var(--bg-3);
+      border:1.5px solid var(--border-mid);
+      overflow:hidden;
+      flex-shrink:0;
+    }
+    .art-byline-text{font-size:13px}
+    .art-byline-name{color:var(--text);font-weight:600}
+    .art-byline-date{color:var(--muted);font-size:12px;margin-top:2px}
+
+    /* ── COVER IMAGE ─────────────────────────── */
+    .art-cover{
+      margin:0;
+    }
+    .art-cover amp-img{
+      display:block;
+    }
+
+    /* ── ARTICLE BODY ────────────────────────── */
+    .art-body{
+      padding:36px 0 48px;
+    }
+    .art-body h2{
+      font-size:clamp(20px,3.5vw,26px);
+      margin:2.2rem 0 1rem;
+      color:var(--white);
+    }
+    .art-body h3{
+      font-size:1.1rem;
+      margin:1.8rem 0 0.75rem;
+      color:var(--text);
+    }
+    .art-body p{
+      color:#C9D1D9;
+      font-size:1.01rem;
+      line-height:1.75;
+    }
+    .art-body strong{color:var(--text);font-weight:600}
+
+    /* Pull-quote */
+    .pullquote{
+      border-left:3px solid var(--green);
+      padding:14px 20px;
+      margin:2rem 0;
+      background:var(--bg-2);
+    }
+    .pullquote p{
+      font-family:var(--font-display);
+      font-size:1.15rem;
+      font-weight:600;
+      color:var(--text) !important;
+      line-height:1.5;
+      margin-bottom:0;
+    }
+
+    /* Data callout box */
+    .callout{
+      border:1px solid var(--border-mid);
+      border-left:3px solid var(--green);
+      background:var(--bg-3);
+      padding:18px 20px;
+      margin:2rem 0;
+      border-radius:2px;
+    }
+    .callout-label{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      color:var(--green);
+      font-weight:700;
+      margin-bottom:6px;
+    }
+    .callout p{font-size:0.92rem;color:var(--muted);margin-bottom:0}
+
+    /* Article image */
+    .art-img{margin:2rem 0}
+    .art-img amp-img{border-radius:2px}
+    .art-img figcaption{
+      font-size:12px;
+      color:var(--muted-2);
+      margin-top:8px;
+      line-height:1.5;
+      font-style:italic;
+    }
+
+    /* Inline list styling */
+    .art-body ul,.art-body ol{
+      padding-left:20px;
+      margin-bottom:1.25rem;
+      color:#C9D1D9;
+    }
+    .art-body li{margin-bottom:6px;font-size:1rem;line-height:1.7}
+
+    /* ── SHARE BAR ───────────────────────────── */
+    .share-bar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:20px 0;
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      margin:2rem 0;
+      flex-wrap:wrap;
+    }
+    .share-label{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      color:var(--muted);
+      font-weight:600;
+      margin-right:4px;
+    }
+    amp-social-share{
+      background-color:var(--bg-3) !important;
+      border:1px solid var(--border-mid) !important;
+      border-radius:3px !important;
+    }
+
+    /* ── RELATED ARTICLES ────────────────────── */
+    .related{
+      border-top:1px solid var(--border);
+      padding-top:32px;
+      margin-top:8px;
+    }
+    .related-label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.07em;
+      color:var(--green);
+      font-weight:700;
+      margin-bottom:20px;
+    }
+    .related-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+    }
+    @media(min-width:520px){
+      .related-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    .related-card{
+      border:1px solid var(--border);
+      padding:16px;
+      transition:border-color 0.15s;
+    }
+    .related-card-tag{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      color:var(--green);
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .related-card h3{
+      font-size:14px;
+      line-height:1.35;
+      color:var(--text);
+      margin-bottom:8px;
+    }
+    .related-card-meta{
+      font-size:11px;
+      color:var(--muted-2);
+    }
+    .related-card a.card-link{
+      display:block;
+      color:inherit;
+      text-decoration:none;
+    }
+
+    /* ── CTA BLOCK ───────────────────────────── */
+    .art-cta{
+      border:1.5px solid var(--green);
+      background:var(--bg-2);
+      padding:28px 24px;
+      margin-top:40px;
+      border-radius:2px;
+    }
+    .art-cta-eyebrow{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      color:var(--green);
+      font-weight:700;
+      margin-bottom:10px;
+    }
+    .art-cta h3{
+      font-size:18px;
+      color:var(--white);
+      margin-bottom:8px;
+    }
+    .art-cta p{
+      font-size:13.5px;
+      color:var(--muted);
+      margin-bottom:18px;
+    }
+    .btn-green{
+      display:inline-block;
+      font-size:13px;
+      font-weight:700;
+      color:var(--bg) !important;
+      background:var(--green);
+      padding:10px 18px;
+      border-radius:3px;
+      text-decoration:none;
+    }
+
+    /* ── FOOTER ──────────────────────────────── */
+    .art-footer{
+      background:var(--bg-2);
+      border-top:1px solid var(--border);
+      padding:32px 0;
+      text-align:center;
+    }
+    .art-footer-logo{
+      font-family:var(--font-display);
+      font-size:15px;
+      font-weight:700;
+      color:var(--text);
+      margin-bottom:10px;
+    }
+    .art-footer-logo span{color:var(--green)}
+    .art-footer nav{margin:12px 0}
+    .art-footer nav a{
+      font-size:12px;
+      color:var(--muted);
+      margin:0 10px;
+      text-decoration:none;
+    }
+    .art-footer-copy{
+      font-size:11px;
+      color:var(--muted-2);
+      margin-top:12px;
+    }
+
+    /* ── PROGRESS BAR (reading indicator) ───── */
+    /* AMP does not support CSS position:fixed animation,
+       so we use a purely decorative top stripe */
+    .progress-stripe{
+      height:3px;
+      background:linear-gradient(90deg,var(--green) 0%,var(--green-dim) 100%);
+      position:fixed;top:56px;left:0;right:0;z-index:9998;
+      transform-origin:left;
+    }
+
+    /* ── UTILITY ─────────────────────────────── */
+    .visually-hidden{
+      position:absolute;width:1px;height:1px;
+      overflow:hidden;clip:rect(0,0,0,0);
+    }
+    .mt-0{margin-top:0}
+    .text-green{color:var(--green)}
+
+    /* ── MOBILE FINE-TUNING ───────────────────── */
+    @media(max-width:400px){
+      .art-hero h1{font-size:24px}
+      .wrap{padding:0 16px}
+      .pullquote p{font-size:1rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ ANALYTICS ═════════════════ -->
+<!-- Replace with your GA4 measurement ID -->
+<amp-analytics type="gtag" data-credentials="include">
+  <script type="application/json">
+  {
+    "vars": {
+      "gtag_id": "G-XXXXXXXXXX",
+      "config": {
+        "G-XXXXXXXXXX": {
+          "groups": "default"
+        }
+      }
+    }
+  }
+  </script>
+</amp-analytics>
+
+<!-- ═══════════════ SIDEBAR ═══════════════════ -->
+<amp-sidebar id="nav-sidebar" layout="nodisplay" side="left">
+  <div class="sidebar-inner">
+    <button class="sidebar-close" on="tap:nav-sidebar.close" aria-label="Close menu">✕</button>
+    <ul class="sidebar-nav">
+      <li><a href="https://growthclarityco.com">Home</a></li>
+      <li><a href="https://growthclarityco.com/services">Services</a></li>
+      <li><a href="https://growthclarityco.com/blog">Blog</a></li>
+      <li><a href="https://growthclarityco.com/about">About</a></li>
+      <li><a href="https://growthclarityco.com/gtm-diagnostic.html">GTM Diagnostic</a></li>
+      <li><a href="https://growthclarityco.com/pages/contact.html">Contact</a></li>
+    </ul>
+    <a href="https://growthclarityco.com/pages/contact.html" class="sidebar-cta">Book a Call</a>
+  </div>
+</amp-sidebar>
+
+<!-- ═══════════════ HEADER ════════════════════ -->
+<header class="gcc-header" role="banner">
+  <button class="hamburger" on="tap:nav-sidebar.toggle" aria-label="Open menu">☰</button>
+  <a href="https://growthclarityco.com" class="gcc-logo">Growth Clarity<span>.</span></a>
+  <ul class="nav-links" role="navigation" aria-label="Main navigation">
+    <li><a href="https://growthclarityco.com/services">Services</a></li>
+    <li><a href="https://growthclarityco.com/blog">Blog</a></li>
+    <li><a href="https://growthclarityco.com/about">About</a></li>
+  </ul>
+  <a href="https://growthclarityco.com/pages/contact.html" class="nav-cta">Book a call</a>
+</header>
+
+<!-- Reading progress stripe -->
+<div class="progress-stripe" aria-hidden="true"></div>
+
+<!-- ═══════════════ ARTICLE HERO ══════════════ -->
+<section class="art-hero">
+  <div class="wrap">
+    <div class="art-meta-row">
+      <span class="art-tag">GTM Strategy</span>
+      <span class="art-section">5 min read</span>
+    </div>
+
+    <h1>Why Your ICP Is the <em>Root Cause</em> of Rising CAC</h1>
+
+    <p class="art-deck">
+      Most B2B SaaS teams treat rising CAC as a channel or bidding problem.
+      In diagnostic work across dozens of Series A–C engagements, the root cause
+      is almost always upstream — ICP drift and positioning decay that no amount
+      of optimisation can fix at the campaign layer.
+    </p>
+
+    <div class="art-byline">
+      <div class="art-byline-avatar">
+        <amp-img
+          src="https://growthclarityco.com/img/jithin-avatar.jpg"
+          width="36" height="36"
+          alt="Jithin George"
+          layout="fixed">
+        </amp-img>
+      </div>
+      <div class="art-byline-text">
+        <div class="art-byline-name">Jithin George</div>
+        <div class="art-byline-date">
+          <time datetime="2025-06-01">June 1, 2025</time> &middot; Growth Clarity Co.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ COVER IMAGE ═══════════════ -->
+<figure class="art-cover" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+  <!-- Mobile image -->
+  <amp-img
+    src="https://growthclarityco.com/blog/img/icp-cac-cover-mobile.jpg"
+    width="390" height="220"
+    layout="responsive"
+    alt="A B2B SaaS demand funnel showing ICP drift widening CAC over time"
+    media="(max-width: 639px)"
+    itemprop="url">
+  </amp-img>
+  <!-- Desktop image -->
+  <amp-img
+    src="https://growthclarityco.com/blog/img/icp-cac-cover.jpg"
+    width="1200" height="480"
+    layout="responsive"
+    alt="A B2B SaaS demand funnel showing ICP drift widening CAC over time"
+    media="(min-width: 640px)"
+    itemprop="url">
+  </amp-img>
+</figure>
+
+<!-- ═══════════════ ARTICLE BODY ══════════════ -->
+<main id="content" role="main">
+  <article class="art-body" itemscope itemtype="https://schema.org/Article">
+
+    <div class="wrap">
+
+      <!-- ── SECTION 1 ── -->
+      <h2>The symptom looks like a channel problem</h2>
+      <p>
+        Your Google Ads CPL went up 28% quarter-over-quarter. LinkedIn is
+        producing demos that never close. Organic traffic is flat despite two
+        new blog posts per week. The instinct — shared by most VP of Marketings
+        and board observers alike — is to optimise the channel: lower bids,
+        refine targeting, A/B the creatives.
+      </p>
+      <p>
+        That instinct is wrong. Not sometimes — structurally, categorically wrong,
+        in the specific scenario where ICP drift has already occurred.
+      </p>
+
+      <div class="pullquote">
+        <p>"You cannot bid your way out of a positioning problem. Every dollar
+        spent on optimisation before fixing ICP definition is wasted twice —
+        once on the spend, once on the false signal it generates."</p>
+      </div>
+
+      <!-- ── SECTION 2 ── -->
+      <h2>What ICP drift actually looks like</h2>
+      <p>
+        ICP drift is not a sudden event. It accumulates quietly over 6–18 months
+        as sales teams close deals outside the original profile — often at lower
+        ACV, higher churn risk, or with slower time-to-value. Each of those
+        outlier customers leaves a trace in your marketing data:
+      </p>
+      <ul>
+        <li>Their keywords inflate your keyword universe</li>
+        <li>Their firmographics blur your targeting logic</li>
+        <li>Their objections train your SDRs on the wrong conversation</li>
+        <li>Their churn anchors retention metrics that mislead the board</li>
+      </ul>
+      <p>
+        By the time CAC rises visibly, the ICP signal in your pipeline data
+        has already been diluted by 12–24 months of mixed-cohort history.
+      </p>
+
+      <div class="callout">
+        <div class="callout-label">Diagnostic signal</div>
+        <p>
+          Run your last 24 months of closed-won deals against your stated ICP.
+          If more than 30% fall outside 2+ ICP dimensions (company size, vertical,
+          tech stack, buying role), you have active ICP drift — and your CAC
+          problem is a data problem before it is a channel problem.
+        </p>
+      </div>
+
+      <!-- Article image -->
+      <figure class="art-img">
+        <amp-img
+          src="https://growthclarityco.com/blog/img/icp-drift-chart.jpg"
+          width="680" height="360"
+          layout="responsive"
+          alt="Chart showing ICP drift compounding CAC over 18 months">
+        </amp-img>
+        <figcaption>
+          ICP drift compounds CAC non-linearly. Each quarter of mixed signals
+          makes the next quarter's data harder to act on.
+        </figcaption>
+      </figure>
+
+      <!-- ── SECTION 3 ── -->
+      <h2>The three-layer fix</h2>
+      <p>
+        Solving this is not a messaging refresh or a new landing page. It requires
+        intervention at three layers, in sequence:
+      </p>
+
+      <h3>Layer 1 — ICP rearchitecture</h3>
+      <p>
+        Re-derive your ICP from your best 20% of customers — highest ACV,
+        lowest CAC, fastest time-to-value, strongest retention. Map their
+        firmographic, technographic, and behavioural patterns. This becomes
+        your <strong>clean ICP signal</strong> — the anchor for everything else.
+      </p>
+
+      <h3>Layer 2 — Positioning realignment</h3>
+      <p>
+        Your positioning is downstream of ICP, not upstream of it. Once ICP
+        is rearchitected, rewrite the value proposition from the clean ICP's
+        perspective: their jobs-to-be-done, their current alternatives, their
+        switching cost language. This is not a tagline exercise — it is a
+        messaging architecture that governs every channel, rep script, and page.
+      </p>
+
+      <h3>Layer 3 — Channel signal recalibration</h3>
+      <p>
+        Only after layers 1 and 2 are in place do you touch channel optimisation.
+        Now you are optimising for the right signal — and the CAC improvement
+        compounds because every dollar of spend is pointed at a coherent target.
+      </p>
+
+      <!-- ── SECTION 4 ── -->
+      <h2>What this looks like in practice</h2>
+      <p>
+        A Healthcare SaaS client at $4M ARR had watched CAC climb 40% over
+        18 months. Their response was to hire a paid media agency, which added
+        another 15% on top. After a Growth Clarity Co. GTM diagnostic, we found
+        that 44% of their closed-won deals in the prior 24 months were outside
+        their stated ICP on at least two dimensions — primarily company size
+        (they were closing 50-seat practices when their product delivered best
+        results at 200+ seats).
+      </p>
+      <p>
+        A 6-week ICP rearchitecture and messaging reset — before touching any
+        channel — reduced their paid CPL by 31% in the following quarter.
+        Same budget. Different signal.
+      </p>
+
+      <div class="callout">
+        <div class="callout-label">What to do this week</div>
+        <p>
+          Pull your last 40 closed-won deals. Tag each one against your ICP
+          on 4 dimensions: company size, vertical, primary buying role, and
+          current tech stack. Calculate the % in-profile. If it is below 70%,
+          stop optimising channels and start the ICP audit first.
+        </p>
+      </div>
+
+      <!-- ── SHARE BAR ── -->
+      <div class="share-bar">
+        <span class="share-label">Share</span>
+        <amp-social-share
+          type="twitter"
+          width="40" height="40"
+          aria-label="Share on Twitter"
+          data-param-text="Why Your ICP Is the Root Cause of Rising CAC — @GrowthClarityCo"
+          data-param-url="https://growthclarityco.com/blog/icp-cac-root-cause">
+        </amp-social-share>
+        <amp-social-share
+          type="linkedin"
+          width="40" height="40"
+          aria-label="Share on LinkedIn">
+        </amp-social-share>
+        <amp-social-share
+          type="email"
+          width="40" height="40"
+          aria-label="Share via email"
+          data-param-subject="Worth reading: ICP + CAC"
+          data-param-body="https://growthclarityco.com/blog/icp-cac-root-cause">
+        </amp-social-share>
+      </div>
+
+      <!-- ── CTA BLOCK ── -->
+      <div class="art-cta">
+        <div class="art-cta-eyebrow">Free diagnostic</div>
+        <h3>Not sure if ICP drift is your problem?</h3>
+        <p>
+          The GTM Diagnostic takes 8 minutes. It scores your ICP definition,
+          positioning clarity, pipeline health, and CAC efficiency —
+          and tells you exactly which layer to fix first.
+        </p>
+        <a href="https://growthclarityco.com/gtm-diagnostic.html" class="btn-green">
+          Take the GTM Diagnostic →
+        </a>
+      </div>
+
+      <!-- ── RELATED ARTICLES ── -->
+      <section class="related" aria-label="Related articles">
+        <div class="related-label">More from the blog</div>
+        <div class="related-grid">
+
+          <div class="related-card">
+            <a href="https://growthclarityco.com/blog/positioning-decay" class="card-link">
+              <div class="related-card-tag">Positioning</div>
+              <h3>Positioning Decay: The Silent Revenue Killer in B2B SaaS</h3>
+              <div class="related-card-meta">April 2025 · 6 min</div>
+            </a>
+          </div>
+
+          <div class="related-card">
+            <a href="https://growthclarityco.com/blog/abm-vs-demand-gen" class="card-link">
+              <div class="related-card-tag">Demand Gen</div>
+              <h3>ABM vs Demand Gen: When Each Motion Actually Makes Sense</h3>
+              <div class="related-card-meta">March 2025 · 5 min</div>
+            </a>
+          </div>
+
+          <div class="related-card">
+            <a href="https://growthclarityco.com/blog/plg-slg-hybrid" class="card-link">
+              <div class="related-card-tag">GTM Motion</div>
+              <h3>The PLG + SLG Hybrid: How to Build It Without Breaking Sales</h3>
+              <div class="related-card-meta">February 2025 · 7 min</div>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </div><!-- /.wrap -->
+  </article>
+</main>
+
+<!-- ═══════════════ FOOTER ════════════════════ -->
+<footer class="art-footer" role="contentinfo">
+  <div class="art-footer-logo">Growth Clarity<span>.</span></div>
+  <nav aria-label="Footer navigation">
+    <a href="https://growthclarityco.com">Home</a>
+    <a href="https://growthclarityco.com/blog">Blog</a>
+    <a href="https://growthclarityco.com/about">About</a>
+    <a href="https://growthclarityco.com/pages/contact.html">Contact</a>
+  </nav>
+  <p class="art-footer-copy">&copy; 2025 Growth Clarity Co. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
