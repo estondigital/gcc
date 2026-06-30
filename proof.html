@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proof — Growth Clarity Co.</title>
+<meta name="description" content="Case studies and GTM frameworks from real Series A–C B2B SaaS engagements — filterable by stage, written for founders who need proof matched to their stage, not generic logos.">
+<link rel="stylesheet" href="css/shared.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Geist:wght@800&display=swap" rel="stylesheet">
+<style>
+  body { padding-top: 64px; }
+  .page-hero { padding: 72px 0 8px; }
+  .page-hero h1 { font-size: 40px; max-width: 700px; margin-bottom: 18px; }
+  .case-card[data-stage] { display: block; }
+  .case-card.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div id="gcc-header" data-active="proof" data-root=""></div>
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow">Proof</div>
+    <h1>Stage-matched proof, not generic logos.</h1>
+    <p class="lede">"Do you have SaaS case studies at my stage?" is the right question to ask any partner. Filter below to see ours.</p>
+    <div class="proof-filter-row" id="proofFilters">
+      <div class="proof-filter active" data-stage="all">All stages</div>
+      <div class="proof-filter" data-stage="a">Series A</div>
+      <div class="proof-filter" data-stage="b">Series B</div>
+      <div class="proof-filter" data-stage="c">Series C</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section class="bordered-top">
+  <div class="wrap">
+    <div class="section-label">Case studies</div>
+    <h2>Three engagements, three different root causes</h2>
+    <div class="case-grid" id="caseGrid">
+      <div class="case-card" data-stage="b">
+        <div class="proof-card-stage">Series B &middot; HR Tech &middot; Positioning</div>
+        <h3>Generic messaging, flat conversion</h3>
+        <p>A messaging house rebuild and category narrative redesign for a Series B HR tech company whose demo conversion had stalled despite steady traffic.</p>
+        <div class="case-stat">+38% win rate</div>
+      </div>
+      <div class="case-card" data-stage="a">
+        <div class="proof-card-stage">Series A &middot; Fintech &middot; Demand Generation</div>
+        <h3>Zero to repeatable pipeline</h3>
+        <p>A trigger-event demand gen engine built from scratch for a founder-led Series A fintech company with no marketing function at all.</p>
+        <div class="case-stat">3&times; pipeline in 2 quarters</div>
+      </div>
+      <div class="case-card" data-stage="c">
+        <div class="proof-card-stage">Series C &middot; AI SaaS &middot; CAC &amp; ICP</div>
+        <h3>CAC drift, hidden in plain sight</h3>
+        <p>An ICP audit revealed the targeted segment had quietly shifted &mdash; rebuilding it cut CAC back toward plan within one quarter.</p>
+        <div class="case-stat">&minus;40% CAC, 2 quarters</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES / CONTENT LIBRARY -->
+<section class="bordered-top">
+  <div class="wrap">
+    <div class="section-label">Frameworks</div>
+    <h2>The thinking behind the diagnostic, written out in full</h2>
+    <p class="section-body">These are the same root-cause frameworks the GTM diagnostic scores against — written for founders comparing GTM partners, and consistently the content that attracts our strongest-fit ICP through search.</p>
+    <div class="article-strip">
+      <div class="article-row">
+        <div><h4>B2B SaaS ICP framework</h4><p>Most B2B SaaS companies don't have an ICP problem — they have an ICP-on-paper problem. The 3-dimension framework that closes the gap.</p></div>
+        <a href="#">Read &rarr;</a>
+      </div>
+      <div class="article-row">
+        <div><h4>Why your CAC keeps rising every quarter</h4><p>Most CAC problems aren't channel problems. Here's how to tell the difference, and what to fix instead.</p></div>
+        <a href="#">Read &rarr;</a>
+      </div>
+      <div class="article-row">
+        <div><h4>Why pipeline is inconsistent month to month</h4><p>Inconsistent pipeline usually isn't a demand gen problem — it's the absence of one. What a real demand gen system looks like.</p></div>
+        <a href="#">Read &rarr;</a>
+      </div>
+      <div class="article-row">
+        <div><h4>Why sales doesn't trust marketing-sourced leads</h4><p>Sales says the leads are bad. Marketing says they hit their number. Here's why both are right, and the one-session fix that ends the argument.</p></div>
+        <a href="#">Read &rarr;</a>
+      </div>
+      <div class="article-row">
+        <div><h4>Why NRR stays flat even with happy customers</h4><p>Good retention and flat NRR can both be true at once. The missing system most companies never built.</p></div>
+        <a href="#">Read &rarr;</a>
+      </div>
+      <div class="article-row">
+        <div><h4>Fractional CMO vs. full-time hire: how to decide</h4><p>Hiring a full-time CMO takes months and is expensive to get wrong. An honest framework for deciding between fractional and full-time.</p></div>
+        <a href="#">Read &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bordered-top final-cta">
+  <div class="wrap">
+    <h2 style="margin-bottom:14px">See where your company fits.</h2>
+    <div class="btn-row" style="justify-content:center">
+      <a href="diagnostic.html" class="btn btn-green btn-xl btn-arrow">Take the GTM diagnostic</a>
+      <a href="contact.html" class="btn-outline-white btn-xl">Book a call instead</a>
+    </div>
+  </div>
+</section>
+
+<div id="gcc-footer" data-root=""></div>
+<script src="js/partials.js"></script>
+<script>
+  document.querySelectorAll('.proof-filter').forEach(f => {
+    f.addEventListener('click', () => {
+      document.querySelectorAll('.proof-filter').forEach(x => x.classList.remove('active'));
+      f.classList.add('active');
+      const stage = f.dataset.stage;
+      document.querySelectorAll('#caseGrid .case-card').forEach(card => {
+        card.classList.toggle('hidden', stage !== 'all' && card.dataset.stage !== stage);
+      });
+    });
+  });
+</script>
+</body>
+</html>
