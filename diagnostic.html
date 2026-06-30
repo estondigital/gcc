@@ -142,6 +142,31 @@
     .gate-result-preview { flex-direction: column; gap: 16px; }
     .cycle-secondary-grid { grid-template-columns: 1fr; }
   }
+
+  /* ============================================
+   PRINT / PDF — used by the "Download PDF
+   report" button (window.print()). Switches to
+   a light, paper-friendly layout and hides
+   everything except the report itself.
+============================================ */
+@media print {
+  body { background: #fff !important; color: #1a1a1a !important; padding-top: 0 !important; }
+  body::before { display: none !important; }
+  header, .progress-track, .no-print, .nav-mobile-panel, .confirm-toast { display: none !important; }
+  .screen { display: none !important; }
+  .screen[data-screen="report"] { display: block !important; }
+  main { padding: 0 !important; max-width: 100% !important; }
+  .diag-wrap { max-width: 100% !important; padding: 0 24px !important; }
+  h1, h2, h3, h4, .report-title, .playbook-name, .roadmap-title { color: #0B1F3A !important; }
+  .report-kicker { color: #00a85c !important; }
+  .report-meta, .report-body, .symptom-text, .playbook-desc, .roadmap-desc { color: #333 !important; }
+  .score-strip, .playbook-card, .tier-callout { border-color: #ccc !important; }
+  .score-cell { border-color: #ddd !important; }
+  .score-cell-label { color: #555 !important; }
+  .cycle-section { display: none !important; }
+  a[href]::after { content: none !important; }
+  .btn, .btn-outline-white, .btn-green { display: none !important; }
+}
 </style>
 </head>
 <body>
@@ -281,6 +306,16 @@
 
 <script src="partials.js"></script>
 <script>
+// ============================================
+// GEMINI API KEY — get a free key (no card required) at
+// aistudio.google.com/apikey, then paste it here.
+// IMPORTANT: do NOT enable billing on this Google Cloud project.
+// On the free tier, a leaked key only risks exhausting your free
+// daily quota — never an unexpected bill. If billing is ever
+// enabled, switch to a backend proxy instead of this direct call.
+// ============================================
+const GEMINI_API_KEY = "AQ.Ab8RN6JOkDHGdscjT32Gar1Fb3zFXBBmVZ8eZAS-opOUe1s4VA";
+
 const state = {
   step: 0,
   screens: ['intro','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','gate','loading','report'],
@@ -604,18 +639,24 @@ Return this exact JSON structure with TWO top-level keys, client_report and inte
 Be specific and insight-heavy, not generic. Reference their actual answers throughout both sections.`;
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1800,
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // never hang longer than 8s — falls back to the templated report instead
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 1800, responseMimeType: "application/json" }
+        })
+      }
+    );
+    clearTimeout(timeoutId);
     const data = await response.json();
-    const textBlock = data.content.find(b => b.type === 'text');
-    const cleaned = textBlock.text.replace(/```json|```/g, '').trim();
+    const rawText = data.candidates[0].content.parts[0].text;
+    const cleaned = rawText.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(cleaned);
     stopLoadingAnimation();
     renderReport(parsed.client_report, scores, top, tier);
@@ -641,7 +682,7 @@ function sendInternalBrief(brief, scores, top, tier) {
   // TODO: replace with the live Zapier webhook URL (integration in progress —
   // see project notes). Until then this fails silently and the client
   // report still renders normally.
-  const INTERNAL_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/REPLACE_ME/';
+  const INTERNAL_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/28100478/42ewf82/';
   fetch(INTERNAL_WEBHOOK_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -661,10 +702,11 @@ function renderReport(report, scores, top, tier) {
     </div>`).join('');
 
   const html = `
-    <div class="report-header">
+    <div class="report-header" id="reportPrintHeader">
       <div class="report-kicker">GTM diagnostic report</div>
       <div class="report-title">Prepared for ${state.contact.name}</div>
       <div class="report-meta">${new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})} &middot; Growth Clarity Co.</div>
+      <button class="btn btn-outline-white btn-md no-print" style="margin-top:18px" onclick="window.print()">&#8595; Download PDF report</button>
     </div>
 
     <div class="score-strip">${cellsHtml}</div>
