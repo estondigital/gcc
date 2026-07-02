@@ -315,9 +315,10 @@
 <main class="diag-wrap" style="padding-top:80px">
 
   <section class="screen active" data-screen="intro">
-    <div class="eyebrow">GTM diagnostic &middot; 4 minutes &middot; free</div>
+    <div class="eyebrow" id="introEyebrow">GTM diagnostic &middot; 4 minutes &middot; free</div>
+    <div id="introWelcomeBanner"></div>
     <h1 class="q-title">Find out which of six GTM problems is actually costing you pipeline.</h1>
-    <p class="q-sub">Ten quick questions about your stage, motion, and funnel. We score positioning, demand generation, CAC, alignment, conversion, and expansion against patterns from real Series A&ndash;C engagements, then tell you the root cause &mdash; not just the symptom.</p>
+    <p class="q-sub" id="introSub">Ten quick questions about your stage, motion, and funnel. We score positioning, demand generation, CAC, alignment, conversion, and expansion against patterns from real Series A&ndash;C engagements, then tell you the root cause &mdash; not just the symptom.</p>
     <button class="btn btn-green btn-lg btn-arrow" onclick="goNext()">Start the diagnostic</button>
   </section>
 
@@ -450,8 +451,52 @@ const state = {
   step: 0,
   screens: ['intro','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','gate','loading','report'],
   answers: {},
-  contact: {}
+  contact: {},
+  prefilled: false,
 };
+
+/* ============================================================
+   HANDOFF FROM start-diagnostic.html
+   That page collects name/email/company/role/ARR/motion, saves it
+   to localStorage as 'gcc_prospect', then links here. If we find it,
+   we reuse it instead of asking again: q1 (motion) and q2 (ARR) are
+   skipped since we already have those answers, and the final email
+   gate is skipped entirely since we already have name+email — the
+   person goes straight from q10 into report generation. Consumed
+   once (removed from localStorage after reading) so a return visit
+   later isn't permanently stuck on the shortened flow.
+   ============================================================ */
+(function applyProspectHandoff() {
+  let raw;
+  try { raw = localStorage.getItem('gcc_prospect'); } catch (e) { return; }
+  if (!raw) return;
+  let data;
+  try { data = JSON.parse(raw); } catch (e) { return; }
+  try { localStorage.removeItem('gcc_prospect'); } catch (e) { /* ignore */ }
+
+  const VALID_MOTION = ['plg', 'slg', 'hybrid'];
+  const VALID_ARR = ['pre', 'sub1m', 'a', 'b', 'c', 'd'];
+  if (!data.name || !data.email || !VALID_MOTION.includes(data.motion) || !VALID_ARR.includes(data.arr)) return;
+
+  state.contact = { name: data.name, email: data.email, company: data.company || '', role: data.role || '' };
+  state.answers.motion = data.motion;
+  state.answers.arr = data.arr;
+  state.prefilled = true;
+  state.screens = state.screens.filter(s => s !== 'q1' && s !== 'q2' && s !== 'gate');
+
+  // Update the intro screen's copy to reflect the shortened flow —
+  // this runs synchronously since the script tag sits after the
+  // markup, so #introEyebrow / #introSub / #introWelcomeBanner
+  // already exist in the DOM at this point.
+  const remainingQ = state.screens.filter(s => /^q\d+$/.test(s)).length;
+  const eyebrowEl = document.getElementById('introEyebrow');
+  const subEl = document.getElementById('introSub');
+  const bannerEl = document.getElementById('introWelcomeBanner');
+  const firstName = data.name.split(' ')[0];
+  if (eyebrowEl) eyebrowEl.innerHTML = `GTM diagnostic &middot; ~3 minutes &middot; free`;
+  if (subEl) subEl.innerHTML = `${remainingQ} quick questions about your funnel &mdash; we've already got your stage and motion from before. We score positioning, demand generation, CAC, alignment, conversion, and expansion against patterns from real Series A&ndash;C engagements, then tell you the root cause &mdash; not just the symptom.`;
+  if (bannerEl) bannerEl.innerHTML = `<div style="font-size:12.5px;color:var(--green);margin-bottom:14px">Continuing as ${firstName}${data.company ? ' &middot; ' + data.company : ''} &mdash; your report goes straight to ${data.email}</div>`;
+})();
 
 const optionSets = {
   motion: [
@@ -460,7 +505,8 @@ const optionSets = {
     { v: 'hybrid', label: 'Hybrid — both self-serve and sales-assisted' },
   ],
   arr: [
-    { v: 'pre', label: 'Pre-revenue or under $1M ARR' },
+    { v: 'pre', label: 'Pre-revenue' },
+    { v: 'sub1m', label: 'Under $1M ARR' },
     { v: 'a', label: '$1M–$5M ARR (Series A range)' },
     { v: 'b', label: '$5M–$12M ARR (Series B range)' },
     { v: 'c', label: '$12M–$20M ARR (Series C range)' },
@@ -543,13 +589,14 @@ function showScreen(idx) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const name = state.screens[idx];
   document.querySelector(`[data-screen="${name}"]`).classList.add('active');
-  const questionScreens = state.screens.slice(1, 11); // q1..q10
+  const questionScreens = state.screens.filter(s => /^q\d+$/.test(s));
+  const totalQ = questionScreens.length;
   const qIdx = questionScreens.indexOf(name);
   if (qIdx >= 0) {
-    document.getElementById('stepIndicator').textContent = `Step ${qIdx+1} of 10`;
-    document.getElementById('progressFill').style.width = `${((qIdx+1)/10)*100}%`;
+    document.getElementById('stepIndicator').textContent = `Step ${qIdx+1} of ${totalQ}`;
+    document.getElementById('progressFill').style.width = `${((qIdx+1)/totalQ)*100}%`;
   } else if (name === 'intro') {
-    document.getElementById('stepIndicator').textContent = 'Step 1 of 10';
+    document.getElementById('stepIndicator').textContent = `Step 1 of ${totalQ}`;
     document.getElementById('progressFill').style.width = '0%';
   } else {
     document.getElementById('stepIndicator').textContent = 'Almost done';
@@ -558,12 +605,19 @@ function showScreen(idx) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// Whenever navigation lands on the 'loading' screen — whether via the
+// email gate (non-prefilled visitors) or straight from q10 (prefilled
+// visitors, who skip the gate) — kick off report generation exactly
+// once. This keeps both flows funneling through one code path instead
+// of duplicating the runDiagnostic()/toast calls per-flow.
 function goNext() {
   state.answers.freetext = document.getElementById('freeTextInput') ? document.getElementById('freeTextInput').value : '';
   if (state.step < state.screens.length - 1) {
     state.step++;
     showScreen(state.step);
-    if (state.screens[state.step] === 'gate') renderGatePreview();
+    const screenName = state.screens[state.step];
+    if (screenName === 'gate') renderGatePreview();
+    if (screenName === 'loading') { runDiagnostic(); showConfirmToast(); }
   }
 }
 function goBack() {
@@ -653,8 +707,8 @@ const SERVICE_MAP = {
    makes the report specific to THIS company, not a templated
    quiz result: every figure traces back to an answer they gave.
    ============================================================ */
-const ARR_MIDPOINT = { pre: 500000, a: 3000000, b: 8500000, c: 16000000, d: 25000000 };
-const ARR_LABEL = { pre: 'Pre-revenue / under $1M', a: '$1M–$5M (Series A)', b: '$5M–$12M (Series B)', c: '$12M–$20M (Series C)', d: 'Above $20M' };
+const ARR_MIDPOINT = { pre: 250000, sub1m: 750000, a: 3000000, b: 8500000, c: 16000000, d: 25000000 };
+const ARR_LABEL = { pre: 'Pre-revenue', sub1m: 'Under $1M', a: '$1M–$5M (Series A)', b: '$5M–$12M (Series B)', c: '$12M–$20M (Series C)', d: 'Above $20M' };
 
 const AXIS_LABEL = { positioning: 'Positioning & ICP', alignment: 'Sales-Marketing Alignment', demand: 'Demand Generation', conversion: 'Conversion', cac: 'CAC & Unit Economics', expansion: 'Expansion / NRR' };
 const AXIS_STATUS_LABEL = { positioning: 'Positioning', alignment: 'Sales Alignment', demand: 'Demand Generation', conversion: 'Website Conversion', cac: 'CAC Efficiency', expansion: 'Expansion / NRR' };
@@ -829,9 +883,7 @@ function submitGate() {
   if (!emailValid) { errBox.innerHTML = '<div class="err-box">That email doesn\'t look right — double check it.</div>'; return; }
 
   state.contact = { name, email };
-  goNext();
-  runDiagnostic();
-  showConfirmToast();
+  goNext(); // lands on 'loading', which triggers runDiagnostic() + toast itself
 }
 
 function showConfirmToast() {
@@ -970,6 +1022,7 @@ function sendInternalBrief(brief, scores, top, tier, m) {
   if (!brief) return;
   const payload = {
     contact: state.contact,
+    company: state.contact.company || '', role: state.contact.role || '',
     answers: state.answers,
     scores, top_cluster: top.key, top_severity: top.score, suggested_tier: tier,
     health_score: m ? m.healthScore : undefined,
@@ -1195,7 +1248,7 @@ function renderReport(report, scores, top, tier, m) {
       <div class="rad-cover-title">Revenue Architecture Diagnostic&trade;</div>
       <div class="rad-cover-sub">Executive Growth Assessment Report</div>
       <div class="rad-cover-meta">
-        <span>Company</span><b>${firstName}'s company</b>
+        <span>Company</span><b>${state.contact.company || firstName + "'s company"}</b>
         <span>ARR</span><b>${m.arrLabel}</b>
         <span>Funding stage</span><b>${state.answers.arr === 'a' ? 'Series A' : state.answers.arr === 'b' ? 'Series B' : state.answers.arr === 'c' ? 'Series C' : state.answers.arr === 'd' ? 'Series D+' : 'Pre-Series A'}</b>
         <span>GTM motion</span><b>${motionLabel}</b>
