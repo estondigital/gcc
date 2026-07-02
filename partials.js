@@ -21,7 +21,7 @@ function gccHeaderHTML(active, root) {
       ${link('services.html', 'Services', 'services')}
       ${link('pricing.html', 'Pricing', 'pricing')}
       ${link('proof.html', 'Proof', 'proof')}
-      ${link('diagnostic.html', 'Take the diagnostic', 'diagnostic')}
+      ${link('start-diagnostic.html', 'Take the diagnostic', 'diagnostic')}
       <a href="${root}contact.html" class="nav-cta">Book a call</a>
     </div>
     <div class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></div>
@@ -37,7 +37,7 @@ function gccHeaderHTML(active, root) {
       <a href="${root}proof.html" class="mobile-link">Proof</a>
       <a href="${root}contact.html" class="mobile-link">Contact</a>
     </div>
-    <a href="${root}diagnostic.html" class="mobile-cta-btn">Take the GTM diagnostic &rarr;</a>
+    <a href="${root}start-diagnostic.html" class="mobile-cta-btn">Take the GTM diagnostic &rarr;</a>
   </div>`;
 }
 
@@ -83,7 +83,7 @@ function gccFooterHTML(root) {
       <div>
         <div class="footer-col-title">Start here</div>
         <div class="footer-col-links">
-          <a href="${root}diagnostic.html">GTM diagnostic</a>
+          <a href="${root}start-diagnostic.html">GTM diagnostic</a>
           <a href="${root}contact.html">Book a call</a>
         </div>
       </div>
