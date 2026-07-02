@@ -365,15 +365,28 @@ body { background: var(--ink); color: var(--white); font-family: 'Instrument San
 
 <script>
 /* ============================================================
- ZAPIER WEBHOOK → GOOGLE SHEETS
- Setup: Zapier → Webhooks (Catch Hook) → Google Sheets (Create Row)
- Map fields: name | email | company | role | arr | motion | source | submitted_at
-
- REPLACE THE URL BELOW with your actual claim-form Zapier webhook.
- (Different from your diagnostic webhook so you can route to a
-  "Claim Submissions" tab in Google Sheets separately.)
+   BACKEND CONFIG
+   Leads go straight to Supabase now instead of a Zapier webhook.
+   The anon key below is safe to be public — see supabase-schema.sql
+   for why (insert-only Row Level Security policy). Use the SAME
+   project/table as diagnostic.html so both forms land in one place.
 ============================================================ */
-const CLAIM_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/28100478/42ewf82/';
+const SUPABASE_URL = "REPLACE_WITH_YOUR_SUPABASE_URL"; // e.g. https://xxxxxxxx.supabase.co
+const SUPABASE_ANON_KEY = "REPLACE_WITH_YOUR_SUPABASE_ANON_KEY";
+
+function saveLead(row) {
+  if (SUPABASE_URL.startsWith('REPLACE_WITH')) return; // not configured yet — see README
+  fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Prefer': 'return=minimal',
+    },
+    body: JSON.stringify(row),
+  }).catch(() => { /* fail silently — never block the success screen */ });
+}
 
 const ctx = { role: '', arr: '', motion: '' };
 
@@ -416,28 +429,23 @@ async function submitClaim() {
   const btn = document.getElementById('submitBtn');
   btn.textContent = 'Saving…'; btn.disabled = true;
 
-  const payload = {
-    type: 'claim_form',
-    name:    document.getElementById('inp_name').value.trim(),
-    email:   document.getElementById('inp_email').value.trim(),
-    company: document.getElementById('inp_company').value.trim(),
-    role:    ctx.role,
-    arr:     ctx.arr,
-    motion:  ctx.motion,
-    source:  'start-diagnostic.html',
+  const name = document.getElementById('inp_name').value.trim();
+  const email = document.getElementById('inp_email').value.trim();
+  const company = document.getElementById('inp_company').value.trim();
+
+  /* Save for diagnostic.html to pre-fill — skips repeat questions and the email gate */
+  localStorage.setItem('gcc_prospect', JSON.stringify({
+    name, email, company, role: ctx.role, arr: ctx.arr, motion: ctx.motion,
+  }));
+
+  /* Save to the database (fail silently — never block the success screen) */
+  saveLead({
+    source: 'start-diagnostic',
+    name, email, company,
+    role: ctx.role, arr: ctx.arr, motion: ctx.motion,
     page_url: window.location.href,
-    submitted_at: new Date().toISOString(),
-  };
-
-  /* Save for diagnostic.html to pre-fill — skips email gate */
-  localStorage.setItem('gcc_prospect', JSON.stringify(payload));
-
-  /* Send to Zapier → Google Sheets (fail silently) */
-  fetch(CLAIM_WEBHOOK, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  }).catch(() => {});
+    user_agent: navigator.userAgent,
+  });
 
   /* Show success */
   document.getElementById('formCard').style.display = 'none';

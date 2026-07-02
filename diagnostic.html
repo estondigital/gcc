@@ -438,14 +438,34 @@
 <script src="partials.js"></script>
 <script>
 // ============================================
-// GEMINI API KEY — get a free key (no card required) at
-// aistudio.google.com/apikey, then paste it here.
-// IMPORTANT: do NOT enable billing on this Google Cloud project.
-// On the free tier, a leaked key only risks exhausting your free
-// daily quota — never an unexpected bill. If billing is ever
-// enabled, switch to a backend proxy instead of this direct call.
+// BACKEND CONFIG
+// The Gemini key no longer lives in this file — it's stored as a
+// secret on the Cloudflare Worker (see /worker in the project repo)
+// and never reaches the browser. This file only needs the worker's
+// public URL and your Supabase project's URL + anon key (safe to be
+// public — see supabase-schema.sql for why: insert-only RLS policy).
 // ============================================
-const GEMINI_API_KEY = "AQ.Ab8RN6JOkDHGdscjT32Gar1Fb3zFXBBmVZ8eZAS-opOUe1s4VA";
+const REPORT_API_URL = "REPLACE_WITH_YOUR_WORKER_URL"; // e.g. https://gcc-report-api.yourname.workers.dev
+const SUPABASE_URL = "REPLACE_WITH_YOUR_SUPABASE_URL"; // e.g. https://xxxxxxxx.supabase.co
+const SUPABASE_ANON_KEY = "REPLACE_WITH_YOUR_SUPABASE_ANON_KEY";
+
+// Writes one row to the `leads` table. Safe to call with the public
+// anon key because the RLS policy only allows INSERT — see
+// supabase-schema.sql. Fails silently so a DB hiccup never blocks
+// the report from rendering for the person waiting on it.
+function saveLead(row) {
+  if (SUPABASE_URL.startsWith('REPLACE_WITH')) return; // not configured yet — see README
+  fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Prefer': 'return=minimal',
+    },
+    body: JSON.stringify(row),
+  }).catch(() => { /* fail silently — never block the client-facing report */ });
+}
 
 const state = {
   step: 0,
@@ -673,7 +693,7 @@ function computeScores() {
 function topProblem(scores) {
   const labels = { positioning: 'Positioning & ICP', demand: 'Demand generation', cac: 'CAC & unit economics', alignment: 'Sales-marketing alignment', conversion: 'Conversion', expansion: 'Expansion / NRR' };
   let top = 'positioning', max = -1;
-  TIE_BREAK_ORDER.forEach(k => { if (scores[k] >= max) { max = scores[k]; top = k; } });
+  TIE_BREAK_ORDER.forEach(k => { if (scores[k] > max) { max = scores[k]; top = k; } });
   return { key: top, label: labels[top], score: scores[top] };
 }
 
@@ -989,18 +1009,12 @@ Be specific and insight-heavy, not generic. Reference their actual answers throu
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000); // never hang longer than 8s — falls back to the templated report instead
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
-        body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: prompt }] }],
-          generationConfig: { maxOutputTokens: 1800, responseMimeType: "application/json" }
-        })
-      }
-    );
+    const response = await fetch(REPORT_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({ prompt }),
+    });
     clearTimeout(timeoutId);
     const data = await response.json();
     const rawText = data.candidates[0].content.parts[0].text;
@@ -1015,31 +1029,32 @@ Be specific and insight-heavy, not generic. Reference their actual answers throu
   }
 }
 
-// Sends the sales-only brief straight to the internal webhook. Never
-// written to the DOM — the prospect's browser never holds this payload
-// in a renderable element, only in this function's local scope.
+// Saves the full submission — answers, scores, computed metrics, and
+// the internal sales brief — to the leads table. Never written to
+// the DOM, only ever sent over the wire to Supabase.
 function sendInternalBrief(brief, scores, top, tier, m) {
   if (!brief) return;
-  const payload = {
-    contact: state.contact,
-    company: state.contact.company || '', role: state.contact.role || '',
+  saveLead({
+    source: 'diagnostic',
+    name: state.contact.name || null,
+    email: state.contact.email || null,
+    company: state.contact.company || null,
+    role: state.contact.role || null,
+    arr: state.answers.arr || null,
+    motion: state.answers.motion || null,
+    team: state.answers.team || null,
     answers: state.answers,
-    scores, top_cluster: top.key, top_severity: top.score, suggested_tier: tier,
-    health_score: m ? m.healthScore : undefined,
-    leakage_range: m ? `${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)}` : undefined,
-    business_risk: m ? m.businessRisk : undefined,
+    scores,
+    top_cluster: top.key,
+    top_severity: top.score,
+    suggested_tier: tier,
+    health_score: m ? m.healthScore : null,
+    leakage_range: m ? `${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)}` : null,
+    business_risk: m ? m.businessRisk : null,
     brief,
-    submitted_at: new Date().toISOString(),
-  };
-  // TODO: replace with the live Zapier webhook URL (integration in progress —
-  // see project notes). Until then this fails silently and the client
-  // report still renders normally.
-  const INTERNAL_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/28100478/42ewf82/';
-  fetch(INTERNAL_WEBHOOK_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  }).catch(() => { /* fail silently — never block the client-facing report */ });
+    page_url: window.location.href,
+    user_agent: navigator.userAgent,
+  });
 }
 
 function scoreClass(n) { return n >= 4 ? 'high' : n >= 2 ? 'mid' : 'low'; }

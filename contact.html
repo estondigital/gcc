@@ -99,9 +99,37 @@
 <div id="gcc-footer" data-root=""></div>
 <script src="partials.js"></script>
 <script>
+  /* Same Supabase project/table as diagnostic.html and start-diagnostic.html —
+     see supabase-schema.sql. Safe to be public (insert-only RLS policy). */
+  const SUPABASE_URL = "REPLACE_WITH_YOUR_SUPABASE_URL"; // e.g. https://xxxxxxxx.supabase.co
+  const SUPABASE_ANON_KEY = "REPLACE_WITH_YOUR_SUPABASE_ANON_KEY";
+
+  function saveLead(row) {
+    if (SUPABASE_URL.startsWith('REPLACE_WITH')) return; // not configured yet — see README
+    fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal',
+      },
+      body: JSON.stringify(row),
+    }).catch(() => { /* fail silently — never block the success screen */ });
+  }
+
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    // TODO: wire to Zapier webhook for lead capture (see project notes — integration in progress)
+    saveLead({
+      source: 'contact',
+      name: document.getElementById('cName').value.trim(),
+      email: document.getElementById('cEmail').value.trim(),
+      company: document.getElementById('cCompany').value.trim(),
+      arr: document.getElementById('cArr').value || null,
+      message: document.getElementById('cMsg').value.trim(),
+      page_url: window.location.href,
+      user_agent: navigator.userAgent,
+    });
     document.getElementById('contactForm').style.display = 'none';
     document.getElementById('formSuccess').classList.add('show');
   });
