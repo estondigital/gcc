@@ -116,6 +116,136 @@
   .tier-callout-label { font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.4); }
   .tier-callout-val { font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; color:var(--green); margin-top:2px; }
 
+  /* ============================================
+     REVENUE ARCHITECTURE DIAGNOSTIC™ REPORT
+     Executive consulting report layout — 12 sections
+     ============================================ */
+  .rad-cover { text-align: center; padding: 48px 0 40px; border-bottom: 2px solid var(--green); margin-bottom: 40px; }
+  .rad-cover-mark { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 18px; }
+  .rad-cover-brand { font-family:'Geist',sans-serif; font-weight:800; font-size:15px; letter-spacing:.02em; color:var(--white); margin-bottom:28px; }
+  .rad-cover-title { font-family:'Bricolage Grotesque',sans-serif; font-size: 34px; font-weight: 800; color: var(--white); line-height:1.15; margin-bottom: 8px; }
+  .rad-cover-sub { font-size: 14px; color: var(--green); font-weight: 600; margin-bottom: 32px; }
+  .rad-cover-meta { display:inline-grid; grid-template-columns: auto auto; gap: 6px 24px; text-align:left; font-size: 13px; color: rgba(255,255,255,.6); border-top:1px solid var(--border-dark); border-bottom:1px solid var(--border-dark); padding: 20px 28px; margin-bottom: 20px; }
+  .rad-cover-meta b { color: var(--white); font-weight:600; }
+  .rad-cover-confidential { font-size: 10.5px; letter-spacing:.1em; text-transform:uppercase; color: rgba(255,255,255,.3); }
+
+  .rad-page { margin-bottom: 48px; padding-bottom: 44px; border-bottom: 1px solid var(--border-dark); }
+  .rad-page:last-of-type { border-bottom: none; }
+  .rad-page-label { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); font-weight: 700; margin-bottom: 6px; }
+  .rad-page-title { font-family:'Bricolage Grotesque',sans-serif; font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 22px; }
+
+  .rad-hero-score { display:flex; gap: 36px; align-items:center; flex-wrap:wrap; margin-bottom: 28px; }
+  .rad-hero-num { font-family:'Bricolage Grotesque',sans-serif; font-size: 56px; font-weight: 800; line-height:1; }
+  .rad-hero-num small { font-size: 22px; color: rgba(255,255,255,.35); font-weight:600; }
+  .rad-hero-bar-track { width: 220px; height: 8px; border-radius: 5px; background: rgba(255,255,255,.06); overflow:hidden; margin-top:10px; }
+  .rad-hero-bar-fill { height:100%; border-radius:5px; background: linear-gradient(90deg,var(--green-2),var(--green)); }
+  .rad-maturity-chip { display:inline-block; font-family:'Geist Mono',monospace; font-size:11px; padding:5px 12px; border-radius:99px; border:1px solid rgba(0,230,118,.3); background:rgba(0,230,118,.06); color:var(--green); margin-top:6px; }
+  .rad-hero-target { text-align:left; }
+  .rad-hero-target-label { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); margin-bottom:4px; }
+
+  .rad-summary-list { display:flex; flex-direction:column; gap:8px; margin: 16px 0 20px; }
+  .rad-summary-list div { font-size:13.5px; color: rgba(255,255,255,.7); display:flex; gap:10px; }
+  .rad-summary-list div span { color: var(--red); flex-shrink:0; }
+  .rad-risk-badge { display:inline-flex; align-items:center; gap:8px; font-family:'Geist Mono',monospace; font-size:12px; font-weight:700; letter-spacing:.05em; padding:8px 16px; border-radius:8px; margin-top:10px; }
+  .rad-risk-badge.high { background:rgba(220,60,60,.12); color:#ff6b6b; border:1px solid rgba(220,60,60,.3); }
+  .rad-risk-badge.medium { background:rgba(240,168,48,.12); color:#f0a830; border:1px solid rgba(240,168,48,.3); }
+  .rad-risk-badge.low { background:rgba(0,230,118,.1); color:var(--green); border:1px solid rgba(0,230,118,.3); }
+
+  .rad-dash-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-bottom:28px; }
+  .rad-dash-cell { border:1px solid var(--border-dark); border-radius:10px; padding:16px 18px; }
+  .rad-dash-cell-label { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); margin-bottom:8px; }
+  .rad-dash-cell-val { font-family:'Bricolage Grotesque',sans-serif; font-size:19px; font-weight:800; }
+
+  .rad-matrix-table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  .rad-matrix-table th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); padding:0 0 10px; border-bottom:1px solid var(--border-dark); font-weight:600; }
+  .rad-matrix-table td { padding:13px 0; border-bottom:1px solid var(--border-dark); color: rgba(255,255,255,.75); }
+  .rad-matrix-table tr:last-child td { border-bottom:none; }
+  .rad-status-pill { font-size:11px; font-weight:700; padding:3px 10px; border-radius:99px; display:inline-block; }
+  .rad-status-pill.critical { background:rgba(220,60,60,.14); color:#ff6b6b; }
+  .rad-status-pill.weak { background:rgba(240,168,48,.14); color:#f0a830; }
+  .rad-status-pill.moderate { background:rgba(240,168,48,.1); color:#e0c060; }
+  .rad-status-pill.stable { background:rgba(0,230,118,.08); color:#8fe0b0; }
+  .rad-status-pill.good { background:rgba(0,230,118,.14); color:var(--green); }
+
+  .rad-symptom-grid { display:flex; flex-direction:column; gap:9px; margin-bottom:24px; }
+  .rad-symptom-grid div { font-size:13.5px; color:rgba(255,255,255,.75); display:flex; gap:10px; align-items:flex-start; }
+  .rad-symptom-grid div span { color:var(--green); flex-shrink:0; font-weight:700; }
+
+  .rad-diag-card { border:1.5px solid rgba(220,60,60,.3); background:rgba(220,60,60,.05); border-radius:12px; padding:22px 24px; margin-bottom:20px; }
+  .rad-diag-row { display:flex; gap:32px; flex-wrap:wrap; margin-bottom:14px; }
+  .rad-diag-item-label { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.4); margin-bottom:4px; }
+  .rad-diag-item-val { font-family:'Bricolage Grotesque',sans-serif; font-size:17px; font-weight:800; color:var(--white); }
+  .rad-diag-item-val.sev { color:#ff6b6b; }
+  .rad-diag-item-val.conf { color:var(--green); }
+
+  .rad-tree { display:flex; flex-direction:column; align-items:center; gap:0; margin: 8px 0 8px; }
+  .rad-tree-node { border:1px solid var(--border-dark); border-radius:8px; padding:10px 18px; font-size:12.5px; text-align:center; color:rgba(255,255,255,.8); background:rgba(255,255,255,.02); }
+  .rad-tree-node.root { border-color:rgba(220,60,60,.4); color:#ff9b9b; font-weight:700; }
+  .rad-tree-node.leak { border-color:var(--green); color:var(--green); font-weight:700; }
+  .rad-tree-arrow { color:rgba(255,255,255,.25); font-size:14px; margin:4px 0; }
+  .rad-tree-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin: 4px 0; }
+
+  .rad-leak-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:14px; margin-bottom:22px; }
+  .rad-leak-cell { border:1px solid var(--border-dark); border-radius:10px; padding:18px 20px; }
+  .rad-leak-cell-label { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); margin-bottom:8px; }
+  .rad-leak-cell-val { font-family:'Bricolage Grotesque',sans-serif; font-size:24px; font-weight:800; color:#ff6b6b; }
+  .rad-leak-cell-val.neutral { color:var(--white); }
+  .rad-leak-note { font-size:11px; color:rgba(255,255,255,.3); margin-top:16px; line-height:1.6; }
+
+  .rad-phase-card { border:1px solid var(--border-dark); border-radius:10px; padding:20px 22px; margin-bottom:12px; }
+  .rad-phase-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+  .rad-phase-num { font-family:'Geist Mono',monospace; font-size:11px; color:var(--green); font-weight:700; }
+  .rad-phase-dur { font-size:11px; color:rgba(255,255,255,.4); }
+  .rad-phase-title { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:800; color:var(--white); margin-bottom:10px; }
+  .rad-phase-obj { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .rad-phase-obj span { font-size:11.5px; background:rgba(255,255,255,.04); border:1px solid var(--border-dark); padding:5px 11px; border-radius:99px; color:rgba(255,255,255,.55); }
+  .rad-phase-deliv { font-size:12px; color:var(--green); font-weight:600; }
+  .rad-phase-deliv b { color:rgba(255,255,255,.4); font-weight:500; text-transform:uppercase; letter-spacing:.04em; font-size:10px; margin-right:6px; }
+
+  .rad-forecast-table { width:100%; border-collapse:collapse; font-size:13.5px; margin-bottom:20px; }
+  .rad-forecast-table th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); padding:0 10px 10px 0; border-bottom:1px solid var(--border-dark); font-weight:600; }
+  .rad-forecast-table td { padding:12px 10px 12px 0; border-bottom:1px solid var(--border-dark); color:rgba(255,255,255,.75); }
+  .rad-forecast-table td.cur { color:rgba(255,255,255,.45); }
+  .rad-forecast-table td.tgt { color:var(--green); font-weight:600; }
+
+  .rad-maturity-ladder { display:flex; flex-direction:column; gap:0; }
+  .rad-maturity-rung { border:1px solid var(--border-dark); padding:13px 18px; font-size:13px; color:rgba(255,255,255,.4); position:relative; }
+  .rad-maturity-rung.here { border-color:var(--green); background:rgba(0,230,118,.06); color:var(--white); font-weight:700; }
+  .rad-maturity-rung.target { border-color:rgba(0,230,118,.3); background:rgba(0,230,118,.02); color:rgba(255,255,255,.7); }
+  .rad-maturity-rung + .rad-maturity-rung { border-top:none; }
+  .rad-maturity-tag { position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--green); }
+
+  .rad-engagement-card { border:1.5px solid rgba(0,230,118,.3); background:rgba(0,230,118,.04); border-radius:12px; padding:22px 24px; margin-bottom:20px; }
+  .rad-engagement-name { font-family:'Bricolage Grotesque',sans-serif; font-size:19px; font-weight:800; color:var(--white); margin-bottom:10px; }
+  .rad-engagement-obj { font-size:13px; color:rgba(255,255,255,.6); line-height:1.7; }
+  .rad-support-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .rad-support-table td { padding:11px 0; border-bottom:1px solid var(--border-dark); color:rgba(255,255,255,.65); }
+  .rad-support-table tr:last-child td { border-bottom:none; }
+
+  .rad-ceo-letter { border:1px solid var(--border-dark); border-radius:12px; padding:28px 30px; }
+  .rad-ceo-letter p { font-size:14px; line-height:1.85; color:rgba(255,255,255,.72); margin-bottom:14px; }
+  .rad-ceo-sign { margin-top:20px; padding-top:16px; border-top:1px solid var(--border-dark); font-size:12.5px; color:rgba(255,255,255,.45); }
+
+  .rad-board-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .rad-board-table th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); padding:0 10px 10px 0; border-bottom:1px solid var(--border-dark); font-weight:600; }
+  .rad-board-table td { padding:12px 10px 12px 0; border-bottom:1px solid var(--border-dark); color:rgba(255,255,255,.7); vertical-align:top; }
+
+  @media (max-width:600px) {
+    .rad-dash-grid { grid-template-columns: repeat(2,1fr); }
+    .rad-leak-grid { grid-template-columns: 1fr; }
+    .rad-diag-row { gap:18px; }
+    .rad-cover-meta { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    .rad-page { page-break-inside: avoid; border-bottom-color:#ddd !important; }
+    .rad-cover { border-bottom-color:#0B1F3A !important; }
+    .rad-cover-title, .rad-page-title, .rad-hero-num, .rad-diag-item-val, .rad-phase-title, .rad-engagement-name { color:#0B1F3A !important; }
+    .rad-page-label, .rad-cover-sub { color:#00a85c !important; }
+    .rad-dash-cell, .rad-phase-card, .rad-leak-cell, .rad-maturity-rung, .rad-support-table td, .rad-board-table td, .rad-ceo-letter, .rad-diag-card { border-color:#ddd !important; }
+    .rad-symptom-grid div, .rad-summary-list div, .rad-ceo-letter p { color:#333 !important; }
+  }
+
   .cycle-section { margin-top: 56px; }
   .cycle-card { border: 1.5px solid rgba(0,230,118,.3); border-radius: 16px; padding: 36px 32px; background: rgba(0,230,118,.04); text-align: center; margin-bottom: 16px; }
   .cycle-card h3 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 10px; }
@@ -513,6 +643,162 @@ const SERVICE_MAP = {
   expansion:   { primary: 'Expansion / NRR Playbook', secondary: 'Product Launch / Adoption System' },
 };
 
+/* ============================================================
+   REVENUE ARCHITECTURE DIAGNOSTIC™ — CALCULATION LAYER
+   Every number in the report is derived here, deterministically,
+   from the person's actual quiz answers. The AI call (below) is
+   used ONLY for narrative sentences and is explicitly instructed
+   to reuse these numbers verbatim, never invent its own — this is
+   what keeps the report credible on a sales call. This is what
+   makes the report specific to THIS company, not a templated
+   quiz result: every figure traces back to an answer they gave.
+   ============================================================ */
+const ARR_MIDPOINT = { pre: 500000, a: 3000000, b: 8500000, c: 16000000, d: 25000000 };
+const ARR_LABEL = { pre: 'Pre-revenue / under $1M', a: '$1M–$5M (Series A)', b: '$5M–$12M (Series B)', c: '$12M–$20M (Series C)', d: 'Above $20M' };
+
+const AXIS_LABEL = { positioning: 'Positioning & ICP', alignment: 'Sales-Marketing Alignment', demand: 'Demand Generation', conversion: 'Conversion', cac: 'CAC & Unit Economics', expansion: 'Expansion / NRR' };
+const AXIS_STATUS_LABEL = { positioning: 'Positioning', alignment: 'Sales Alignment', demand: 'Demand Generation', conversion: 'Website Conversion', cac: 'CAC Efficiency', expansion: 'Expansion / NRR' };
+const DIAGNOSIS_NAME = {
+  positioning: 'Messaging-Market Misalignment',
+  alignment: 'Sales-Marketing Alignment Breakdown',
+  demand: 'Demand Generation Deficit',
+  conversion: 'Conversion Funnel Leakage',
+  cac: 'CAC Escalation Syndrome',
+  expansion: 'Expansion Revenue Stagnation',
+};
+const AXIS_OWNER = { positioning: 'CEO + Fractional CMO', alignment: 'Marketing + Sales Leadership', demand: 'Growth Team', conversion: 'Growth Team', cac: 'Finance + Growth', expansion: 'Customer Success + Marketing' };
+
+const AXIS_PHASE = {
+  positioning: { title: 'Rebuild Positioning & Messaging', duration: '21 Days', objectives: ['Positioning Framework', 'Category Narrative', 'Value Proposition', 'Messaging Matrix'], deliverable: 'Messaging Architecture' },
+  alignment:   { title: 'Sales & Marketing Alignment', duration: '14 Days', objectives: ['Shared MQL/SQL Definition', 'GTM Alignment Workshop', 'Lead Scoring Rebuild'], deliverable: 'Revenue Operating Agreement' },
+  demand:      { title: 'Demand Generation', duration: '30 Days', objectives: ['Trigger-Event Mapping', 'Channel Architecture', 'Content Engine', 'Retargeting'], deliverable: 'Predictable Pipeline' },
+  conversion:  { title: 'Conversion Optimization', duration: '21 Days', objectives: ['Homepage', 'Landing Pages', 'Demo Flow', 'CTA Optimization'], deliverable: 'Conversion Engine' },
+  cac:         { title: 'CAC & Unit Economics', duration: '21 Days', objectives: ['Channel-by-Channel CAC Audit', 'ICP Drift Diagnosis', 'Spend Reallocation'], deliverable: 'CAC Efficiency Plan' },
+  expansion:   { title: 'Expansion & Revenue Enablement', duration: '21 Days', objectives: ['Champion Identification', 'Upsell Triggers', 'CS-to-Marketing Handoff'], deliverable: 'Revenue Operating System' },
+};
+
+const MATURITY_LABELS = { 1: 'Marketing Chaos', 2: 'Campaign Driven', 3: 'Demand Engine', 4: 'Revenue Engine', 5: 'AI Revenue Operating System' };
+
+function calculateReportMetrics(scores, answers, top, tier) {
+  const axisKeys = Object.keys(scores);
+  const avg = axisKeys.reduce((s, k) => s + scores[k], 0) / axisKeys.length;
+
+  // Revenue Health Score: 1 (best) -> 100, 5 (worst) -> 20
+  const healthScore = Math.round(Math.max(15, Math.min(95, 120 - avg * 20)));
+
+  let maturityLevel = 1;
+  if (healthScore >= 85) maturityLevel = 5;
+  else if (healthScore >= 70) maturityLevel = 4;
+  else if (healthScore >= 55) maturityLevel = 3;
+  else if (healthScore >= 40) maturityLevel = 2;
+  const teamFloor = { none: 1, small: 2, mid: 3, large: 4 }[answers.team] || 1;
+  maturityLevel = Math.min(maturityLevel, Math.max(maturityLevel, teamFloor >= maturityLevel ? maturityLevel : maturityLevel));
+  const targetLevel = Math.min(5, maturityLevel + (tier === 'Fractional CMO' ? 2 : 1));
+
+  // 0-100 per axis (same scale as health score, so the matrix and hero number agree)
+  const matrix = {};
+  axisKeys.forEach(k => { matrix[k] = Math.round(120 - scores[k] * 20); });
+
+  const arrEstimate = ARR_MIDPOINT[answers.arr] || 3000000;
+  const arrLabel = ARR_LABEL[answers.arr] || 'Not specified';
+  const leakageRate = 0.05 + ((avg - 1) / 4) * 0.30; // 5%–35% of ARR, scaled to actual severity
+  const leakageMid = Math.round(arrEstimate * leakageRate);
+  const leakageLow = Math.round(leakageMid * 0.75);
+  const leakageHigh = Math.round(leakageMid * 1.25);
+
+  const criticalAxes = axisKeys.filter(k => scores[k] >= 4);
+  const critCount = criticalAxes.length;
+  const confidence = Math.min(96, 68 + critCount * 6 + Math.round((scores[top.key] - 1) * 3));
+
+  const CONVERSION_BAND = {
+    weak: { cur: '<10%', tgt: '18–22%' },
+    average: { cur: '10–25%', tgt: '25–32%' },
+    strong: { cur: '25%+', tgt: '32%+' },
+    unsure: { cur: 'Not tracked', tgt: '15%+ (tracked)' },
+  };
+  const CAC_TREND = { down: 'Improving', flat: 'Stable', up_moderate: 'Rising (explainable)', up_sharp: 'Rising (unexplained)' };
+  const PIPELINE_STATE = { consistent: 'Predictable', volatile: 'Volatile', declining: 'Declining', none: 'Not yet established' };
+  const ALIGNMENT_STATE = { aligned: 'Documented & shared', mostly: 'Informal', no: 'Disputed' };
+  const NRR_STATE = { strong: 'Structured lever', some: 'Present, not repeatable', flat: 'Flat / declining', unsure: 'Not tracked' };
+
+  const conversion = CONVERSION_BAND[answers.conversion] || CONVERSION_BAND.unsure;
+  const cacTrend = CAC_TREND[answers.cac] || 'Unknown';
+  const pipelineState = PIPELINE_STATE[answers.pipeline] || 'Unknown';
+  const alignmentState = ALIGNMENT_STATE[answers.alignment] || 'Unknown';
+  const nrrState = NRR_STATE[answers.nrr] || 'Unknown';
+
+  // Business risk: high if 3+ critical axes or health score under 45
+  let businessRisk = 'low';
+  if (critCount >= 3 || healthScore < 45) businessRisk = 'high';
+  else if (critCount >= 1 || healthScore < 65) businessRisk = 'medium';
+
+  // Sequenced 5-phase treatment plan: Phase 1 is always foundation/diagnosis,
+  // Phases 2-5 are the four highest-severity axes, ordered by severity desc.
+  const orderedAxes = [...axisKeys].sort((a, b) => scores[b] - scores[a]);
+  const phaseAxes = orderedAxes.slice(0, 4);
+  const treatmentPlan = [
+    { num: 'Phase One', title: 'Stabilize Revenue Foundation', duration: '14 Days',
+      objectives: ['Executive Interviews', 'ICP Workshop', 'Customer Research', 'Win/Loss Analysis', 'Competitive Review'],
+      deliverable: 'Revenue Foundation Blueprint' },
+    ...phaseAxes.map((k, i) => {
+      const p = AXIS_PHASE[k];
+      return { num: ['Phase Two', 'Phase Three', 'Phase Four', 'Phase Five'][i], title: p.title, duration: p.duration, objectives: p.objectives, deliverable: p.deliverable };
+    }),
+  ];
+
+  // Business impact forecast — current vs target, all grounded in real answers
+  const forecast = [
+    { kpi: 'CAC Trend', current: cacTrend, target: 'Stable / Improving' },
+    { kpi: 'Lead Quality Agreement (SQL)', current: alignmentState, target: 'Documented & shared' },
+    { kpi: answers.motion === 'plg' ? 'Trial-to-Paid Conversion' : 'Demo-to-Close Conversion', current: conversion.cur, target: conversion.tgt },
+    { kpi: 'Pipeline Predictability', current: pipelineState, target: 'Predictable' },
+    { kpi: 'Expansion / NRR', current: nrrState, target: 'Structured lever' },
+    { kpi: 'Revenue Health Score', current: `${healthScore}/100`, target: `${Math.min(95, healthScore + 20)}/100` },
+  ];
+
+  // Board Action Matrix — rows built from the highest-severity axes, priority tied to actual score
+  const boardMatrix = orderedAxes.slice(0, 4).map(k => {
+    const sev = scores[k];
+    let priority = 'Strategic', timeline = '180 Days', dotClass = 'good';
+    if (sev >= 4) { priority = 'Immediate'; timeline = '30 Days'; dotClass = 'critical'; }
+    else if (sev === 3) { priority = 'High'; timeline = '45 Days'; dotClass = 'weak'; }
+    else if (sev === 2) { priority = 'Medium'; timeline = '90 Days'; dotClass = 'moderate'; }
+    return { priority, risk: AXIS_LABEL[k], owner: AXIS_OWNER[k], timeline, dotClass };
+  });
+  boardMatrix.push({ priority: 'Strategic', risk: 'AI GTM Transformation', owner: 'Executive Team', timeline: '180 Days', dotClass: 'good' });
+
+  return {
+    healthScore, maturityLevel, maturityLabel: MATURITY_LABELS[maturityLevel],
+    targetLevel, targetLabel: MATURITY_LABELS[targetLevel],
+    matrix, arrEstimate, arrLabel, leakageLow, leakageHigh, leakageRatePct: Math.round(leakageRate * 100),
+    confidence, businessRisk, criticalAxes, critCount,
+    conversion, cacTrend, pipelineState, alignmentState, nrrState,
+    diagnosisName: DIAGNOSIS_NAME[top.key],
+    treatmentPlan, forecast, boardMatrix,
+    orderedAxes,
+  };
+}
+
+function fmtUSD(n) {
+  if (n >= 1000000) return `$${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1)}M`;
+  return `$${Math.round(n / 1000)}K`;
+}
+
+function statusPillClass(score100) {
+  if (score100 < 45) return 'critical';
+  if (score100 < 60) return 'weak';
+  if (score100 < 70) return 'moderate';
+  if (score100 < 85) return 'stable';
+  return 'good';
+}
+function statusPillLabel(score100) {
+  if (score100 < 45) return 'Critical';
+  if (score100 < 60) return 'Weak';
+  if (score100 < 70) return 'Moderate';
+  if (score100 < 85) return 'Stable';
+  return 'Strong';
+}
+
 function renderGatePreview() {
   const scores = computeScores();
   const top = topProblem(scores);
@@ -586,42 +872,52 @@ async function runDiagnostic() {
   const tier = suggestedTier(scores, state.answers.team);
   const svc = SERVICE_MAP[top.key];
   const a = state.answers;
+  const m = calculateReportMetrics(scores, a, top, tier);
 
-  const prompt = `You are a senior B2B SaaS GTM strategist with 10+ years running discovery calls for Growth Clarity Co, a revenue growth partner for Series A-C B2B SaaS companies ($1M-$20M ARR). Analyze this diagnostic input and respond ONLY with valid JSON, no markdown fences, no preamble.
+  // NOTE ON WHY THE PROMPT IS SHAPED THIS WAY:
+  // Every number that appears in the report (health score, leakage
+  // range, KPI current/target, phase sequencing, board matrix) is
+  // already computed above by calculateReportMetrics() from the
+  // person's real answers. The AI call below is asked for narrative
+  // sentences ONLY, and is explicitly told to reuse the numbers we
+  // hand it rather than invent its own — this is what makes the
+  // report trustworthy on a sales call instead of a source of "wait,
+  // where did that number come from?" objections.
+  const prompt = `You are a senior B2B SaaS GTM strategist with 10+ years running discovery calls for Growth Clarity Co, a revenue growth partner for Series A-C B2B SaaS companies ($1M-$20M ARR). Analyze this diagnostic input and respond ONLY with valid JSON, no markdown fences, no preamble. Do NOT invent any statistics, dollar figures, or percentages beyond the ones supplied below — reuse them exactly where relevant.
 
-Input data:
+Company input:
 - GTM motion: ${a.motion}
-- ARR stage: ${a.arr}
+- ARR stage: ${a.arr} (${m.arrLabel})
 - Marketing team size: ${a.team}
 - Messaging consistency across reps: ${a.messaging}
 - Pipeline pattern: ${a.pipeline}
 - CAC trend (2 quarters): ${a.cac}
 - Sales/marketing alignment on lead quality: ${a.alignment}
-- Demo/trial-to-paid conversion: ${a.conversion}
+- Demo/trial-to-paid conversion band: ${a.conversion}
 - Expansion/NRR health: ${a.nrr}
 - Free text — what made them click today: "${a.freetext || 'none provided'}"
-- Computed severity scores (1-5): positioning=${scores.positioning}, demand=${scores.demand}, cac=${scores.cac}, alignment=${scores.alignment}, conversion=${scores.conversion}, expansion=${scores.expansion}
-- Top/root-cause cluster: ${top.label} (tie-break order used: positioning > alignment > demand > conversion > cac > expansion, since positioning and alignment problems are usually upstream of CAC and conversion symptoms)
+
+Already-computed figures (reuse these exactly, do not recompute or alter them):
+- Severity scores (1-5, higher = worse): positioning=${scores.positioning}, demand=${scores.demand}, cac=${scores.cac}, alignment=${scores.alignment}, conversion=${scores.conversion}, expansion=${scores.expansion}
+- Revenue Health Score: ${m.healthScore}/100
+- Growth Maturity: Level ${m.maturityLevel} (${m.maturityLabel}), target Level ${m.targetLevel} (${m.targetLabel})
+- Top/root-cause cluster: ${top.label}, severity ${top.score}/5
+- Diagnosis name: ${m.diagnosisName}
+- Diagnostic confidence: ${m.confidence}%
+- Business risk level: ${m.businessRisk}
+- Estimated annual revenue leakage: ${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)} (${m.leakageRatePct}% of estimated ARR)
 - Primary recommended service: ${svc.primary}
 - Secondary recommended service: ${svc.secondary}
-- Suggested engagement tier (based on number of critical clusters and team size): ${tier}
+- Suggested engagement tier: ${tier}
 
 Return this exact JSON structure with TWO top-level keys, client_report and internal_brief:
 
 {
   "client_report": {
-    "classification": "one sentence classifying their GTM maturity and motion in plain language",
-    "symptoms": ["3-4 specific symptoms quoted back from their own answers, each one sentence, written as if mirroring what they told us"],
-    "root_cause": "2-3 sentences explaining the underlying root cause, written directly to the founder, specific to their answers not generic, explaining why the root-cause cluster is upstream of the others",
-    "playbooks": [
-      {"name": "${svc.primary}", "objective": "one sentence on what it fixes and why it is sequenced first", "price_range": "appropriate USD range for this tier: Entry $1.2K-$5K one-time, Retainer $2.4K-$10K/mo, Fractional CMO $12K+/mo"},
-      {"name": "${svc.secondary}", "objective": "one sentence on what it fixes and why it comes second", "price_range": "same tier logic as above"}
-    ],
-    "roadmap": [
-      {"phase": "Days 1-30", "title": "short title", "description": "one sentence on what happens"},
-      {"phase": "Days 31-60", "title": "short title", "description": "one sentence on what happens"},
-      {"phase": "Days 61-90", "title": "short title", "description": "one sentence on what happens"}
-    ]
+    "executive_summary": "2-3 sentences, written for a CEO reading this before a board meeting, stating what's healthy and what's broken in plain language, specific to their actual answers — not generic",
+    "symptoms": ["4-5 specific symptoms mirrored back from their own answers, each one short sentence, phrased as if this is what their business is actually experiencing"],
+    "clinical_explanation": "2-3 sentences explaining WHY ${top.label} creates the leakage described above, written directly to the founder, tracing the causal chain from root cause to lost revenue — specific to their motion and stage, not generic",
+    "ceo_letter_body": "2 short paragraphs (roughly 70-110 words total), addressed as an executive conclusion. Paragraph 1 states plainly that this is a revenue architecture problem, not a marketing execution problem. Paragraph 2 recommends addressing the highest-impact constraint first through the phased plan, referencing the ${m.leakageLow ? fmtUSD(m.leakageLow) + '–' + fmtUSD(m.leakageHigh) : ''} leakage range and the suggested ${tier} engagement. Confident, board-ready tone — no hedging, no fluff."
   },
   "internal_brief": {
     "fit_score": "High, Medium, or Low based on ARR range and team size matching our $1M-$20M ICP",
@@ -659,23 +955,26 @@ Be specific and insight-heavy, not generic. Reference their actual answers throu
     const cleaned = rawText.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(cleaned);
     stopLoadingAnimation();
-    renderReport(parsed.client_report, scores, top, tier);
-    sendInternalBrief(parsed.internal_brief, scores, top, tier);
+    renderReport(parsed.client_report, scores, top, tier, m);
+    sendInternalBrief(parsed.internal_brief, scores, top, tier, m);
   } catch (err) {
     stopLoadingAnimation();
-    renderFallbackReport(scores, top, tier);
+    renderFallbackReport(scores, top, tier, m);
   }
 }
 
 // Sends the sales-only brief straight to the internal webhook. Never
 // written to the DOM — the prospect's browser never holds this payload
 // in a renderable element, only in this function's local scope.
-function sendInternalBrief(brief, scores, top, tier) {
+function sendInternalBrief(brief, scores, top, tier, m) {
   if (!brief) return;
   const payload = {
     contact: state.contact,
     answers: state.answers,
     scores, top_cluster: top.key, top_severity: top.score, suggested_tier: tier,
+    health_score: m ? m.healthScore : undefined,
+    leakage_range: m ? `${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)}` : undefined,
+    business_risk: m ? m.businessRisk : undefined,
     brief,
     submitted_at: new Date().toISOString(),
   };
@@ -692,70 +991,222 @@ function sendInternalBrief(brief, scores, top, tier) {
 
 function scoreClass(n) { return n >= 4 ? 'high' : n >= 2 ? 'mid' : 'low'; }
 
-function renderReport(report, scores, top, tier) {
-  const cellLabels = { positioning: 'Positioning', alignment: 'Alignment', demand: 'Demand gen', conversion: 'Conversion', cac: 'CAC', expansion: 'Expansion' };
-  const cellsHtml = Object.keys(cellLabels).map(k => `
-    <div class="score-cell ${k === top.key ? 'is-root' : ''}">
-      <div class="score-cell-label">${cellLabels[k]}</div>
-      <div class="score-cell-val ${scoreClass(scores[k])}">${scores[k]}/5</div>
-      <div class="score-cell-meter"><i class="${scoreClass(scores[k])}" style="width:${(scores[k]/5)*100}%"></i></div>
-    </div>`).join('');
+/* ============================================================
+   RENDER — Revenue Architecture Diagnostic™ Report
+   `report` = AI (or fallback) narrative fields: executive_summary,
+   symptoms[], clinical_explanation, ceo_letter_body.
+   `m` = deterministic metrics from calculateReportMetrics().
+   Every number on screen comes from `m` / `scores`; `report` only
+   supplies sentences, so the numbers never drift between runs.
+   ============================================================ */
+function renderReport(report, scores, top, tier, m) {
+  const name = state.contact.name || 'you';
+  const firstName = name.split(' ')[0];
+  const dateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const motionLabel = state.answers.motion === 'plg' ? 'Product-led' : state.answers.motion === 'slg' ? 'Sales-led' : 'Hybrid';
+  const svc = SERVICE_MAP[top.key];
 
-  const html = `
-    <div class="report-header" id="reportPrintHeader">
-      <div class="report-kicker">GTM diagnostic report</div>
-      <div class="report-title">Prepared for ${state.contact.name}</div>
-      <div class="report-meta">${new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})} &middot; Growth Clarity Co.</div>
-      <button class="btn btn-outline-white btn-md no-print" style="margin-top:18px" onclick="window.print()">&#8595; Download PDF report</button>
-    </div>
+  const riskLabel = m.businessRisk === 'high' ? 'HIGH' : m.businessRisk === 'medium' ? 'MEDIUM' : 'LOW';
 
-    <div class="score-strip">${cellsHtml}</div>
-
-    <div class="report-section">
-      <div class="report-section-title">Classification</div>
-      <div class="report-body"><p>${report.classification}</p></div>
-    </div>
-
-    <div class="report-section">
-      <div class="report-section-title">What you told us</div>
-      ${report.symptoms.map(s => `<div class="symptom-row"><span class="symptom-flag">SYMPTOM</span><span class="symptom-text">${s}</span></div>`).join('')}
-    </div>
-
-    <div class="report-section">
-      <div class="report-section-title">Root cause</div>
-      <div class="report-body"><p>${report.root_cause}</p></div>
-    </div>
-
-    <div class="tier-callout">
-      <div><div class="tier-callout-label">Suggested engagement tier</div><div class="tier-callout-val">${tier}</div></div>
-      <a href="pricing.html" class="btn-outline-white btn-md">See what's included &rarr;</a>
-    </div>
-
-    <div class="report-section">
-      <div class="report-section-title">Recommended services</div>
-      ${report.playbooks.map(p => `
-        <div class="playbook-card">
-          <div class="playbook-head">
-            <span class="playbook-name">${p.name}</span>
-            <span class="playbook-tier">${p.price_range}</span>
-          </div>
-          <div class="playbook-desc">${p.objective}</div>
+  // ---- Page 1: Executive Summary ----
+  const p1 = `
+    <div class="rad-page">
+      <div class="rad-page-label">Page 1 &middot; Executive Summary</div>
+      <div class="rad-page-title">Revenue Health Score</div>
+      <div class="rad-hero-score">
+        <div>
+          <div class="rad-hero-num" style="color:${m.healthScore >= 70 ? 'var(--green)' : m.healthScore >= 45 ? '#f0a830' : '#ff6b6b'}">${m.healthScore}<small>/100</small></div>
+          <div class="rad-hero-bar-track"><div class="rad-hero-bar-fill" style="width:${m.healthScore}%"></div></div>
         </div>
-      `).join('')}
-    </div>
+        <div class="rad-hero-target">
+          <div class="rad-hero-target-label">Growth maturity</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800">Level ${m.maturityLevel}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:8px">${m.maturityLabel}</div>
+          <div class="rad-maturity-chip">Target: Level ${m.targetLevel} &middot; ${m.targetLabel}</div>
+        </div>
+      </div>
+      <div class="report-body"><p>${report.executive_summary}</p></div>
+      <div class="rad-summary-list">
+        ${m.orderedAxes.slice(0, 3).map(k => `<div><span>&bull;</span>${AXIS_LABEL[k]}</div>`).join('')}
+      </div>
+      <div class="rad-risk-badge ${m.businessRisk}">Overall Business Risk &middot; ${riskLabel}</div>
+    </div>`;
 
-    <div class="report-section">
-      <div class="report-section-title">Your 90-day roadmap</div>
-      <div class="roadmap-track">
-        ${report.roadmap.map(r => `
-          <div class="roadmap-phase">
-            <div class="roadmap-days">${r.phase}</div>
-            <div class="roadmap-title">${r.title}</div>
-            <div class="roadmap-desc">${r.description}</div>
-          </div>
-        `).join('')}
+  // ---- Page 2: Executive Dashboard ----
+  const cellLabels = { positioning: 'Positioning', alignment: 'Sales Alignment', demand: 'Demand Gen', conversion: 'Website Conversion', cac: 'CAC Efficiency', expansion: 'Expansion / NRR' };
+  const matrixRows = Object.keys(cellLabels).map(k => `
+    <tr>
+      <td>${cellLabels[k]}</td>
+      <td>${m.matrix[k]}</td>
+      <td><span class="rad-status-pill ${statusPillClass(m.matrix[k])}">${statusPillClass(m.matrix[k]) === 'critical' ? '\u{1F534}' : statusPillClass(m.matrix[k]) === 'weak' || statusPillClass(m.matrix[k]) === 'moderate' ? '\u{1F7E0}' : statusPillClass(m.matrix[k]) === 'stable' ? '\u{1F7E1}' : '\u{1F7E2}'} ${statusPillLabel(m.matrix[k])}</span></td>
+    </tr>`).join('');
+  const p2 = `
+    <div class="rad-page">
+      <div class="rad-page-label">Page 2 &middot; Executive Dashboard</div>
+      <div class="rad-page-title">Where the constraints sit</div>
+      <div class="rad-dash-grid">
+        <div class="rad-dash-cell"><div class="rad-dash-cell-label">Revenue Score</div><div class="rad-dash-cell-val" style="color:${m.healthScore >= 70 ? 'var(--green)' : m.healthScore >= 45 ? '#f0a830' : '#ff6b6b'}">${m.healthScore}</div></div>
+        <div class="rad-dash-cell"><div class="rad-dash-cell-label">Pipeline Risk</div><div class="rad-dash-cell-val">${m.pipelineState}</div></div>
+        <div class="rad-dash-cell"><div class="rad-dash-cell-label">CAC Efficiency</div><div class="rad-dash-cell-val">${m.cacTrend}</div></div>
+        <div class="rad-dash-cell"><div class="rad-dash-cell-label">${motionLabel === 'Product-led' ? 'Trial-to-Paid' : 'Win Rate'}</div><div class="rad-dash-cell-val">${m.conversion.cur}</div></div>
+        <div class="rad-dash-cell"><div class="rad-dash-cell-label">Sales Alignment</div><div class="rad-dash-cell-val">${m.alignmentState}</div></div>
+        <div class="rad-dash-cell"><div class="rad-dash-cell-label">Expansion / NRR</div><div class="rad-dash-cell-val">${m.nrrState}</div></div>
+      </div>
+      <div class="report-section-title" style="border:none;margin-bottom:8px">GTM Health Matrix</div>
+      <table class="rad-matrix-table"><thead><tr><th>Area</th><th>Score</th><th>Status</th></tr></thead><tbody>${matrixRows}</tbody></table>
+    </div>`;
+
+  // ---- Page 3: Clinical Diagnosis ----
+  const p3 = `
+    <div class="rad-page">
+      <div class="rad-page-label">Page 3 &middot; Clinical Diagnosis</div>
+      <div class="rad-page-title">Business Symptoms</div>
+      <div class="rad-symptom-grid">
+        ${report.symptoms.map(s => `<div><span>&check;</span>${s}</div>`).join('')}
+      </div>
+      <div class="rad-diag-card">
+        <div class="rad-diag-row">
+          <div><div class="rad-diag-item-label">Diagnosis</div><div class="rad-diag-item-val">${m.diagnosisName}</div></div>
+          <div><div class="rad-diag-item-label">Severity</div><div class="rad-diag-item-val sev">${top.score >= 4 ? 'CRITICAL' : top.score === 3 ? 'ELEVATED' : 'MODERATE'}</div></div>
+          <div><div class="rad-diag-item-label">Confidence</div><div class="rad-diag-item-val conf">${m.confidence}%</div></div>
+        </div>
+        <div class="report-body" style="margin-top:6px"><p>${report.clinical_explanation}</p></div>
+      </div>
+    </div>`;
+
+  // ---- Page 4: Root Cause Tree ----
+  const top3 = m.orderedAxes.slice(0, 3);
+  const p4 = `
+    <div class="rad-page">
+      <div class="rad-page-label">Page 4 &middot; Root Cause Tree</div>
+      <div class="rad-page-title">How ${top.label.toLowerCase()} becomes lost revenue</div>
+      <div class="rad-tree">
+        <div class="rad-tree-node root">Revenue Growth Problem</div>
+        <div class="rad-tree-arrow">&darr;</div>
+        <div class="rad-tree-node">${m.pipelineState} Pipeline</div>
+        <div class="rad-tree-arrow">&darr;</div>
+        <div class="rad-tree-row">${top3.map(k => `<div class="rad-tree-node">${AXIS_LABEL[k]}</div>`).join('')}</div>
+        <div class="rad-tree-arrow">&darr;</div>
+        <div class="rad-tree-node">${motionLabel === 'Product-led' ? 'Low Trial-to-Paid' : 'Low Demo-to-Close'} (${m.conversion.cur})</div>
+        <div class="rad-tree-arrow">&darr;</div>
+        <div class="rad-tree-node leak">Revenue Leakage &mdash; ${fmtUSD(m.leakageLow)}&ndash;${fmtUSD(m.leakageHigh)}/yr</div>
+      </div>
+    </div>`;
+
+  // ---- Page 5: Revenue Leakage Analysis ----
+  const p5 = `
+    <div class="rad-page">
+      <div class="rad-page-label">Page 5 &middot; Revenue Leakage Analysis</div>
+      <div class="rad-page-title">Estimated Annual Revenue Leakage</div>
+      <div class="rad-leak-grid">
+        <div class="rad-leak-cell"><div class="rad-leak-cell-label">Estimated leakage range</div><div class="rad-leak-cell-val">${fmtUSD(m.leakageLow)}&ndash;${fmtUSD(m.leakageHigh)}</div></div>
+        <div class="rad-leak-cell"><div class="rad-leak-cell-label">Leakage as % of ARR</div><div class="rad-leak-cell-val neutral">${m.leakageRatePct}%</div></div>
+        <div class="rad-leak-cell"><div class="rad-leak-cell-label">Estimated ARR basis</div><div class="rad-leak-cell-val neutral">${m.arrLabel}</div></div>
+        <div class="rad-leak-cell"><div class="rad-leak-cell-label">Forecast risk</div><div class="rad-leak-cell-val" style="color:${m.businessRisk === 'high' ? '#ff6b6b' : m.businessRisk === 'medium' ? '#f0a830' : 'var(--green)'}">${riskLabel}</div></div>
+      </div>
+      <div class="report-body"><p>Most of this leakage occurs before a prospect ever reaches a closed-won stage &mdash; it shows up as ${top.label.toLowerCase()} friction, not a lack of top-of-funnel activity.</p></div>
+      <div class="rad-leak-note">Leakage range is calculated from your reported ARR band and the severity of your six diagnostic scores &mdash; not an AI estimate. It widens or narrows as your actual answers do, and should be treated as a directional planning figure, not an audited number.</div>
+    </div>`;
+
+  // ---- Page 6: Executive Treatment Plan ----
+  const phaseCards = m.treatmentPlan.map((ph, i) => `
+    <div class="rad-phase-card">
+      <div class="rad-phase-head"><span class="rad-phase-num">${ph.num}</span><span class="rad-phase-dur">${ph.duration}</span></div>
+      <div class="rad-phase-title">${ph.title}</div>
+      <div class="rad-phase-obj">${ph.objectives.map(o => `<span>${o}</span>`).join('')}</div>
+      <div class="rad-phase-deliv"><b>Deliverable</b>${ph.deliverable}</div>
+    </div>`).join('');
+  const p6 = `
+    <div class="rad-page">
+      <div class="rad-page-label">Page 6 &middot; Revenue Prescription</div>
+      <div class="rad-page-title">Executive Treatment Plan</div>
+      ${phaseCards}
+    </div>`;
+
+  // ---- Page 7: Business Impact Forecast ----
+  const forecastRows = m.forecast.map(r => `<tr><td>${r.kpi}</td><td class="cur">${r.current}</td><td class="tgt">${r.target}</td></tr>`).join('');
+  const p7 = `
+    <div class="rad-page">
+      <div class="rad-page-label">Page 7 &middot; Business Impact Forecast</div>
+      <div class="rad-page-title">Current vs. target, by KPI</div>
+      <table class="rad-forecast-table"><thead><tr><th>KPI</th><th>Current</th><th>Target</th></tr></thead><tbody>${forecastRows}</tbody></table>
+      <div class="tier-callout">
+        <div><div class="tier-callout-label">Suggested engagement tier</div><div class="tier-callout-val">${tier}</div></div>
+        <a href="pricing.html" class="btn-outline-white btn-md">See what's included &rarr;</a>
+      </div>
+    </div>`;
+
+  // ---- Page 8: Revenue Maturity Model ----
+  const rungs = [1, 2, 3, 4, 5].map(lvl => {
+    const cls = lvl === m.maturityLevel ? 'here' : lvl === m.targetLevel ? 'target' : '';
+    const tag = lvl === m.maturityLevel ? 'You are here' : lvl === m.targetLevel ? 'Target' : '';
+    return `<div class="rad-maturity-rung ${cls}">LEVEL ${lvl} &middot; ${MATURITY_LABELS[lvl]}${tag ? `<span class="rad-maturity-tag">${tag}</span>` : ''}</div>`;
+  }).join('');
+  const p8 = `
+    <div class="rad-page">
+      <div class="rad-page-label">Page 8 &middot; Revenue Maturity Model</div>
+      <div class="rad-page-title">Where you sit today, and the target</div>
+      <div class="rad-maturity-ladder">${rungs}</div>
+    </div>`;
+
+  // ---- Page 9: Recommended Engagement ----
+  const p9 = `
+    <div class="rad-page">
+      <div class="rad-page-label">Page 9 &middot; Recommended Engagement</div>
+      <div class="rad-page-title">Primary engagement</div>
+      <div class="rad-engagement-card">
+        <div class="rad-engagement-name">${tier}${tier === 'Fractional CMO' ? ' (90 Days)' : ''}</div>
+        <div class="rad-engagement-obj">Align GTM strategy, build the revenue architecture above, and improve executive visibility into pipeline health &mdash; starting with ${AXIS_LABEL[top.key].toLowerCase()}.</div>
+      </div>
+      <div class="report-section-title" style="border:none;margin-bottom:8px">Supporting engagements</div>
+      <table class="rad-support-table">
+        <tr><td><span class="rad-status-pill critical">&#128308;</span></td><td>${svc.primary}</td><td>Reduces ${AXIS_LABEL[top.key].toLowerCase()} risk</td></tr>
+        <tr><td><span class="rad-status-pill weak">&#128992;</span></td><td>${svc.secondary}</td><td>Sequenced second, once primary fix is underway</td></tr>
+        <tr><td><span class="rad-status-pill good">&#128994;</span></td><td>GTM Intelligence Dashboard</td><td>Ongoing visibility between engagements</td></tr>
+      </table>
+    </div>`;
+
+  // ---- Final Page: CEO Letter + Board Action Matrix ----
+  const boardRows = m.boardMatrix.map(r => `
+    <tr>
+      <td><span class="rad-status-pill ${r.dotClass}">${r.priority}</span></td>
+      <td>${r.risk}</td>
+      <td>${r.owner}</td>
+      <td>${r.timeline}</td>
+    </tr>`).join('');
+  const pFinal = `
+    <div class="rad-page">
+      <div class="rad-page-label">Executive Conclusion</div>
+      <div class="rad-page-title">CEO Letter</div>
+      <div class="rad-ceo-letter">
+        ${report.ceo_letter_body.split(/\n+/).filter(Boolean).map(par => `<p>${par}</p>`).join('')}
+        <div class="rad-ceo-sign">Prepared by: Growth Clarity Co. &mdash; Fractional CMO &amp; Revenue Architecture Advisors</div>
       </div>
     </div>
+    <div class="rad-page">
+      <div class="rad-page-label">Board Action Matrix</div>
+      <div class="rad-page-title">Decisions for the next board meeting</div>
+      <table class="rad-board-table"><thead><tr><th>Priority</th><th>Business Risk</th><th>Owner</th><th>Timeline</th></tr></thead><tbody>${boardRows}</tbody></table>
+    </div>`;
+
+  const html = `
+    <div class="rad-cover" id="reportPrintHeader">
+      <div class="rad-cover-mark">Growth Clarity Co.</div>
+      <div class="rad-cover-title">Revenue Architecture Diagnostic&trade;</div>
+      <div class="rad-cover-sub">Executive Growth Assessment Report</div>
+      <div class="rad-cover-meta">
+        <span>Company</span><b>${firstName}'s company</b>
+        <span>ARR</span><b>${m.arrLabel}</b>
+        <span>Funding stage</span><b>${state.answers.arr === 'a' ? 'Series A' : state.answers.arr === 'b' ? 'Series B' : state.answers.arr === 'c' ? 'Series C' : state.answers.arr === 'd' ? 'Series D+' : 'Pre-Series A'}</b>
+        <span>GTM motion</span><b>${motionLabel}</b>
+        <span>Assessment date</span><b>${dateStr}</b>
+        <span>Prepared for</span><b>${name}</b>
+      </div>
+      <div class="rad-cover-confidential">Confidential &middot; Prepared by Growth Clarity Co.</div>
+      <div style="margin-top:20px"><button class="btn btn-outline-white btn-md no-print" onclick="window.print()">&#8595; Download PDF report</button></div>
+    </div>
+
+    ${p1}${p2}${p3}${p4}${p5}${p6}${p7}${p8}${p9}${pFinal}
 
     <div class="cycle-section">
       <div class="cycle-card">
@@ -780,33 +1231,40 @@ function renderReport(report, scores, top, tier) {
   document.getElementById('reportContent').innerHTML = html;
 }
 
-function renderFallbackReport(scores, top, tier) {
-  const svc = SERVICE_MAP[top.key];
-  const report = {
-    classification: `A ${state.answers.motion === 'plg' ? 'product-led' : state.answers.motion === 'slg' ? 'sales-led' : 'hybrid'} company where ${top.label.toLowerCase()} is the most urgent constraint on growth right now.`,
-    symptoms: [
-      'Pipeline behaves inconsistently from month to month, making forecasting unreliable.',
-      'CAC has moved in a direction that is not fully explained by channel mix changes.',
-      'Reps are not fully aligned on how to describe why a buyer should choose you.',
-    ],
-    root_cause: `Based on your answers, the highest-severity area is ${top.label}. This typically sits upstream of the other symptoms — fixing it first usually resolves the others faster than treating each symptom in isolation.`,
-    playbooks: [
-      { name: svc.primary, objective: 'Addresses your highest-severity cluster directly.', price_range: tier === 'Entry' ? '$1.2K–$5K' : tier === 'Retainer' ? '$2.4K–$10K/mo' : '$12K+/mo' },
-      { name: svc.secondary, objective: 'Sequenced second, once the primary fix is underway.', price_range: tier === 'Entry' ? '$1.2K–$5K' : tier === 'Retainer' ? '$2.4K–$10K/mo' : '$12K+/mo' },
-    ],
-    roadmap: [
-      { phase: 'Days 1-30', title: 'Diagnose and align', description: 'Validate root cause with a structured win/loss and ICP review.' },
-      { phase: 'Days 31-60', title: 'Rebuild the foundation', description: 'Ship the positioning or alignment fix identified as highest priority.' },
-      { phase: 'Days 61-90', title: 'Activate and measure', description: 'Launch the matching service and track leading indicators weekly.' },
-    ]
+/* ============================================================
+   FALLBACK — used only if the Gemini call fails/times out.
+   Numbers still come entirely from calculateReportMetrics(); only
+   the narrative sentences are templated instead of AI-written, and
+   they're still built from this company's actual top axis and
+   free-text answer, not a single generic paragraph.
+   ============================================================ */
+function renderFallbackReport(scores, top, tier, m) {
+  const a = state.answers;
+  const motionWord = a.motion === 'plg' ? 'product-led' : a.motion === 'slg' ? 'sales-led' : 'hybrid';
+  const AXIS_SYMPTOM = {
+    positioning: 'Reps describe the product differently depending on who is asking, and buyers default to comparing you on price.',
+    alignment: 'Sales routinely says marketing-sourced leads are not good enough to work.',
+    demand: `Pipeline is ${m.pipelineState.toLowerCase()} month to month, which makes forecasting unreliable.`,
+    conversion: `${a.motion === 'plg' ? 'Trial-to-paid' : 'Demo-to-close'} conversion sits at ${m.conversion.cur}, below where it should be for your stage.`,
+    cac: `CAC has been ${m.cacTrend.toLowerCase()} over the last two quarters.`,
+    expansion: `Expansion revenue is ${m.nrrState.toLowerCase()}, leaving NRR flatter than it should be.`,
   };
-  renderReport(report, scores, top, tier);
+  const symptoms = m.orderedAxes.slice(0, 4).map(k => AXIS_SYMPTOM[k]);
+  if (a.freetext) symptoms.unshift(`You told us: "${a.freetext}"`);
+
+  const report = {
+    executive_summary: `Your business is a ${motionWord} company with a Revenue Health Score of ${m.healthScore}/100. The assessment identified ${AXIS_LABEL[top.key].toLowerCase()} as the highest-severity constraint currently limiting predictable revenue growth.`,
+    symptoms: symptoms.slice(0, 5),
+    clinical_explanation: `${AXIS_LABEL[top.key]} sits upstream of the other symptoms in your answers — fixing it first is why it's sequenced as Phase Two of the treatment plan below, ahead of the other constraints your scores flagged.`,
+    ceo_letter_body: `Our assessment indicates that your business does not have a marketing execution problem — it has a revenue architecture problem, concentrated in ${AXIS_LABEL[top.key].toLowerCase()}.\nWe recommend addressing this highest-impact constraint first through a phased transformation, sized as a ${tier} engagement, with an estimated ${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)} in annual revenue leakage at stake if it goes unaddressed.`,
+  };
+  renderReport(report, scores, top, tier, m);
   sendInternalBrief({
     fit_score: 'Unknown — AI report generation failed, review answers manually',
     intent_score: 'Unknown', timing_score: 'Unknown',
     opening_line: state.answers.freetext ? `They mentioned: "${state.answers.freetext}"` : `Lead with their ${top.label} score.`,
     likely_objection: '', objection_counter: '', price_anchor: '', disqualify: 'false', upsell_flag: '',
-  }, scores, top, tier);
+  }, scores, top, tier, m);
 }
 </script>
 
