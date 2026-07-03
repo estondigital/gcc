@@ -1,5 +1,5 @@
 name = "gcc-report-api"
-main = "src/index.js"
+main = "index.js"
 compatibility_date = "2026-01-01"
 
 # Set this to your real domain once the worker is deployed and tested.
