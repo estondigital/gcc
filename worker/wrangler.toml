@@ -1,0 +1,9 @@
+name = "gcc-report-api"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+# Set this to your real domain once the worker is deployed and tested.
+# During setup you can leave it as-is and test from localhost too —
+# see the ALLOWED_ORIGINS list in src/index.js.
+[vars]
+ALLOWED_ORIGIN = "https://growthclarityco.com"
