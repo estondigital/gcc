@@ -445,9 +445,9 @@
 // public URL and your Supabase project's URL + anon key (safe to be
 // public — see supabase-schema.sql for why: insert-only RLS policy).
 // ============================================
-const REPORT_API_URL = "REPLACE_WITH_YOUR_WORKER_URL"; // e.g. https://gcc-report-api.yourname.workers.dev
-const SUPABASE_URL = "REPLACE_WITH_YOUR_SUPABASE_URL"; // e.g. https://xxxxxxxx.supabase.co
-const SUPABASE_ANON_KEY = "REPLACE_WITH_YOUR_SUPABASE_ANON_KEY";
+const REPORT_API_URL = "https://gcc-report-api.estondigital.workers.dev/"; // e.g. https://gcc-report-api.yourname.workers.dev
+const SUPABASE_URL = "https://vtxqgmioqwftrszgfohy.supabase.co"; // e.g. https://xxxxxxxx.supabase.co
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ0eHFnbWlvcXdmdHJzemdmb2h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5OTY2OTIsImV4cCI6MjA5ODU3MjY5Mn0.n9APqs8-j4UsS-rlvEJ6IXkLap9LWZ6-wqQ14KPjB4I";
 
 // Writes one row to the `leads` table. Safe to call with the public
 // anon key because the RLS policy only allows INSERT — see
