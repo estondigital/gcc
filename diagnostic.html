@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -445,7 +446,7 @@
 // public URL and your Supabase project's URL + anon key (safe to be
 // public — see supabase-schema.sql for why: insert-only RLS policy).
 // ============================================
-const REPORT_API_URL = "https://gcc-report-api.estondigital.workers.dev/"; // e.g. https://gcc-report-api.yourname.workers.dev
+const REPORT_API_URL = "REPLACE_WITH_YOUR_WORKER_URL"; // e.g. https://gcc-report-api.yourname.workers.dev
 const SUPABASE_URL = "REPLACE_WITH_YOUR_SUPABASE_URL"; // e.g. https://xxxxxxxx.supabase.co
 const SUPABASE_ANON_KEY = "REPLACE_WITH_YOUR_SUPABASE_ANON_KEY";
 
@@ -1297,6 +1298,14 @@ function renderReport(report, scores, top, tier, m) {
     </div>
   `;
   document.getElementById('reportContent').innerHTML = html;
+
+  // This is the step that was missing: writing the HTML above only
+  // populates the (hidden) report section — nothing else ever tells
+  // the page to switch off the loading screen and onto this one.
+  // Without this, the loading messages just cycle forever while the
+  // finished report sits there invisible.
+  state.step = state.screens.length - 1; // 'report' is always the last screen
+  showScreen(state.step);
 }
 
 /* ============================================================
