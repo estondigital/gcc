@@ -117,133 +117,202 @@
   .tier-callout-val { font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; color:var(--green); margin-top:2px; }
 
   /* ============================================
-     REVENUE ARCHITECTURE DIAGNOSTIC™ REPORT
-     Executive consulting report layout — 12 sections
+     GTM DIAGNOSTIC REPORT — dark consulting-report design
+     Everything below is scoped to gr- prefixed classes so it can't
+     collide with the rest of the page. Colors are defined as their
+     own set of variables (gr-ink, gr-panel, etc.) rather than reusing
+     the page's --ink/--navy, since this report's palette is close
+     but not identical (deliberately matched to the reference design
+     you provided rather than force-fit to the site's exact tokens).
      ============================================ */
-  .rad-cover { text-align: center; padding: 48px 0 40px; border-bottom: 2px solid var(--green); margin-bottom: 40px; }
-  .rad-cover-mark { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 18px; }
-  .rad-cover-brand { font-family:'Geist',sans-serif; font-weight:800; font-size:15px; letter-spacing:.02em; color:var(--white); margin-bottom:28px; }
-  .rad-cover-title { font-family:'Bricolage Grotesque',sans-serif; font-size: 34px; font-weight: 800; color: var(--white); line-height:1.15; margin-bottom: 8px; }
-  .rad-cover-sub { font-size: 14px; color: var(--green); font-weight: 600; margin-bottom: 32px; }
-  .rad-cover-meta { display:inline-grid; grid-template-columns: auto auto; gap: 6px 24px; text-align:left; font-size: 13px; color: rgba(255,255,255,.6); border-top:1px solid var(--border-dark); border-bottom:1px solid var(--border-dark); padding: 20px 28px; margin-bottom: 20px; }
-  .rad-cover-meta b { color: var(--white); font-weight:600; }
-  .rad-cover-confidential { font-size: 10.5px; letter-spacing:.1em; text-transform:uppercase; color: rgba(255,255,255,.3); }
-
-  .rad-page { margin-bottom: 48px; padding-bottom: 44px; border-bottom: 1px solid var(--border-dark); }
-  .rad-page:last-of-type { border-bottom: none; }
-  .rad-page-label { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); font-weight: 700; margin-bottom: 6px; }
-  .rad-page-title { font-family:'Bricolage Grotesque',sans-serif; font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 22px; }
-
-  .rad-hero-score { display:flex; gap: 36px; align-items:center; flex-wrap:wrap; margin-bottom: 28px; }
-  .rad-hero-num { font-family:'Bricolage Grotesque',sans-serif; font-size: 56px; font-weight: 800; line-height:1; }
-  .rad-hero-num small { font-size: 22px; color: rgba(255,255,255,.35); font-weight:600; }
-  .rad-hero-bar-track { width: 220px; height: 8px; border-radius: 5px; background: rgba(255,255,255,.06); overflow:hidden; margin-top:10px; }
-  .rad-hero-bar-fill { height:100%; border-radius:5px; background: linear-gradient(90deg,var(--green-2),var(--green)); }
-  .rad-maturity-chip { display:inline-block; font-family:'Geist Mono',monospace; font-size:11px; padding:5px 12px; border-radius:99px; border:1px solid rgba(0,230,118,.3); background:rgba(0,230,118,.06); color:var(--green); margin-top:6px; }
-  .rad-hero-target { text-align:left; }
-  .rad-hero-target-label { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); margin-bottom:4px; }
-
-  .rad-summary-list { display:flex; flex-direction:column; gap:8px; margin: 16px 0 20px; }
-  .rad-summary-list div { font-size:13.5px; color: rgba(255,255,255,.7); display:flex; gap:10px; }
-  .rad-summary-list div span { color: var(--red); flex-shrink:0; }
-  .rad-risk-badge { display:inline-flex; align-items:center; gap:8px; font-family:'Geist Mono',monospace; font-size:12px; font-weight:700; letter-spacing:.05em; padding:8px 16px; border-radius:8px; margin-top:10px; }
-  .rad-risk-badge.high { background:rgba(220,60,60,.12); color:#ff6b6b; border:1px solid rgba(220,60,60,.3); }
-  .rad-risk-badge.medium { background:rgba(240,168,48,.12); color:#f0a830; border:1px solid rgba(240,168,48,.3); }
-  .rad-risk-badge.low { background:rgba(0,230,118,.1); color:var(--green); border:1px solid rgba(0,230,118,.3); }
-
-  .rad-dash-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-bottom:28px; }
-  .rad-dash-cell { border:1px solid var(--border-dark); border-radius:10px; padding:16px 18px; }
-  .rad-dash-cell-label { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); margin-bottom:8px; }
-  .rad-dash-cell-val { font-family:'Bricolage Grotesque',sans-serif; font-size:19px; font-weight:800; }
-
-  .rad-matrix-table { width:100%; border-collapse:collapse; font-size:13.5px; }
-  .rad-matrix-table th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); padding:0 0 10px; border-bottom:1px solid var(--border-dark); font-weight:600; }
-  .rad-matrix-table td { padding:13px 0; border-bottom:1px solid var(--border-dark); color: rgba(255,255,255,.75); }
-  .rad-matrix-table tr:last-child td { border-bottom:none; }
-  .rad-status-pill { font-size:11px; font-weight:700; padding:3px 10px; border-radius:99px; display:inline-block; }
-  .rad-status-pill.critical { background:rgba(220,60,60,.14); color:#ff6b6b; }
-  .rad-status-pill.weak { background:rgba(240,168,48,.14); color:#f0a830; }
-  .rad-status-pill.moderate { background:rgba(240,168,48,.1); color:#e0c060; }
-  .rad-status-pill.stable { background:rgba(0,230,118,.08); color:#8fe0b0; }
-  .rad-status-pill.good { background:rgba(0,230,118,.14); color:var(--green); }
-
-  .rad-symptom-grid { display:flex; flex-direction:column; gap:9px; margin-bottom:24px; }
-  .rad-symptom-grid div { font-size:13.5px; color:rgba(255,255,255,.75); display:flex; gap:10px; align-items:flex-start; }
-  .rad-symptom-grid div span { color:var(--green); flex-shrink:0; font-weight:700; }
-
-  .rad-diag-card { border:1.5px solid rgba(220,60,60,.3); background:rgba(220,60,60,.05); border-radius:12px; padding:22px 24px; margin-bottom:20px; }
-  .rad-diag-row { display:flex; gap:32px; flex-wrap:wrap; margin-bottom:14px; }
-  .rad-diag-item-label { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.4); margin-bottom:4px; }
-  .rad-diag-item-val { font-family:'Bricolage Grotesque',sans-serif; font-size:17px; font-weight:800; color:var(--white); }
-  .rad-diag-item-val.sev { color:#ff6b6b; }
-  .rad-diag-item-val.conf { color:var(--green); }
-
-  .rad-tree { display:flex; flex-direction:column; align-items:center; gap:0; margin: 8px 0 8px; }
-  .rad-tree-node { border:1px solid var(--border-dark); border-radius:8px; padding:10px 18px; font-size:12.5px; text-align:center; color:rgba(255,255,255,.8); background:rgba(255,255,255,.02); }
-  .rad-tree-node.root { border-color:rgba(220,60,60,.4); color:#ff9b9b; font-weight:700; }
-  .rad-tree-node.leak { border-color:var(--green); color:var(--green); font-weight:700; }
-  .rad-tree-arrow { color:rgba(255,255,255,.25); font-size:14px; margin:4px 0; }
-  .rad-tree-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin: 4px 0; }
-
-  .rad-leak-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:14px; margin-bottom:22px; }
-  .rad-leak-cell { border:1px solid var(--border-dark); border-radius:10px; padding:18px 20px; }
-  .rad-leak-cell-label { font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); margin-bottom:8px; }
-  .rad-leak-cell-val { font-family:'Bricolage Grotesque',sans-serif; font-size:24px; font-weight:800; color:#ff6b6b; }
-  .rad-leak-cell-val.neutral { color:var(--white); }
-  .rad-leak-note { font-size:11px; color:rgba(255,255,255,.3); margin-top:16px; line-height:1.6; }
-
-  .rad-phase-card { border:1px solid var(--border-dark); border-radius:10px; padding:20px 22px; margin-bottom:12px; }
-  .rad-phase-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
-  .rad-phase-num { font-family:'Geist Mono',monospace; font-size:11px; color:var(--green); font-weight:700; }
-  .rad-phase-dur { font-size:11px; color:rgba(255,255,255,.4); }
-  .rad-phase-title { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:800; color:var(--white); margin-bottom:10px; }
-  .rad-phase-obj { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
-  .rad-phase-obj span { font-size:11.5px; background:rgba(255,255,255,.04); border:1px solid var(--border-dark); padding:5px 11px; border-radius:99px; color:rgba(255,255,255,.55); }
-  .rad-phase-deliv { font-size:12px; color:var(--green); font-weight:600; }
-  .rad-phase-deliv b { color:rgba(255,255,255,.4); font-weight:500; text-transform:uppercase; letter-spacing:.04em; font-size:10px; margin-right:6px; }
-
-  .rad-forecast-table { width:100%; border-collapse:collapse; font-size:13.5px; margin-bottom:20px; }
-  .rad-forecast-table th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); padding:0 10px 10px 0; border-bottom:1px solid var(--border-dark); font-weight:600; }
-  .rad-forecast-table td { padding:12px 10px 12px 0; border-bottom:1px solid var(--border-dark); color:rgba(255,255,255,.75); }
-  .rad-forecast-table td.cur { color:rgba(255,255,255,.45); }
-  .rad-forecast-table td.tgt { color:var(--green); font-weight:600; }
-
-  .rad-maturity-ladder { display:flex; flex-direction:column; gap:0; }
-  .rad-maturity-rung { border:1px solid var(--border-dark); padding:13px 18px; font-size:13px; color:rgba(255,255,255,.4); position:relative; }
-  .rad-maturity-rung.here { border-color:var(--green); background:rgba(0,230,118,.06); color:var(--white); font-weight:700; }
-  .rad-maturity-rung.target { border-color:rgba(0,230,118,.3); background:rgba(0,230,118,.02); color:rgba(255,255,255,.7); }
-  .rad-maturity-rung + .rad-maturity-rung { border-top:none; }
-  .rad-maturity-tag { position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--green); }
-
-  .rad-engagement-card { border:1.5px solid rgba(0,230,118,.3); background:rgba(0,230,118,.04); border-radius:12px; padding:22px 24px; margin-bottom:20px; }
-  .rad-engagement-name { font-family:'Bricolage Grotesque',sans-serif; font-size:19px; font-weight:800; color:var(--white); margin-bottom:10px; }
-  .rad-engagement-obj { font-size:13px; color:rgba(255,255,255,.6); line-height:1.7; }
-  .rad-support-table { width:100%; border-collapse:collapse; font-size:13px; }
-  .rad-support-table td { padding:11px 0; border-bottom:1px solid var(--border-dark); color:rgba(255,255,255,.65); }
-  .rad-support-table tr:last-child td { border-bottom:none; }
-
-  .rad-ceo-letter { border:1px solid var(--border-dark); border-radius:12px; padding:28px 30px; }
-  .rad-ceo-letter p { font-size:14px; line-height:1.85; color:rgba(255,255,255,.72); margin-bottom:14px; }
-  .rad-ceo-sign { margin-top:20px; padding-top:16px; border-top:1px solid var(--border-dark); font-size:12.5px; color:rgba(255,255,255,.45); }
-
-  .rad-board-table { width:100%; border-collapse:collapse; font-size:13px; }
-  .rad-board-table th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.35); padding:0 10px 10px 0; border-bottom:1px solid var(--border-dark); font-weight:600; }
-  .rad-board-table td { padding:12px 10px 12px 0; border-bottom:1px solid var(--border-dark); color:rgba(255,255,255,.7); vertical-align:top; }
-
-  @media (max-width:600px) {
-    .rad-dash-grid { grid-template-columns: repeat(2,1fr); }
-    .rad-leak-grid { grid-template-columns: 1fr; }
-    .rad-diag-row { gap:18px; }
-    .rad-cover-meta { grid-template-columns: 1fr; }
+  .gr-report {
+    --gr-ink: #070D17; --gr-ink-2: #0B1424; --gr-panel: #0E1A2E; --gr-card: #0C1626;
+    --gr-line: rgba(255,255,255,.10); --gr-line-2: rgba(255,255,255,.06);
+    --gr-white: #F5F7FA; --gr-text: rgba(245,247,250,.68); --gr-text-2: rgba(245,247,250,.42); --gr-text-3: rgba(245,247,250,.28);
+    --gr-green: #00E676; --gr-green-2: #1FE07A; --gr-green-soft: rgba(0,230,118,.10); --gr-green-line: rgba(0,230,118,.30);
+    --gr-red: #E24B4A; --gr-red-soft: rgba(226,75,74,.12); --gr-red-line: rgba(226,75,74,.35);
+    --gr-amber: #EF9F27; --gr-amber-soft: rgba(239,159,39,.12); --gr-amber-line: rgba(239,159,39,.35);
+    --gr-teal: #1D9E75; --gr-teal-soft: rgba(29,158,117,.14); --gr-teal-line: rgba(29,158,117,.35);
+    --gr-blue: #4C8DFF; --gr-purple: #B08CFF;
+    --gr-f-display: 'Bricolage Grotesque', sans-serif; --gr-f-body: 'Instrument Sans', sans-serif; --gr-f-mono: 'Geist Mono', ui-monospace, monospace;
+    max-width: 980px; margin: 0 auto; background: var(--gr-ink); border: 1px solid var(--gr-line); border-radius: 20px; overflow: hidden;
+    font-family: var(--gr-f-body); color: var(--gr-text); line-height: 1.6;
   }
+  .gr-report h1, .gr-report h2, .gr-report h3, .gr-report h4 { font-family: var(--gr-f-display); color: var(--gr-white); letter-spacing: -.02em; font-weight: 800; }
+  .gr-mono { font-family: var(--gr-f-mono); }
+  .gr-eyebrow-mono { font-family: var(--gr-f-mono); font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gr-green); }
 
-  @media print {
-    .rad-page { page-break-inside: avoid; border-bottom-color:#ddd !important; }
-    .rad-cover { border-bottom-color:#0B1F3A !important; }
-    .rad-cover-title, .rad-page-title, .rad-hero-num, .rad-diag-item-val, .rad-phase-title, .rad-engagement-name { color:#0B1F3A !important; }
-    .rad-page-label, .rad-cover-sub { color:#00a85c !important; }
-    .rad-dash-cell, .rad-phase-card, .rad-leak-cell, .rad-maturity-rung, .rad-support-table td, .rad-board-table td, .rad-ceo-letter, .rad-diag-card { border-color:#ddd !important; }
-    .rad-symptom-grid div, .rad-summary-list div, .rad-ceo-letter p { color:#333 !important; }
+  .gr-secnum { display: inline-flex; align-items: center; justify-content: center; font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .06em; color: var(--gr-green); border: 1px solid var(--gr-green-line); border-radius: 7px; padding: 3px 8px; flex: none; }
+  .gr-sechead { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .gr-sechead h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .04em; }
+  .gr-section { padding: 32px 44px; border-top: 1px solid var(--gr-line); }
+  .gr-section:first-of-type { border-top: none; }
+
+  .gr-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--gr-line); border-radius: 100px; padding: 5px 11px; color: var(--gr-text-2); }
+  .gr-badge { display: inline-flex; align-items: center; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; border-radius: 100px; padding: 5px 12px; font-weight: 600; }
+  .gr-badge.critical { background: var(--gr-red-soft); color: var(--gr-red); border: 1px solid var(--gr-red-line); }
+  .gr-badge.caution, .gr-badge.high { background: var(--gr-amber-soft); color: var(--gr-amber); border: 1px solid var(--gr-amber-line); }
+  .gr-badge.healthy { background: var(--gr-teal-soft); color: var(--gr-teal); border: 1px solid var(--gr-teal-line); }
+  .gr-badge.root { background: var(--gr-green-soft); color: var(--gr-green); border: 1px solid var(--gr-green-line); }
+
+  /* Cover */
+  .gr-cover { padding: 44px 44px 40px; border-bottom: 2px solid var(--gr-green); position: relative; overflow: hidden; }
+  .gr-cover::before { content: ''; position: absolute; right: -140px; top: -160px; width: 420px; height: 420px; background: radial-gradient(circle, rgba(0,230,118,.14), transparent 62%); pointer-events: none; }
+  .gr-cover-top { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; flex-wrap: wrap; gap: 12px; }
+  .gr-logo { display: inline-flex; align-items: center; line-height: 1; font-size: 19px; white-space: nowrap; }
+  .gr-logo .star { color: var(--gr-green); margin-right: .5em; font-size: .8em; }
+  .gr-logo .w { font-family: var(--gr-f-display); font-weight: 800; letter-spacing: -.03em; }
+  .gr-logo .w.growth { color: var(--gr-white); margin-right: .1em; }
+  .gr-logo .w.clarity { color: var(--gr-green); margin-right: .1em; }
+  .gr-logo .w.co { color: var(--gr-green); }
+  .gr-cover-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .gr-cover-title { font-size: 40px; line-height: 1.08; margin: 30px 0 0; max-width: 20ch; position: relative; z-index: 1; }
+  .gr-cover-title em { font-style: normal; color: var(--gr-green); }
+  .gr-cover-meta { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 34px; position: relative; z-index: 1; flex-wrap: wrap; gap: 20px; }
+  .gr-cover-meta .prep .k { font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--gr-text-3); }
+  .gr-cover-meta .prep .v { font-size: 16px; font-weight: 600; color: var(--gr-white); margin-top: 6px; }
+  .gr-cover-meta .prep .d { font-size: 13px; color: var(--gr-text-2); margin-top: 3px; }
+  .gr-consultant { display: flex; align-items: center; gap: 12px; }
+  .gr-consultant .avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--gr-panel); border: 1px solid var(--gr-green-line); display: grid; place-items: center; font-family: var(--gr-f-display); font-weight: 800; font-size: 15px; color: var(--gr-green); }
+  .gr-consultant .cn { font-size: 14px; font-weight: 700; color: var(--gr-white); }
+  .gr-consultant .cr { font-size: 12px; color: var(--gr-text-2); }
+
+  /* 01 Snapshot */
+  .gr-snap { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: start; }
+  .gr-snap-score .num { font-family: var(--gr-f-display); font-weight: 800; font-size: 76px; line-height: .95; letter-spacing: -.03em; }
+  .gr-snap-score .lbl { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gr-text-2); margin-top: 10px; }
+  .gr-snap-right .maturity { font-size: 18px; font-weight: 700; color: var(--gr-white); margin-bottom: 10px; }
+  .gr-snap-right .summary { font-size: 14.5px; line-height: 1.65; color: var(--gr-text); max-width: 62ch; }
+  .gr-snap-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+  .gr-snap-card { background: var(--gr-panel); border: 1px solid var(--gr-line); border-radius: 12px; padding: 16px 18px; }
+  .gr-snap-card .v { font-family: var(--gr-f-display); font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
+  .gr-snap-card .v.red { color: var(--gr-red); } .gr-snap-card .v.amber { color: var(--gr-amber); } .gr-snap-card .v.teal { color: var(--gr-teal); }
+  .gr-snap-card .l { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); margin-top: 8px; }
+
+  /* 02 Scorecard */
+  .gr-scorecard { border: 1px solid var(--gr-line); border-radius: 14px; overflow: hidden; }
+  .gr-scorecard .hdr { background: var(--gr-panel); padding: 12px 20px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
+  .gr-axis-row { display: grid; grid-template-columns: 160px 1fr 56px 100px; align-items: center; gap: 16px; padding: 14px 20px; border-top: 1px solid var(--gr-line-2); position: relative; }
+  .gr-axis-row.root { background: var(--gr-green-soft); }
+  .gr-axis-row.root::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gr-green); }
+  .gr-axis-name { font-size: 13.5px; font-weight: 700; color: var(--gr-white); }
+  .gr-axis-name .sub { display: block; font-size: 11px; font-weight: 400; color: var(--gr-text-2); margin-top: 2px; }
+  .gr-axis-bar { height: 8px; border-radius: 100px; background: rgba(255,255,255,.06); overflow: hidden; }
+  .gr-axis-bar .fill { height: 100%; border-radius: 100px; }
+  .gr-axis-bar .fill.red { background: var(--gr-red); } .gr-axis-bar .fill.amber { background: var(--gr-amber); } .gr-axis-bar .fill.teal { background: var(--gr-teal); }
+  .gr-axis-score { font-family: var(--gr-f-mono); font-size: 13px; font-weight: 600; text-align: right; }
+  .gr-axis-score.red { color: var(--gr-red); } .gr-axis-score.amber { color: var(--gr-amber); } .gr-axis-score.teal { color: var(--gr-teal); }
+  .gr-axis-tags { display: flex; gap: 6px; justify-content: flex-end; }
+
+  /* 03 Diagnosis */
+  .gr-diagnosis { border-left: 3px solid var(--gr-green); background: var(--gr-panel); border-radius: 0 12px 12px 0; padding: 22px 26px; }
+  .gr-diagnosis p { font-size: 14px; line-height: 1.7; color: var(--gr-text); margin-bottom: 12px; }
+  .gr-diagnosis p:last-child { margin-bottom: 0; }
+
+  /* 04 Pain signals */
+  .gr-signals { display: flex; flex-direction: column; gap: 16px; }
+  .gr-signal-row { display: flex; gap: 14px; align-items: flex-start; }
+  .gr-signal-title { font-size: 14.5px; font-weight: 700; color: var(--gr-white); margin-bottom: 4px; }
+  .gr-signal-detail { font-size: 13px; color: var(--gr-text-2); line-height: 1.6; }
+
+  /* 05 Root cause */
+  .gr-rootcause .lbl { font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); margin-bottom: 8px; }
+  .gr-rootcause .statement { font-size: 18px; font-weight: 700; color: var(--gr-white); line-height: 1.4; margin-bottom: 22px; }
+  .gr-rc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .gr-rc-card { background: var(--gr-panel); border: 1px solid var(--gr-line); border-radius: 12px; padding: 18px 20px; }
+  .gr-rc-card h4 { font-size: 13px; margin-bottom: 12px; }
+  .gr-rc-card ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .gr-rc-card li { font-size: 13px; color: var(--gr-text); line-height: 1.5; display: flex; gap: 8px; }
+  .gr-rc-card.factors li::before { content: '•'; color: var(--gr-green); flex: none; }
+  .gr-rc-card.effects li::before { content: '→'; color: var(--gr-green); flex: none; }
+  .gr-rc-footer { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--gr-line); font-size: 12.5px; color: var(--gr-text-2); }
+
+  /* 06 Priority matrix */
+  .gr-matrix { border: 1px solid var(--gr-line); border-radius: 14px; overflow: hidden; }
+  .gr-matrix .mhdr { display: grid; grid-template-columns: 56px 1fr 200px 90px; background: var(--gr-panel); padding: 12px 20px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
+  .gr-matrix-row { display: grid; grid-template-columns: 56px 1fr 200px 90px; align-items: center; gap: 10px; padding: 18px 20px; border-top: 1px solid var(--gr-line-2); }
+  .gr-matrix-row .rank { font-family: var(--gr-f-display); font-weight: 800; font-size: 30px; color: var(--gr-text-3); }
+  .gr-matrix-row .prob-name { font-size: 14.5px; font-weight: 700; color: var(--gr-white); }
+  .gr-matrix-row .prob-reason { font-size: 12.5px; color: var(--gr-text-2); margin-top: 4px; line-height: 1.5; }
+  .gr-ice-badges { display: flex; gap: 6px; }
+  .gr-ice-badge { font-family: var(--gr-f-mono); font-size: 10.5px; font-weight: 600; padding: 4px 8px; border-radius: 6px; }
+  .gr-ice-badge.g { background: var(--gr-green-soft); color: var(--gr-green); }
+  .gr-ice-badge.a { background: var(--gr-amber-soft); color: var(--gr-amber); }
+  .gr-ice-total { font-family: var(--gr-f-display); font-weight: 800; font-size: 26px; color: var(--gr-green); text-align: right; }
+
+  /* 07 Playbooks */
+  .gr-playbook { border: 1px solid var(--gr-line); border-radius: 14px; padding: 24px 26px; }
+  .gr-playbook + .gr-playbook { margin-top: 16px; }
+  .gr-pb-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .gr-pb-name { font-size: 19px; font-weight: 800; color: var(--gr-white); }
+  .gr-pb-badges { display: flex; gap: 8px; }
+  .gr-pb-objective { border-left: 3px solid var(--gr-green); padding-left: 14px; margin-top: 14px; font-size: 13.5px; line-height: 1.6; color: var(--gr-text); }
+  .gr-pb-keyactions { margin-top: 20px; }
+  .gr-pb-keyactions .lbl { font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); margin-bottom: 10px; }
+  .gr-pb-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .gr-pb-list li { display: flex; gap: 12px; font-size: 13.5px; color: var(--gr-white); align-items: baseline; }
+  .gr-pb-list li .n { font-family: var(--gr-f-mono); font-size: 11px; color: var(--gr-green); flex: none; }
+  .gr-pb-outcome { margin-top: 18px; background: var(--gr-green-soft); border: 1px solid var(--gr-green-line); border-radius: 10px; padding: 12px 16px; font-size: 13px; color: var(--gr-green); font-weight: 600; }
+
+  /* 08 Service stack */
+  .gr-stack { border: 1px solid var(--gr-line); border-radius: 14px; overflow: hidden; }
+  .gr-stack-group-hdr { background: var(--gr-panel); padding: 10px 22px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); border-top: 1px solid var(--gr-line); }
+  .gr-stack-group-hdr:first-child { border-top: none; }
+  .gr-stack-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 22px; border-top: 1px solid var(--gr-line-2); }
+  .gr-stack-row .sn { font-size: 14px; font-weight: 700; color: var(--gr-white); }
+  .gr-stack-row .sd { font-size: 12.5px; color: var(--gr-text-2); margin-top: 3px; }
+  .gr-stack-row .price { font-family: var(--gr-f-mono); font-size: 14px; font-weight: 600; flex: none; }
+  .gr-stack-row .price.green { color: var(--gr-green); } .gr-stack-row .price.purple { color: var(--gr-purple); }
+
+  /* 09 Roadmap */
+  .gr-timeline { position: relative; padding-left: 30px; }
+  .gr-timeline::before { content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 1.5px; background: var(--gr-green-line); }
+  .gr-phase { position: relative; padding-bottom: 30px; }
+  .gr-phase:last-child { padding-bottom: 0; }
+  .gr-phase::before { content: ''; position: absolute; left: -30px; top: 4px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--gr-ink); }
+  .gr-phase.p1::before { background: var(--gr-green); } .gr-phase.p2::before { background: var(--gr-amber); } .gr-phase.p3::before { background: var(--gr-blue); }
+  .gr-phase-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .gr-phase-name { font-size: 16px; font-weight: 800; color: var(--gr-white); }
+  .gr-phase-tag { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 9px; border-radius: 100px; border: 1px solid var(--gr-line); color: var(--gr-text-2); }
+  .gr-phase-focus { font-size: 13.5px; color: var(--gr-text); margin: 10px 0 14px; max-width: 60ch; }
+  .gr-phase-checks { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .gr-phase-checks li { font-size: 13px; color: var(--gr-text); display: flex; gap: 10px; align-items: baseline; }
+  .gr-phase-checks li::before { content: '✓'; color: var(--gr-green); font-weight: 700; flex: none; }
+
+  /* 10 Targets */
+  .gr-targets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .gr-target { background: var(--gr-panel); border: 1px solid var(--gr-line); border-radius: 12px; padding: 18px 18px; }
+  .gr-target .l { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
+  .gr-target .v { font-family: var(--gr-f-display); font-weight: 800; font-size: 26px; color: var(--gr-green); letter-spacing: -.02em; margin: 10px 0 6px; }
+  .gr-target .d { font-size: 12px; color: var(--gr-text-2); line-height: 1.4; }
+
+  /* 11 CTA + footer */
+  .gr-cta-card { border: 1.5px solid var(--gr-green-line); border-radius: 16px; padding: 44px 40px; text-align: center; background: linear-gradient(180deg, rgba(0,230,118,.05), transparent); }
+  .gr-cta-card .lbl { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--gr-green); }
+  .gr-cta-card h3 { font-size: 28px; margin: 14px 0 12px; }
+  .gr-cta-card p { font-size: 14.5px; color: var(--gr-text); max-width: 46ch; margin: 0 auto; line-height: 1.6; }
+  .gr-cta-btn { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; background: var(--gr-green); color: var(--gr-ink); font-family: var(--gr-f-display); font-weight: 700; font-size: 15px; border-radius: 9px; padding: 15px 28px; cursor: pointer; border: none; text-decoration: none; }
+  .gr-cta-btn:hover { background: #14f085; }
+  .gr-cta-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 28px; }
+  .gr-cta-sec-card { border: 1px solid var(--gr-line); border-radius: 12px; padding: 16px 18px; text-align: left; }
+  .gr-cta-sec-card .k { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
+  .gr-cta-sec-card .v { font-size: 13.5px; font-weight: 600; color: var(--gr-white); margin-top: 6px; }
+  .gr-docfoot { display: flex; align-items: center; justify-content: space-between; padding: 20px 44px; border-top: 1px solid var(--gr-line); background: var(--gr-ink-2); flex-wrap: wrap; gap: 12px; }
+  .gr-docfoot .gr-logo { font-size: 15px; }
+  .gr-docfoot .conf { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
+  .gr-docfoot .dl { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--gr-line); border-radius: 9px; padding: 8px 14px; color: var(--gr-white); cursor: pointer; background: none; }
+  .gr-docfoot .dl:hover { border-color: var(--gr-green-line); color: var(--gr-green); }
+  .gr-docfoot .dl:disabled { opacity: .5; cursor: wait; }
+
+  @media (max-width: 760px) {
+    .gr-section { padding: 26px 22px; } .gr-cover { padding: 30px 22px; }
+    .gr-snap, .gr-rc-grid, .gr-cta-secondary { grid-template-columns: 1fr; }
+    .gr-snap-cards, .gr-targets { grid-template-columns: 1fr 1fr; }
+    .gr-axis-row { grid-template-columns: 1fr; gap: 8px; }
+    .gr-axis-tags { justify-content: flex-start; }
+    .gr-matrix .mhdr, .gr-matrix-row { grid-template-columns: 40px 1fr; }
+    .gr-matrix-row .gr-ice-badges, .gr-matrix-row .gr-ice-total { grid-column: 2; }
+    .gr-docfoot { flex-direction: column; }
   }
 
   .cycle-section { margin-top: 56px; }
@@ -435,6 +504,11 @@
 
 <div class="confirm-toast" id="confirmToast">Added to the list &mdash; check your inbox in a moment.</div>
 
+<!-- PDF export libraries — only used by the "Download PDF" button on the
+     finished report; loaded from cdnjs, no build step, no backend. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script src="partials.js"></script>
 <script>
 // ============================================
@@ -445,9 +519,9 @@
 // public URL and your Supabase project's URL + anon key (safe to be
 // public — see supabase-schema.sql for why: insert-only RLS policy).
 // ============================================
-const REPORT_API_URL = "https://gcc-report-api.estondigital.workers.dev/"; // e.g. https://gcc-report-api.yourname.workers.dev
-const SUPABASE_URL = "https://vtxqgmioqwftrszgfohy.supabase.co"; // e.g. https://xxxxxxxx.supabase.co
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ0eHFnbWlvcXdmdHJzemdmb2h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5OTY2OTIsImV4cCI6MjA5ODU3MjY5Mn0.n9APqs8-j4UsS-rlvEJ6IXkLap9LWZ6-wqQ14KPjB4I";
+const REPORT_API_URL = "REPLACE_WITH_YOUR_WORKER_URL"; // e.g. https://gcc-report-api.yourname.workers.dev
+const SUPABASE_URL = "REPLACE_WITH_YOUR_SUPABASE_URL"; // e.g. https://xxxxxxxx.supabase.co
+const SUPABASE_ANON_KEY = "REPLACE_WITH_YOUR_SUPABASE_ANON_KEY";
 
 // Writes one row to the `leads` table. Safe to call with the public
 // anon key because the RLS policy only allows INSERT — see
@@ -841,6 +915,71 @@ function calculateReportMetrics(scores, answers, top, tier) {
   });
   boardMatrix.push({ priority: 'Strategic', risk: 'AI GTM Transformation', owner: 'Executive Team', timeline: '180 Days', dotClass: 'good' });
 
+  // ---- Additions below are for the redesigned GTM Diagnostic Report ----
+  // (cover/snapshot/scorecard/diagnosis/pain-signals/root-cause/priority-
+  // matrix/playbooks/service-stack/roadmap/targets/CTA layout). Everything
+  // here is still deterministic — only wording/narrative is left to the AI.
+
+  const AXIS_SUBLABEL = {
+    positioning: 'Value narrative', alignment: 'Lead-quality trust', demand: 'Top-of-funnel volume',
+    conversion: 'MQL → closed-won', cac: 'Acquisition efficiency', expansion: 'NRR & churn signals',
+  };
+  function severityColor(score) { return score >= 4 ? 'red' : score === 3 ? 'amber' : 'teal'; }
+  function severityBadge(score) { return score >= 4 ? 'critical' : score === 3 ? 'caution' : 'healthy'; }
+
+  const AXIS_REASON = {
+    positioning: 'Highest leverage — narrative fixes compound across every other channel.',
+    alignment: 'Directly unblocks the lead-quality trust gap between sales and marketing.',
+    demand: 'Fixes the volume ceiling before spending more on channels that already work.',
+    conversion: 'Fast to ship, meaningful lift on pages with real, wasted traffic.',
+    cac: 'Stops paying more to acquire the same outcome, quarter over quarter.',
+    expansion: 'Unlocks revenue from existing customers without new acquisition spend.',
+  };
+
+  // ICE-scored priority matrix — top 3 axes by severity
+  const iceMatrix = orderedAxes.slice(0, 3).map(k => {
+    const sev = scores[k];
+    const impact = sev >= 4 ? 'H' : sev === 3 ? 'M' : 'L';
+    const confLvl = sev >= 3 ? 'H' : 'M';
+    const durationNum = parseInt(AXIS_PHASE[k].duration, 10) || 21;
+    const ease = durationNum <= 21 ? 'H' : durationNum <= 25 ? 'M' : 'L';
+    const val = { H: 9, M: 6, L: 3 };
+    const total = Math.round(((val[impact] + val[confLvl] + val[ease]) / 3) * 10) / 10;
+    return { probName: AXIS_PHASE[k].title, probReason: AXIS_REASON[k], impact, confidence: confLvl, ease, total };
+  });
+
+  // Service stack — grouped, priced from your actual published tiers
+  const TIER_PRICE = { Entry: '$1.2K–$5K', Retainer: '$2.4K–$10K/mo', 'Fractional CMO': '$12K+/mo' };
+  const svc = SERVICE_MAP[top.key];
+  const serviceStack = {
+    foundationGroup: 'Positioning & messaging engine',
+    foundationRows: [
+      { name: svc.primary, desc: `Fixes ${AXIS_LABEL[top.key].toLowerCase()} directly — the highest-severity constraint found.`, price: '$1.2K–$5K', priceClass: 'green' },
+      { name: svc.secondary, desc: 'Sequenced second, once the primary fix is underway.', price: '$1.2K–$5K', priceClass: 'green' },
+    ],
+    engagementGroup: `${tier} engagement`,
+    engagementRows: [
+      { name: tier === 'Entry' ? 'Follow-up Entry project' : tier, desc: tier === 'Fractional CMO' ? 'Full Growth OS ownership, board-level reporting' : tier === 'Retainer' ? 'Weekly Growth Sprints, monthly Intelligence dashboard' : 'Fixed-scope delivery, 2–4 weeks', price: TIER_PRICE[tier] || TIER_PRICE.Entry, priceClass: 'purple' },
+    ],
+  };
+
+  // Roadmap — reuses the treatment plan's first 3 phases, reshaped
+  const PHASE_TAGS = ['Diagnose and align', 'Build and activate', 'Measure and scale'];
+  const roadmap = treatmentPlan.slice(0, 3).map((p, i) => ({
+    name: `Phase ${i + 1}`, tag: PHASE_TAGS[i], focus: p.deliverable ? `Deliverable: ${p.deliverable}.` : '', checks: p.objectives, cls: `p${i + 1}`,
+  }));
+
+  // Targets — 4 of the 6 forecast KPIs, reshaped for the targets grid
+  const targets = [
+    { l: 'CAC Trend', v: 'Stable', d: `Up from "${cacTrend}"` },
+    { l: answers.motion === 'plg' ? 'Trial-to-Paid' : 'Demo-to-Close', v: conversion.tgt, d: `Up from ${conversion.cur}` },
+    { l: 'Pipeline', v: 'Predictable', d: `Up from "${pipelineState}"` },
+    { l: 'Health Score', v: `${Math.min(95, healthScore + 20)}/100`, d: `Up from ${healthScore}/100` },
+  ];
+
+  // Snapshot stats
+  const pipelineAtRiskPct = Math.round(leakageRate * 100);
+
   return {
     healthScore, maturityLevel, maturityLabel: MATURITY_LABELS[maturityLevel],
     targetLevel, targetLabel: MATURITY_LABELS[targetLevel],
@@ -850,6 +989,8 @@ function calculateReportMetrics(scores, answers, top, tier) {
     diagnosisName: DIAGNOSIS_NAME[top.key],
     treatmentPlan, forecast, boardMatrix,
     orderedAxes,
+    axisSubLabel: AXIS_SUBLABEL, severityColor, severityBadge,
+    iceMatrix, serviceStack, roadmap, targets, pipelineAtRiskPct,
   };
 }
 
@@ -942,7 +1083,6 @@ async function runDiagnostic() {
   const scores = computeScores();
   const top = topProblem(scores);
   const tier = suggestedTier(scores, state.answers.team);
-  const svc = SERVICE_MAP[top.key];
   const a = state.answers;
   const m = calculateReportMetrics(scores, a, top, tier);
 
@@ -955,7 +1095,10 @@ async function runDiagnostic() {
   // hand it rather than invent its own — this is what makes the
   // report trustworthy on a sales call instead of a source of "wait,
   // where did that number come from?" objections.
-  const prompt = `You are a senior B2B SaaS GTM strategist with 10+ years running discovery calls for Growth Clarity Co, a revenue growth partner for Series A-C B2B SaaS companies ($1M-$20M ARR). Analyze this diagnostic input and respond ONLY with valid JSON, no markdown fences, no preamble. Do NOT invent any statistics, dollar figures, or percentages beyond the ones supplied below — reuse them exactly where relevant.
+  const top4 = m.orderedAxes.slice(0, 4).map(k => AXIS_LABEL[k]);
+  const top2Phases = m.treatmentPlan.slice(1, 3); // the two highest-severity axis phases (Phase One is always the fixed foundation phase)
+
+  const prompt = `You are a senior B2B SaaS GTM strategist with 10+ years running discovery calls for Growth Clarity Co, a revenue growth partner for Series A-C B2B SaaS companies ($1M-$20M ARR). Analyze this diagnostic input and respond ONLY with valid JSON, no markdown fences, no preamble. Do NOT invent any statistics, dollar figures, or percentages beyond the ones supplied below — reuse them exactly where relevant, and do NOT assign your own severity/priority labels — those come from the scores, not from you.
 
 Company input:
 - GTM motion: ${a.motion}
@@ -974,22 +1117,36 @@ Already-computed figures (reuse these exactly, do not recompute or alter them):
 - Revenue Health Score: ${m.healthScore}/100
 - Growth Maturity: Level ${m.maturityLevel} (${m.maturityLabel}), target Level ${m.targetLevel} (${m.targetLabel})
 - Top/root-cause cluster: ${top.label}, severity ${top.score}/5
-- Diagnosis name: ${m.diagnosisName}
+- The 4 highest-severity constraint axes, IN THIS EXACT ORDER: 1) ${top4[0]}, 2) ${top4[1]}, 3) ${top4[2]}, 4) ${top4[3]}
 - Diagnostic confidence: ${m.confidence}%
 - Business risk level: ${m.businessRisk}
 - Estimated annual revenue leakage: ${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)} (${m.leakageRatePct}% of estimated ARR)
-- Primary recommended service: ${svc.primary}
-- Secondary recommended service: ${svc.secondary}
 - Suggested engagement tier: ${tier}
+- Phase 2 of the treatment plan (2nd-highest-severity axis): "${top2Phases[0] ? top2Phases[0].title : ''}", deliverable "${top2Phases[0] ? top2Phases[0].deliverable : ''}"
+- Phase 3 of the treatment plan (3rd-highest-severity axis): "${top2Phases[1] ? top2Phases[1].title : ''}", deliverable "${top2Phases[1] ? top2Phases[1].deliverable : ''}"
 
 Return this exact JSON structure with TWO top-level keys, client_report and internal_brief:
 
 {
   "client_report": {
     "executive_summary": "2-3 sentences, written for a CEO reading this before a board meeting, stating what's healthy and what's broken in plain language, specific to their actual answers — not generic",
-    "symptoms": ["4-5 specific symptoms mirrored back from their own answers, each one short sentence, phrased as if this is what their business is actually experiencing"],
-    "clinical_explanation": "2-3 sentences explaining WHY ${top.label} creates the leakage described above, written directly to the founder, tracing the causal chain from root cause to lost revenue — specific to their motion and stage, not generic",
-    "ceo_letter_body": "2 short paragraphs (roughly 70-110 words total), addressed as an executive conclusion. Paragraph 1 states plainly that this is a revenue architecture problem, not a marketing execution problem. Paragraph 2 recommends addressing the highest-impact constraint first through the phased plan, referencing the ${m.leakageLow ? fmtUSD(m.leakageLow) + '–' + fmtUSD(m.leakageHigh) : ''} leakage range and the suggested ${tier} engagement. Confident, board-ready tone — no hedging, no fluff."
+    "pain_signals": [
+      {"title": "short punchy title for the #1 axis listed above", "detail": "1-2 sentences making it concrete and specific to their answers, as if quoting a real pattern"},
+      {"title": "short punchy title for the #2 axis listed above", "detail": "1-2 sentences, same style"},
+      {"title": "short punchy title for the #3 axis listed above", "detail": "1-2 sentences, same style"},
+      {"title": "short punchy title for the #4 axis listed above", "detail": "1-2 sentences, same style"}
+    ],
+    "diagnosis_paragraphs": ["2-3 short paragraphs (2-3 sentences each) explaining WHY ${top.label} is the root cause and how it traces down to the revenue leakage figure above — written directly to the founder, specific to their motion and stage, not generic"],
+    "root_cause": {
+      "statement": "one sharp sentence stating the root cause in plain language",
+      "factors": ["3 short contributing-factor bullets, specific to their answers"],
+      "effects": ["3 short downstream-effect bullets, specific to their answers"],
+      "footer": "one sentence explaining why fixing the root cause first compounds every other investment"
+    },
+    "playbooks": [
+      {"objective": "1-2 sentences on what Phase 2 above actually does and why it comes first", "key_actions": ["4 short, concrete action items for Phase 2"], "outcome": "1 sentence, a plausible directional outcome — no invented specific percentages"},
+      {"objective": "1-2 sentences on what Phase 3 above actually does", "key_actions": ["4 short, concrete action items for Phase 3"], "outcome": "1 sentence, a plausible directional outcome — no invented specific percentages"}
+    ]
   },
   "internal_brief": {
     "fit_score": "High, Medium, or Low based on ARR range and team size matching our $1M-$20M ICP",
@@ -1071,210 +1228,233 @@ function renderReport(report, scores, top, tier, m) {
   const name = state.contact.name || 'you';
   const firstName = name.split(' ')[0];
   const dateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  const motionLabel = state.answers.motion === 'plg' ? 'Product-led' : state.answers.motion === 'slg' ? 'Sales-led' : 'Hybrid';
-  const svc = SERVICE_MAP[top.key];
+  const motionLabel = state.answers.motion === 'plg' ? 'Product-Led' : state.answers.motion === 'slg' ? 'Sales-Led' : 'Hybrid';
+  const seriesLabel = state.answers.arr === 'a' ? 'Series A' : state.answers.arr === 'b' ? 'Series B' : state.answers.arr === 'c' ? 'Series C' : state.answers.arr === 'd' ? 'Series D+' : 'Pre-Series A';
+  const preparedFor = `${name}${state.contact.role ? ', ' + state.contact.role : ''}${state.contact.company ? ' — ' + state.contact.company : ''}`;
 
-  const riskLabel = m.businessRisk === 'high' ? 'HIGH' : m.businessRisk === 'medium' ? 'MEDIUM' : 'LOW';
-
-  // ---- Page 1: Executive Summary ----
-  const p1 = `
-    <div class="rad-page">
-      <div class="rad-page-label">Page 1 &middot; Executive Summary</div>
-      <div class="rad-page-title">Revenue Health Score</div>
-      <div class="rad-hero-score">
-        <div>
-          <div class="rad-hero-num" style="color:${m.healthScore >= 70 ? 'var(--green)' : m.healthScore >= 45 ? '#f0a830' : '#ff6b6b'}">${m.healthScore}<small>/100</small></div>
-          <div class="rad-hero-bar-track"><div class="rad-hero-bar-fill" style="width:${m.healthScore}%"></div></div>
-        </div>
-        <div class="rad-hero-target">
-          <div class="rad-hero-target-label">Growth maturity</div>
-          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800">Level ${m.maturityLevel}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:8px">${m.maturityLabel}</div>
-          <div class="rad-maturity-chip">Target: Level ${m.targetLevel} &middot; ${m.targetLabel}</div>
+  // ---- Cover ----
+  const cover = `
+    <div class="gr-cover" id="reportPrintHeader">
+      <div class="gr-cover-top">
+        <span class="gr-logo"><span class="star">✦</span><span class="w growth">Growth</span><span class="w clarity">Clarity</span><span class="w co">Co.</span></span>
+        <div class="gr-cover-badges">
+          <span class="gr-pill">${seriesLabel} &middot; ${fmtUSD(m.arrEstimate)} ARR (est.)</span>
+          <span class="gr-pill">${motionLabel} Motion</span>
         </div>
       </div>
-      <div class="report-body"><p>${report.executive_summary}</p></div>
-      <div class="rad-summary-list">
-        ${m.orderedAxes.slice(0, 3).map(k => `<div><span>&bull;</span>${AXIS_LABEL[k]}</div>`).join('')}
-      </div>
-      <div class="rad-risk-badge ${m.businessRisk}">Overall Business Risk &middot; ${riskLabel}</div>
-    </div>`;
-
-  // ---- Page 2: Executive Dashboard ----
-  const cellLabels = { positioning: 'Positioning', alignment: 'Sales Alignment', demand: 'Demand Gen', conversion: 'Website Conversion', cac: 'CAC Efficiency', expansion: 'Expansion / NRR' };
-  const matrixRows = Object.keys(cellLabels).map(k => `
-    <tr>
-      <td>${cellLabels[k]}</td>
-      <td>${m.matrix[k]}</td>
-      <td><span class="rad-status-pill ${statusPillClass(m.matrix[k])}">${statusPillClass(m.matrix[k]) === 'critical' ? '\u{1F534}' : statusPillClass(m.matrix[k]) === 'weak' || statusPillClass(m.matrix[k]) === 'moderate' ? '\u{1F7E0}' : statusPillClass(m.matrix[k]) === 'stable' ? '\u{1F7E1}' : '\u{1F7E2}'} ${statusPillLabel(m.matrix[k])}</span></td>
-    </tr>`).join('');
-  const p2 = `
-    <div class="rad-page">
-      <div class="rad-page-label">Page 2 &middot; Executive Dashboard</div>
-      <div class="rad-page-title">Where the constraints sit</div>
-      <div class="rad-dash-grid">
-        <div class="rad-dash-cell"><div class="rad-dash-cell-label">Revenue Score</div><div class="rad-dash-cell-val" style="color:${m.healthScore >= 70 ? 'var(--green)' : m.healthScore >= 45 ? '#f0a830' : '#ff6b6b'}">${m.healthScore}</div></div>
-        <div class="rad-dash-cell"><div class="rad-dash-cell-label">Pipeline Risk</div><div class="rad-dash-cell-val">${m.pipelineState}</div></div>
-        <div class="rad-dash-cell"><div class="rad-dash-cell-label">CAC Efficiency</div><div class="rad-dash-cell-val">${m.cacTrend}</div></div>
-        <div class="rad-dash-cell"><div class="rad-dash-cell-label">${motionLabel === 'Product-led' ? 'Trial-to-Paid' : 'Win Rate'}</div><div class="rad-dash-cell-val">${m.conversion.cur}</div></div>
-        <div class="rad-dash-cell"><div class="rad-dash-cell-label">Sales Alignment</div><div class="rad-dash-cell-val">${m.alignmentState}</div></div>
-        <div class="rad-dash-cell"><div class="rad-dash-cell-label">Expansion / NRR</div><div class="rad-dash-cell-val">${m.nrrState}</div></div>
-      </div>
-      <div class="report-section-title" style="border:none;margin-bottom:8px">GTM Health Matrix</div>
-      <table class="rad-matrix-table"><thead><tr><th>Area</th><th>Score</th><th>Status</th></tr></thead><tbody>${matrixRows}</tbody></table>
-    </div>`;
-
-  // ---- Page 3: Clinical Diagnosis ----
-  const p3 = `
-    <div class="rad-page">
-      <div class="rad-page-label">Page 3 &middot; Clinical Diagnosis</div>
-      <div class="rad-page-title">Business Symptoms</div>
-      <div class="rad-symptom-grid">
-        ${report.symptoms.map(s => `<div><span>&check;</span>${s}</div>`).join('')}
-      </div>
-      <div class="rad-diag-card">
-        <div class="rad-diag-row">
-          <div><div class="rad-diag-item-label">Diagnosis</div><div class="rad-diag-item-val">${m.diagnosisName}</div></div>
-          <div><div class="rad-diag-item-label">Severity</div><div class="rad-diag-item-val sev">${top.score >= 4 ? 'CRITICAL' : top.score === 3 ? 'ELEVATED' : 'MODERATE'}</div></div>
-          <div><div class="rad-diag-item-label">Confidence</div><div class="rad-diag-item-val conf">${m.confidence}%</div></div>
+      <h1 class="gr-cover-title">GTM Diagnostic <em>Report</em></h1>
+      <div class="gr-cover-meta">
+        <div class="prep">
+          <div class="k">Prepared for</div>
+          <div class="v">${preparedFor}</div>
+          <div class="d">${dateStr}</div>
         </div>
-        <div class="report-body" style="margin-top:6px"><p>${report.clinical_explanation}</p></div>
+        <div class="gr-consultant">
+          <div class="avatar">JG</div>
+          <div><div class="cn">Jithin George</div><div class="cr">Founder &amp; Fractional CMO</div></div>
+        </div>
       </div>
     </div>`;
 
-  // ---- Page 4: Root Cause Tree ----
-  const top3 = m.orderedAxes.slice(0, 3);
-  const p4 = `
-    <div class="rad-page">
-      <div class="rad-page-label">Page 4 &middot; Root Cause Tree</div>
-      <div class="rad-page-title">How ${top.label.toLowerCase()} becomes lost revenue</div>
-      <div class="rad-tree">
-        <div class="rad-tree-node root">Revenue Growth Problem</div>
-        <div class="rad-tree-arrow">&darr;</div>
-        <div class="rad-tree-node">${m.pipelineState} Pipeline</div>
-        <div class="rad-tree-arrow">&darr;</div>
-        <div class="rad-tree-row">${top3.map(k => `<div class="rad-tree-node">${AXIS_LABEL[k]}</div>`).join('')}</div>
-        <div class="rad-tree-arrow">&darr;</div>
-        <div class="rad-tree-node">${motionLabel === 'Product-led' ? 'Low Trial-to-Paid' : 'Low Demo-to-Close'} (${m.conversion.cur})</div>
-        <div class="rad-tree-arrow">&darr;</div>
-        <div class="rad-tree-node leak">Revenue Leakage &mdash; ${fmtUSD(m.leakageLow)}&ndash;${fmtUSD(m.leakageHigh)}/yr</div>
+  // ---- 01 Snapshot ----
+  const scoreColor = m.healthScore >= 70 ? 'teal' : m.healthScore >= 45 ? 'amber' : 'red';
+  const snapshot = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">01</span><h2>Revenue health snapshot</h2></div>
+      <div class="gr-snap">
+        <div class="gr-snap-score">
+          <div class="num" style="color:var(--gr-${scoreColor})">${m.healthScore}</div>
+          <div class="lbl">GTM Health / 100</div>
+        </div>
+        <div class="gr-snap-right">
+          <div class="maturity">Maturity: ${m.maturityLabel}, Constrained by ${AXIS_LABEL[top.key]}</div>
+          <p class="summary">${report.executive_summary}</p>
+          <div class="gr-snap-cards">
+            <div class="gr-snap-card"><div class="v ${severityColorFor(top.score)}">${AXIS_LABEL[top.key]}</div><div class="l">Top constraint</div></div>
+            <div class="gr-snap-card"><div class="v amber">${m.pipelineAtRiskPct}%</div><div class="l">Pipeline at risk</div></div>
+            <div class="gr-snap-card"><div class="v ${m.critCount >= 3 ? 'red' : m.critCount >= 1 ? 'amber' : 'teal'}">${m.critCount} of 6</div><div class="l">Critical axes</div></div>
+          </div>
+        </div>
       </div>
     </div>`;
 
-  // ---- Page 5: Revenue Leakage Analysis ----
-  const p5 = `
-    <div class="rad-page">
-      <div class="rad-page-label">Page 5 &middot; Revenue Leakage Analysis</div>
-      <div class="rad-page-title">Estimated Annual Revenue Leakage</div>
-      <div class="rad-leak-grid">
-        <div class="rad-leak-cell"><div class="rad-leak-cell-label">Estimated leakage range</div><div class="rad-leak-cell-val">${fmtUSD(m.leakageLow)}&ndash;${fmtUSD(m.leakageHigh)}</div></div>
-        <div class="rad-leak-cell"><div class="rad-leak-cell-label">Leakage as % of ARR</div><div class="rad-leak-cell-val neutral">${m.leakageRatePct}%</div></div>
-        <div class="rad-leak-cell"><div class="rad-leak-cell-label">Estimated ARR basis</div><div class="rad-leak-cell-val neutral">${m.arrLabel}</div></div>
-        <div class="rad-leak-cell"><div class="rad-leak-cell-label">Forecast risk</div><div class="rad-leak-cell-val" style="color:${m.businessRisk === 'high' ? '#ff6b6b' : m.businessRisk === 'medium' ? '#f0a830' : 'var(--green)'}">${riskLabel}</div></div>
-      </div>
-      <div class="report-body"><p>Most of this leakage occurs before a prospect ever reaches a closed-won stage &mdash; it shows up as ${top.label.toLowerCase()} friction, not a lack of top-of-funnel activity.</p></div>
-      <div class="rad-leak-note">Leakage range is calculated from your reported ARR band and the severity of your six diagnostic scores &mdash; not an AI estimate. It widens or narrows as your actual answers do, and should be treated as a directional planning figure, not an audited number.</div>
-    </div>`;
-
-  // ---- Page 6: Executive Treatment Plan ----
-  const phaseCards = m.treatmentPlan.map((ph, i) => `
-    <div class="rad-phase-card">
-      <div class="rad-phase-head"><span class="rad-phase-num">${ph.num}</span><span class="rad-phase-dur">${ph.duration}</span></div>
-      <div class="rad-phase-title">${ph.title}</div>
-      <div class="rad-phase-obj">${ph.objectives.map(o => `<span>${o}</span>`).join('')}</div>
-      <div class="rad-phase-deliv"><b>Deliverable</b>${ph.deliverable}</div>
-    </div>`).join('');
-  const p6 = `
-    <div class="rad-page">
-      <div class="rad-page-label">Page 6 &middot; Revenue Prescription</div>
-      <div class="rad-page-title">Executive Treatment Plan</div>
-      ${phaseCards}
-    </div>`;
-
-  // ---- Page 7: Business Impact Forecast ----
-  const forecastRows = m.forecast.map(r => `<tr><td>${r.kpi}</td><td class="cur">${r.current}</td><td class="tgt">${r.target}</td></tr>`).join('');
-  const p7 = `
-    <div class="rad-page">
-      <div class="rad-page-label">Page 7 &middot; Business Impact Forecast</div>
-      <div class="rad-page-title">Current vs. target, by KPI</div>
-      <table class="rad-forecast-table"><thead><tr><th>KPI</th><th>Current</th><th>Target</th></tr></thead><tbody>${forecastRows}</tbody></table>
-      <div class="tier-callout">
-        <div><div class="tier-callout-label">Suggested engagement tier</div><div class="tier-callout-val">${tier}</div></div>
-        <a href="pricing.html" class="btn-outline-white btn-md">See what's included &rarr;</a>
-      </div>
-    </div>`;
-
-  // ---- Page 8: Revenue Maturity Model ----
-  const rungs = [1, 2, 3, 4, 5].map(lvl => {
-    const cls = lvl === m.maturityLevel ? 'here' : lvl === m.targetLevel ? 'target' : '';
-    const tag = lvl === m.maturityLevel ? 'You are here' : lvl === m.targetLevel ? 'Target' : '';
-    return `<div class="rad-maturity-rung ${cls}">LEVEL ${lvl} &middot; ${MATURITY_LABELS[lvl]}${tag ? `<span class="rad-maturity-tag">${tag}</span>` : ''}</div>`;
+  // ---- 02 Scorecard ----
+  function severityColorFor(sev) { return sev >= 4 ? 'red' : sev === 3 ? 'amber' : 'teal'; }
+  const axisRows = Object.keys(scores).map(k => {
+    const sev = scores[k];
+    const color = severityColorFor(sev);
+    const isRoot = k === top.key;
+    return `
+      <div class="gr-axis-row${isRoot ? ' root' : ''}">
+        <div class="gr-axis-name">${AXIS_LABEL[k]}<span class="sub">${m.axisSubLabel[k]}</span></div>
+        <div class="gr-axis-bar"><div class="fill ${color}" style="width:${m.matrix[k]}%"></div></div>
+        <div class="gr-axis-score ${color}">${sev}/5</div>
+        <div class="gr-axis-tags">
+          <span class="gr-badge ${m.severityBadge(sev)}">${m.severityBadge(sev) === 'critical' ? 'Critical' : m.severityBadge(sev) === 'caution' ? 'Caution' : 'Healthy'}</span>
+          ${isRoot ? '<span class="gr-badge root">Root</span>' : ''}
+        </div>
+      </div>`;
   }).join('');
-  const p8 = `
-    <div class="rad-page">
-      <div class="rad-page-label">Page 8 &middot; Revenue Maturity Model</div>
-      <div class="rad-page-title">Where you sit today, and the target</div>
-      <div class="rad-maturity-ladder">${rungs}</div>
-    </div>`;
-
-  // ---- Page 9: Recommended Engagement ----
-  const p9 = `
-    <div class="rad-page">
-      <div class="rad-page-label">Page 9 &middot; Recommended Engagement</div>
-      <div class="rad-page-title">Primary engagement</div>
-      <div class="rad-engagement-card">
-        <div class="rad-engagement-name">${tier}${tier === 'Fractional CMO' ? ' (90 Days)' : ''}</div>
-        <div class="rad-engagement-obj">Align GTM strategy, build the revenue architecture above, and improve executive visibility into pipeline health &mdash; starting with ${AXIS_LABEL[top.key].toLowerCase()}.</div>
+  const scorecard = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">02</span><h2>GTM performance scorecard</h2></div>
+      <div class="gr-scorecard">
+        <div class="hdr">Axis &middot; Severity, 1 (worst) &ndash; 5 (best)</div>
+        ${axisRows}
       </div>
-      <div class="report-section-title" style="border:none;margin-bottom:8px">Supporting engagements</div>
-      <table class="rad-support-table">
-        <tr><td><span class="rad-status-pill critical">&#128308;</span></td><td>${svc.primary}</td><td>Reduces ${AXIS_LABEL[top.key].toLowerCase()} risk</td></tr>
-        <tr><td><span class="rad-status-pill weak">&#128992;</span></td><td>${svc.secondary}</td><td>Sequenced second, once primary fix is underway</td></tr>
-        <tr><td><span class="rad-status-pill good">&#128994;</span></td><td>GTM Intelligence Dashboard</td><td>Ongoing visibility between engagements</td></tr>
-      </table>
     </div>`;
 
-  // ---- Final Page: CEO Letter + Board Action Matrix ----
-  const boardRows = m.boardMatrix.map(r => `
-    <tr>
-      <td><span class="rad-status-pill ${r.dotClass}">${r.priority}</span></td>
-      <td>${r.risk}</td>
-      <td>${r.owner}</td>
-      <td>${r.timeline}</td>
-    </tr>`).join('');
-  const pFinal = `
-    <div class="rad-page">
-      <div class="rad-page-label">Executive Conclusion</div>
-      <div class="rad-page-title">CEO Letter</div>
-      <div class="rad-ceo-letter">
-        ${report.ceo_letter_body.split(/\n+/).filter(Boolean).map(par => `<p>${par}</p>`).join('')}
-        <div class="rad-ceo-sign">Prepared by: Growth Clarity Co. &mdash; Fractional CMO &amp; Revenue Architecture Advisors</div>
+  // ---- 03 Diagnosis ----
+  const diagParas = (report.diagnosis_paragraphs || []).map(p => `<p>${p}</p>`).join('');
+  const diagnosis = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">03</span><h2>Strategic diagnosis</h2></div>
+      <div class="gr-diagnosis">
+        <div class="gr-eyebrow-mono" style="margin-bottom:10px">AI Diagnosis &middot; Gemini 2.5</div>
+        ${diagParas}
+      </div>
+    </div>`;
+
+  // ---- 04 Pain signals ----
+  const top4Axes = m.orderedAxes.slice(0, 4);
+  const painSignals = (report.pain_signals || []).map((sig, i) => {
+    const axisKey = top4Axes[i];
+    const sev = axisKey ? scores[axisKey] : 3;
+    const badgeType = sev >= 4 ? 'critical' : 'high';
+    return `
+      <div class="gr-signal-row">
+        <span class="gr-badge ${badgeType}">${badgeType === 'critical' ? 'Critical' : 'High'}</span>
+        <div><div class="gr-signal-title">${sig.title}</div><div class="gr-signal-detail">${sig.detail}</div></div>
+      </div>`;
+  }).join('');
+  const painSection = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">04</span><h2>Pain signal analysis</h2></div>
+      <div class="gr-signals">${painSignals}</div>
+    </div>`;
+
+  // ---- 05 Root cause ----
+  const rc = report.root_cause || { statement: '', factors: [], effects: [], footer: '' };
+  const rootCause = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">05</span><h2>Root cause framework</h2></div>
+      <div class="gr-rootcause">
+        <div class="lbl">Primary root cause</div>
+        <div class="statement">${rc.statement}</div>
+        <div class="gr-rc-grid">
+          <div class="gr-rc-card factors"><h4>Contributing factors</h4><ul>${(rc.factors || []).map(f => `<li>${f}</li>`).join('')}</ul></div>
+          <div class="gr-rc-card effects"><h4>Downstream effects</h4><ul>${(rc.effects || []).map(e => `<li>${e}</li>`).join('')}</ul></div>
+        </div>
+        <div class="gr-rc-footer">${rc.footer}</div>
+      </div>
+    </div>`;
+
+  // ---- 06 Priority matrix ----
+  const iceRows = m.iceMatrix.map((row, i) => `
+    <div class="gr-matrix-row">
+      <div class="rank">0${i + 1}</div>
+      <div><div class="prob-name">${row.probName}</div><div class="prob-reason">${row.probReason}</div></div>
+      <div class="gr-ice-badges">
+        <span class="gr-ice-badge ${row.impact === 'H' ? 'g' : 'a'}">I: ${row.impact}</span>
+        <span class="gr-ice-badge ${row.confidence === 'H' ? 'g' : 'a'}">C: ${row.confidence}</span>
+        <span class="gr-ice-badge ${row.ease === 'H' ? 'g' : 'a'}">E: ${row.ease}</span>
+      </div>
+      <div class="gr-ice-total">${row.total}</div>
+    </div>`).join('');
+  const priorityMatrix = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">06</span><h2>Priority action matrix</h2></div>
+      <div class="gr-matrix">
+        <div class="mhdr"><span>Rank</span><span>Problem</span><span>ICE</span><span>Score</span></div>
+        ${iceRows}
+      </div>
+    </div>`;
+
+  // ---- 07 Playbooks ----
+  const phaseTitles = m.treatmentPlan.slice(1, 3).map(p => p.title);
+  const playbooksHtml = (report.playbooks || []).map((pb, i) => `
+    <div class="gr-playbook${i === 1 ? ' muted' : ''}">
+      <div class="gr-pb-top">
+        <div class="gr-pb-name">${phaseTitles[i] || ''}</div>
+        <div class="gr-pb-badges"><span class="gr-pill">Phase ${i + 2}</span></div>
+      </div>
+      <div class="gr-pb-objective">${pb.objective}</div>
+      <div class="gr-pb-keyactions">
+        <div class="lbl">Key actions</div>
+        <ol class="gr-pb-list">${(pb.key_actions || []).map((act, j) => `<li><span class="n">0${j + 1}</span>${act}</li>`).join('')}</ol>
+      </div>
+      <div class="gr-pb-outcome">&rarr; ${pb.outcome}</div>
+    </div>`).join('');
+  const playbooksSection = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">07</span><h2>Growth playbooks</h2></div>
+      ${playbooksHtml}
+    </div>`;
+
+  // ---- 08 Service stack ----
+  const stackRows = (group) => group.map(r => `
+    <div class="gr-stack-row">
+      <div><div class="sn">${r.name}</div><div class="sd">${r.desc}</div></div>
+      <div class="price ${r.priceClass}">${r.price}</div>
+    </div>`).join('');
+  const serviceStack = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">08</span><h2>Recommended service stack</h2></div>
+      <div class="gr-stack">
+        <div class="gr-stack-group-hdr">${m.serviceStack.foundationGroup}</div>
+        ${stackRows(m.serviceStack.foundationRows)}
+        <div class="gr-stack-group-hdr">${m.serviceStack.engagementGroup}</div>
+        ${stackRows(m.serviceStack.engagementRows)}
+      </div>
+    </div>`;
+
+  // ---- 09 Roadmap ----
+  const phasesHtml = m.roadmap.map(ph => `
+    <div class="gr-phase ${ph.cls}">
+      <div class="gr-phase-top"><div class="gr-phase-name">${ph.name}</div><span class="gr-phase-tag">${ph.tag}</span></div>
+      <div class="gr-phase-focus">${ph.focus}</div>
+      <ul class="gr-phase-checks">${ph.checks.map(c => `<li>${c}</li>`).join('')}</ul>
+    </div>`).join('');
+  const roadmapSection = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">09</span><h2>Execution roadmap</h2></div>
+      <div class="gr-timeline">${phasesHtml}</div>
+    </div>`;
+
+  // ---- 10 Targets ----
+  const targetsHtml = m.targets.map(t => `
+    <div class="gr-target"><div class="l">${t.l}</div><div class="v">${t.v}</div><div class="d">${t.d}</div></div>`).join('');
+  const targetsSection = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">10</span><h2>Growth targets</h2></div>
+      <div class="gr-targets">${targetsHtml}</div>
+    </div>`;
+
+  // ---- 11 CTA + footer ----
+  const ctaSection = `
+    <div class="gr-section">
+      <div class="gr-sechead"><span class="gr-secnum">11</span><h2>Your next step</h2></div>
+      <div class="gr-cta-card">
+        <div class="lbl">Your next step</div>
+        <h3>Let's fix the constraint that's actually stalling growth.</h3>
+        <p>This diagnosis is directional &mdash; the next call turns it into a plan with an owner, a metric, and a weekly cadence.</p>
+        <a href="contact.html" class="gr-cta-btn">📅 Schedule a call to discuss</a>
+        <div class="gr-cta-secondary">
+          <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" rel="noopener" class="gr-cta-sec-card"><div class="k">LinkedIn</div><div class="v">Follow for GTM teardowns weekly</div></a>
+          <a href="https://www.linkedin.com/newsletters/marketingled-newsletter-7415340728588926976/" target="_blank" rel="noopener" class="gr-cta-sec-card"><div class="k">Newsletter</div><div class="v">MarketingLed &middot; monthly read</div></a>
+        </div>
       </div>
     </div>
-    <div class="rad-page">
-      <div class="rad-page-label">Board Action Matrix</div>
-      <div class="rad-page-title">Decisions for the next board meeting</div>
-      <table class="rad-board-table"><thead><tr><th>Priority</th><th>Business Risk</th><th>Owner</th><th>Timeline</th></tr></thead><tbody>${boardRows}</tbody></table>
+    <div class="gr-docfoot">
+      <span class="gr-logo"><span class="star">✦</span><span class="w growth">Growth</span><span class="w clarity">Clarity</span><span class="w co">Co.</span></span>
+      <span class="conf">Confidential &middot; Not for distribution</span>
+      <button class="dl" id="downloadPdfBtn" onclick="downloadReportPDF()">Download PDF</button>
     </div>`;
 
   const html = `
-    <div class="rad-cover" id="reportPrintHeader">
-      <div class="rad-cover-mark">Growth Clarity Co.</div>
-      <div class="rad-cover-title">Revenue Architecture Diagnostic&trade;</div>
-      <div class="rad-cover-sub">Executive Growth Assessment Report</div>
-      <div class="rad-cover-meta">
-        <span>Company</span><b>${state.contact.company || firstName + "'s company"}</b>
-        <span>ARR</span><b>${m.arrLabel}</b>
-        <span>Funding stage</span><b>${state.answers.arr === 'a' ? 'Series A' : state.answers.arr === 'b' ? 'Series B' : state.answers.arr === 'c' ? 'Series C' : state.answers.arr === 'd' ? 'Series D+' : 'Pre-Series A'}</b>
-        <span>GTM motion</span><b>${motionLabel}</b>
-        <span>Assessment date</span><b>${dateStr}</b>
-        <span>Prepared for</span><b>${name}</b>
-      </div>
-      <div class="rad-cover-confidential">Confidential &middot; Prepared by Growth Clarity Co.</div>
-      <div style="margin-top:20px"><button class="btn btn-outline-white btn-md no-print" onclick="window.print()">&#8595; Download PDF report</button></div>
+    <div class="gr-report" id="gr-report-root">
+      ${cover}${snapshot}${scorecard}${diagnosis}${painSection}${rootCause}${priorityMatrix}${playbooksSection}${serviceStack}${roadmapSection}${targetsSection}${ctaSection}
     </div>
-
-    ${p1}${p2}${p3}${p4}${p5}${p6}${p7}${p8}${p9}${pFinal}
 
     <div class="cycle-section">
       <div class="cycle-card">
@@ -1307,6 +1487,47 @@ function renderReport(report, scores, top, tier, m) {
   showScreen(state.step);
 }
 
+// Renders the whole .gr-report node to a canvas (via html2canvas) and
+// slices it into A4-proportioned pages inside a real PDF (via jsPDF).
+// This is a rasterized PDF — pixel-perfect match to what's on screen,
+// but text inside it isn't selectable/searchable. That trade-off is
+// what keeps this a zero-backend, zero-cost solution; a server-side
+// PDF service is the upgrade path later if selectable text matters.
+async function downloadReportPDF() {
+  const btn = document.getElementById('downloadPdfBtn');
+  const original = btn.textContent;
+  btn.textContent = 'Preparing PDF…';
+  btn.disabled = true;
+  try {
+    const node = document.getElementById('gr-report-root');
+    const canvas = await html2canvas(node, { scale: 2, backgroundColor: '#070D17', useCORS: true });
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'pt', format: 'a4' });
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const imgW = pageW;
+    const imgH = (canvas.height * imgW) / canvas.width;
+    let heightLeft = imgH;
+    let position = 0;
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+    pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+    heightLeft -= pageH;
+    while (heightLeft > 0) {
+      position = heightLeft - imgH;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+      heightLeft -= pageH;
+    }
+    const fname = `growth-clarity-co-gtm-diagnostic-${(state.contact.company || state.contact.name || 'report').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.pdf`;
+    pdf.save(fname);
+  } catch (err) {
+    alert('PDF generation failed — please try again, or use your browser\'s Print > Save as PDF instead.');
+  } finally {
+    btn.textContent = original;
+    btn.disabled = false;
+  }
+}
+
 /* ============================================================
    FALLBACK — used only if the Gemini call fails/times out.
    Numbers still come entirely from calculateReportMetrics(); only
@@ -1317,22 +1538,52 @@ function renderReport(report, scores, top, tier, m) {
 function renderFallbackReport(scores, top, tier, m) {
   const a = state.answers;
   const motionWord = a.motion === 'plg' ? 'product-led' : a.motion === 'slg' ? 'sales-led' : 'hybrid';
-  const AXIS_SYMPTOM = {
-    positioning: 'Reps describe the product differently depending on who is asking, and buyers default to comparing you on price.',
-    alignment: 'Sales routinely says marketing-sourced leads are not good enough to work.',
-    demand: `Pipeline is ${m.pipelineState.toLowerCase()} month to month, which makes forecasting unreliable.`,
-    conversion: `${a.motion === 'plg' ? 'Trial-to-paid' : 'Demo-to-close'} conversion sits at ${m.conversion.cur}, below where it should be for your stage.`,
-    cac: `CAC has been ${m.cacTrend.toLowerCase()} over the last two quarters.`,
-    expansion: `Expansion revenue is ${m.nrrState.toLowerCase()}, leaving NRR flatter than it should be.`,
+  const top4 = m.orderedAxes.slice(0, 4);
+
+  const AXIS_SIGNAL = {
+    positioning: { title: 'Generic, undifferentiated messaging', detail: 'Reps describe the product differently depending on who is asking, and buyers default to comparing you on price.' },
+    alignment: { title: 'Sales distrusts marketing-sourced leads', detail: 'Sales routinely says marketing-sourced leads are not good enough to work, and the definition of a qualified lead was never agreed in writing.' },
+    demand: { title: 'Inconsistent pipeline month to month', detail: `Pipeline is ${m.pipelineState.toLowerCase()} month to month, which makes forecasting to the board unreliable.` },
+    conversion: { title: `Low ${a.motion === 'plg' ? 'trial-to-paid' : 'demo-to-close'} conversion`, detail: `${a.motion === 'plg' ? 'Trial-to-paid' : 'Demo-to-close'} conversion sits at ${m.conversion.cur}, below where it should be for your stage.` },
+    cac: { title: 'CAC trending in the wrong direction', detail: `CAC has been ${m.cacTrend.toLowerCase()} over the last two quarters, without a clear explanation tied to channel mix.` },
+    expansion: { title: 'Expansion revenue underperforming', detail: `Expansion revenue is ${m.nrrState.toLowerCase()}, leaving NRR flatter than it should be at your stage.` },
   };
-  const symptoms = m.orderedAxes.slice(0, 4).map(k => AXIS_SYMPTOM[k]);
-  if (a.freetext) symptoms.unshift(`You told us: "${a.freetext}"`);
+  const AXIS_FACTOR = {
+    positioning: 'No single narrative reps and pages consistently draw from',
+    alignment: 'No shared, written definition of what counts as a qualified lead',
+    demand: 'No repeatable trigger-event or channel system generating volume',
+    conversion: 'No structured objection-handling or conversion testing in place',
+    cac: 'No channel-by-channel breakdown of what is actually driving cost',
+    expansion: 'No structured handoff from Customer Success into expansion motion',
+  };
+  const AXIS_EFFECT = {
+    positioning: 'Buyers default to comparing you on price instead of value',
+    alignment: 'Good leads get deprioritized because trust between teams has broken down',
+    demand: 'Forecasting to the board becomes guesswork, not a model',
+    conversion: 'Marketing spend converts at a lower rate than it should',
+    cac: 'Every new dollar of spend buys less growth than the last one',
+    expansion: 'Revenue that should compound from existing customers stays flat',
+  };
 
   const report = {
     executive_summary: `Your business is a ${motionWord} company with a Revenue Health Score of ${m.healthScore}/100. The assessment identified ${AXIS_LABEL[top.key].toLowerCase()} as the highest-severity constraint currently limiting predictable revenue growth.`,
-    symptoms: symptoms.slice(0, 5),
-    clinical_explanation: `${AXIS_LABEL[top.key]} sits upstream of the other symptoms in your answers — fixing it first is why it's sequenced as Phase Two of the treatment plan below, ahead of the other constraints your scores flagged.`,
-    ceo_letter_body: `Our assessment indicates that your business does not have a marketing execution problem — it has a revenue architecture problem, concentrated in ${AXIS_LABEL[top.key].toLowerCase()}.\nWe recommend addressing this highest-impact constraint first through a phased transformation, sized as a ${tier} engagement, with an estimated ${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)} in annual revenue leakage at stake if it goes unaddressed.`,
+    pain_signals: top4.map(k => AXIS_SIGNAL[k]),
+    diagnosis_paragraphs: [
+      `${AXIS_LABEL[top.key]} scored ${scores[top.key]}/5 in this assessment — the highest-severity constraint out of the six measured. Based on your answers, this sits upstream of the other symptoms you're seeing, which is why it's sequenced first in the treatment plan below.`,
+      `Left unaddressed, this constraint is estimated to account for ${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)} in annual revenue leakage — roughly ${m.leakageRatePct}% of your estimated ARR — concentrated in the areas this report flags as critical or caution.`,
+      `Fixing ${AXIS_LABEL[top.key].toLowerCase()} first is what makes every other investment (channel spend, headcount, tooling) compound instead of getting diluted by the same underlying gap.`,
+    ],
+    root_cause: {
+      statement: `${AXIS_LABEL[top.key]} is the structural constraint behind the other symptoms flagged in this assessment.`,
+      factors: top4.slice(0, 3).map(k => AXIS_FACTOR[k]),
+      effects: top4.slice(0, 3).map(k => AXIS_EFFECT[k]),
+      footer: `Fixing ${AXIS_LABEL[top.key].toLowerCase()} first compounds every other investment — fixing anything else first will not.`,
+    },
+    playbooks: m.treatmentPlan.slice(1, 3).map(p => ({
+      objective: `${p.title} — ${p.deliverable ? 'delivering a ' + p.deliverable.toLowerCase() : 'addressing this constraint directly'} over ${p.duration.toLowerCase()}.`,
+      key_actions: p.objectives,
+      outcome: `Expected outcome: measurable movement on the KPIs tied to this axis within one quarter.`,
+    })),
   };
   renderReport(report, scores, top, tier, m);
   sendInternalBrief({
