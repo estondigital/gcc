@@ -11,7 +11,16 @@
 <style>
   body { padding-top: 64px; }
   .diag-wrap { max-width: 680px; margin: 0 auto; padding: 0 24px; }
-  .diag-wrap.showing-report { max-width: 1040px; }
+  /* The report is meant to feel like its own page, not a card squeezed
+     inside the quiz shell — so instead of just widening the container,
+     drop the cap entirely (the .gr-report element below has its own
+     980px max-width and centers itself) and hide the quiz's fixed
+     header/progress bar, which don't make sense once you're looking
+     at a finished report rather than answering a question. */
+  body.showing-report header, body.showing-report .progress-track { display: none !important; }
+  body.showing-report { padding-top: 0 !important; }
+  body.showing-report main.diag-wrap { padding-top: 32px !important; }
+  .diag-wrap.showing-report { max-width: none; padding: 0 24px; }
   .step-indicator { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .04em; text-transform: uppercase; }
   .progress-track { height: 2px; background: var(--border-dark); position: relative; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--green); transition: width 0.5s var(--ease); width: 0%; }
@@ -692,8 +701,10 @@ function showScreen(idx) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const name = state.screens[idx];
   document.querySelector(`[data-screen="${name}"]`).classList.add('active');
-  // The report design needs more horizontal room than the 680px used
-  // by the question screens — widen the wrapper only while it's showing.
+  // The report is meant to feel like its own page, not part of the quiz —
+  // full width, no fixed header/progress bar. Toggled on body so the CSS
+  // can hide/adjust the header and main padding together.
+  document.body.classList.toggle('showing-report', name === 'report');
   document.querySelector('.diag-wrap').classList.toggle('showing-report', name === 'report');
   const questionScreens = state.screens.filter(s => /^q\d+$/.test(s));
   const totalQ = questionScreens.length;
