@@ -145,7 +145,7 @@
     --gr-teal: #1D9E75; --gr-teal-soft: rgba(29,158,117,.14); --gr-teal-line: rgba(29,158,117,.35);
     --gr-blue: #4C8DFF; --gr-purple: #B08CFF;
     --gr-f-display: 'Bricolage Grotesque', sans-serif; --gr-f-body: 'Instrument Sans', sans-serif; --gr-f-mono: 'Geist Mono', ui-monospace, monospace;
-    max-width: 980px; margin: 0 auto; background: var(--gr-ink); border: 1px solid var(--gr-line); border-radius: 20px; overflow: hidden;
+    max-width: 1078px; margin: 0 auto; background: var(--gr-ink); border: 1px solid var(--gr-line); border-radius: 20px; overflow: hidden;
     font-family: var(--gr-f-body); color: var(--gr-text); line-height: 1.6;
   }
   .gr-report h1, .gr-report h2, .gr-report h3, .gr-report h4 { font-family: var(--gr-f-display); color: var(--gr-white); letter-spacing: -.02em; font-weight: 800; }
@@ -201,9 +201,9 @@
   .gr-snap-score .lbl { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gr-text-2); margin-top: 10px; }
   .gr-snap-right .maturity { font-size: 18px; font-weight: 700; color: var(--gr-white); margin-bottom: 10px; }
   .gr-snap-right .summary { font-size: 14.5px; line-height: 1.65; color: var(--gr-text); max-width: 62ch; }
-  .gr-snap-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+  .gr-snap-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
   .gr-snap-card { background: var(--gr-panel); border: 1px solid var(--gr-line); border-radius: 12px; padding: 16px 18px; }
-  .gr-snap-card .v { font-family: var(--gr-f-display); font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
+  .gr-snap-card .v { font-family: var(--gr-f-display); font-weight: 800; font-size: 22px; line-height: 1.15; letter-spacing: -.02em; overflow-wrap: break-word; }
   .gr-snap-card .v.red { color: var(--gr-red); } .gr-snap-card .v.amber { color: var(--gr-amber); } .gr-snap-card .v.teal { color: var(--gr-teal); }
   .gr-snap-card .l { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); margin-top: 8px; }
 
@@ -298,7 +298,7 @@
   .gr-phase-checks li::before { content: '✓'; color: var(--gr-green); font-weight: 700; flex: none; }
 
   /* 10 Targets */
-  .gr-targets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .gr-targets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
   .gr-target { background: var(--gr-panel); border: 1px solid var(--gr-line); border-radius: 12px; padding: 18px 18px; }
   .gr-target .l { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
   .gr-target .v { font-family: var(--gr-f-display); font-weight: 800; font-size: 26px; color: var(--gr-green); letter-spacing: -.02em; margin: 10px 0 6px; }
@@ -808,6 +808,11 @@ const ARR_MIDPOINT = { pre: 250000, sub1m: 750000, a: 3000000, b: 8500000, c: 16
 const ARR_LABEL = { pre: 'Pre-revenue', sub1m: 'Under $1M', a: '$1M–$5M (Series A)', b: '$5M–$12M (Series B)', c: '$12M–$20M (Series C)', d: 'Above $20M' };
 
 const AXIS_LABEL = { positioning: 'Positioning & ICP', alignment: 'Sales-Marketing Alignment', demand: 'Demand Generation', conversion: 'Conversion', cac: 'CAC & Unit Economics', expansion: 'Expansion / NRR' };
+// Shorter variants for the snapshot stat card, which is only ~150px wide —
+// the full AXIS_LABEL strings (e.g. "Sales-Marketing Alignment", 25 chars)
+// were wrapping to 3+ lines there and looking broken. Full labels are still
+// used everywhere else (scorecard, root cause, etc.) where there's room.
+const AXIS_LABEL_SHORT = { positioning: 'Positioning', alignment: 'Alignment', demand: 'Demand Gen', conversion: 'Conversion', cac: 'CAC', expansion: 'Expansion' };
 const AXIS_STATUS_LABEL = { positioning: 'Positioning', alignment: 'Sales Alignment', demand: 'Demand Generation', conversion: 'Website Conversion', cac: 'CAC Efficiency', expansion: 'Expansion / NRR' };
 const DIAGNOSIS_NAME = {
   positioning: 'Messaging-Market Misalignment',
@@ -1240,7 +1245,7 @@ function renderReport(report, scores, top, tier, m) {
           <div class="maturity">Maturity: ${m.maturityLabel}, Constrained by ${AXIS_LABEL[top.key]}</div>
           <p class="summary">${report.executive_summary}</p>
           <div class="gr-snap-cards">
-            <div class="gr-snap-card"><div class="v ${severityColorFor(top.score)}">${AXIS_LABEL[top.key]}</div><div class="l">Top constraint</div></div>
+            <div class="gr-snap-card"><div class="v ${severityColorFor(top.score)}">${AXIS_LABEL_SHORT[top.key]}</div><div class="l">Top constraint</div></div>
             <div class="gr-snap-card"><div class="v amber">${m.pipelineAtRiskPct}%</div><div class="l">Pipeline at risk</div></div>
             <div class="gr-snap-card"><div class="v ${m.critCount >= 3 ? 'red' : m.critCount >= 1 ? 'amber' : 'teal'}">${m.critCount} of 6</div><div class="l">Critical axes</div></div>
           </div>
