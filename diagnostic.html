@@ -486,25 +486,6 @@
     </div>
   </section>
 
-  <section class="screen" data-screen="gate">
-    <div class="eyebrow">Your diagnostic is ready</div>
-    <h1 class="q-title">Here's a preview of what we found.</h1>
-    <div class="gate-card">
-      <div class="gate-result-preview" id="gatePreview"></div>
-      <div class="blur-tease">
-        <p style="font-size:14px; line-height:1.7; margin-bottom:14px;color:rgba(255,255,255,.7)"><strong style="color:var(--white)">Root cause:</strong> Your combination of answers points to a problem that's quietly inflating CAC. Most companies in your stage and motion fix this before touching demand gen spend, because&mdash;</p>
-        <p style="font-size:14px; line-height:1.7;color:rgba(255,255,255,.7)"><strong style="color:var(--white)">Recommended service:</strong> sequenced before any paid channel investment, with an estimated&mdash;</p>
-      </div>
-      <div class="email-form">
-        <input type="text" id="nameInput" placeholder="Your name">
-        <input type="email" id="emailInput" placeholder="Work email">
-        <button class="btn btn-green btn-lg" style="margin-top:4px;justify-content:center" onclick="submitGate()">Unlock my full GTM diagnostic</button>
-        <div class="consent-line">We'll send your full report here, plus occasional GTM frameworks like this one from Jithin. Unsubscribe anytime.</div>
-        <div id="gateError"></div>
-      </div>
-    </div>
-  </section>
-
   <section class="screen" data-screen="loading">
     <div class="loading-screen">
       <div class="eyebrow" style="justify-content:center">Generating your diagnostic</div>
@@ -537,9 +518,9 @@
 // public URL and your Supabase project's URL + anon key (safe to be
 // public — see supabase-schema.sql for why: insert-only RLS policy).
 // ============================================
-const REPORT_API_URL = "REPLACE_WITH_YOUR_WORKER_URL"; // e.g. https://gcc-report-api.yourname.workers.dev
-const SUPABASE_URL = "REPLACE_WITH_YOUR_SUPABASE_URL"; // e.g. https://xxxxxxxx.supabase.co
-const SUPABASE_ANON_KEY = "REPLACE_WITH_YOUR_SUPABASE_ANON_KEY";
+const REPORT_API_URL = "https://gcc-report-api.estondigital.workers.dev/";
+const SUPABASE_URL = "https://vtxqgmioqwftrszgfohy.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ0eHFnbWlvcXdmdHJzemdmb2h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5OTY2OTIsImV4cCI6MjA5ODU3MjY5Mn0.n9APqs8-j4UsS-rlvEJ6IXkLap9LWZ6-wqQ14KPjB4I";
 
 // Writes one row to the `leads` table. Safe to call with the public
 // anon key because the RLS policy only allows INSERT — see
@@ -561,7 +542,7 @@ function saveLead(row) {
 
 const state = {
   step: 0,
-  screens: ['intro','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','gate','loading','report'],
+  screens: ['intro','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','loading','report'],
   answers: {},
   contact: {},
   prefilled: false,
@@ -594,7 +575,7 @@ const state = {
   state.answers.motion = data.motion;
   state.answers.arr = data.arr;
   state.prefilled = true;
-  state.screens = state.screens.filter(s => s !== 'q1' && s !== 'q2' && s !== 'gate');
+  state.screens = state.screens.filter(s => s !== 'q1' && s !== 'q2');
 
   // Update the intro screen's copy to reflect the shortened flow —
   // this runs synchronously since the script tag sits after the
@@ -733,7 +714,6 @@ function goNext() {
     state.step++;
     showScreen(state.step);
     const screenName = state.screens[state.step];
-    if (screenName === 'gate') renderGatePreview();
     if (screenName === 'loading') { runDiagnostic(); showConfirmToast(); }
   }
 }
@@ -1037,39 +1017,6 @@ function statusPillLabel(score100) {
   return 'Strong';
 }
 
-function renderGatePreview() {
-  const scores = computeScores();
-  const top = topProblem(scores);
-  const sevClass = top.score >= 4 ? 'warn' : '';
-  document.getElementById('gatePreview').innerHTML = `
-    <div class="preview-stat">
-      <div class="preview-num ${sevClass}">${top.score}/5</div>
-      <div class="preview-label">${top.label} severity</div>
-    </div>
-    <div class="preview-stat">
-      <div class="preview-num">6</div>
-      <div class="preview-label">Pain clusters scored</div>
-    </div>
-    <div class="preview-stat">
-      <div class="preview-num">${top.score >= 4 ? 'High' : top.score >= 2 ? 'Med' : 'Low'}</div>
-      <div class="preview-label">Urgency to address</div>
-    </div>
-  `;
-}
-
-function submitGate() {
-  const name = document.getElementById('nameInput').value.trim();
-  const email = document.getElementById('emailInput').value.trim();
-  const errBox = document.getElementById('gateError');
-  errBox.innerHTML = '';
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  if (!name) { errBox.innerHTML = '<div class="err-box">We need your name to personalize the report.</div>'; return; }
-  if (!emailValid) { errBox.innerHTML = '<div class="err-box">That email doesn\'t look right — double check it.</div>'; return; }
-
-  state.contact = { name, email };
-  goNext(); // lands on 'loading', which triggers runDiagnostic() + toast itself
-}
-
 function showConfirmToast() {
   const toast = document.getElementById('confirmToast');
   toast.classList.add('show');
@@ -1248,7 +1195,7 @@ function scoreClass(n) { return n >= 4 ? 'high' : n >= 2 ? 'mid' : 'low'; }
    supplies sentences, so the numbers never drift between runs.
    ============================================================ */
 function renderReport(report, scores, top, tier, m) {
-  const name = state.contact.name || 'you';
+  const name = state.contact.name || 'You';
   const firstName = name.split(' ')[0];
   const dateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   const motionLabel = state.answers.motion === 'plg' ? 'Product-Led' : state.answers.motion === 'slg' ? 'Sales-Led' : 'Hybrid';
@@ -1485,8 +1432,8 @@ function renderReport(report, scores, top, tier, m) {
       </div>
       <div class="cycle-secondary-grid">
         <div class="cycle-secondary-card">
-          <h4>Not ready for a call yet?</h4>
-          <p>Your report has been sent to ${state.contact.email}. We'll also send 1-2 relevant frameworks over the next few weeks based on your ${top.label.toLowerCase()} score &mdash; not a generic drip sequence.</p>
+          <h4>Want to keep this report?</h4>
+          <p>${state.contact.email ? `We've saved a copy against ${state.contact.email}. We'll also send 1-2 relevant frameworks over the next few weeks based on your ${top.label.toLowerCase()} score &mdash; not a generic drip sequence.` : `Download the PDF above before you close this tab &mdash; or subscribe below and we'll send 1-2 relevant frameworks over the next few weeks based on your ${top.label.toLowerCase()} score.`}</p>
           <a href="https://www.linkedin.com/newsletters/marketingled-newsletter-7415340728588926976/" target="_blank" rel="noopener" class="btn btn-outline-white btn-md">Subscribe to the newsletter</a>
         </div>
         <div class="cycle-secondary-card">
@@ -1509,7 +1456,12 @@ function renderReport(report, scores, top, tier, m) {
 }
 
 // Renders the whole .gr-report node to a canvas (via html2canvas) and
-// slices it into A4-proportioned pages inside a real PDF (via jsPDF).
+// drops it into a jsPDF page sized to match the report's ACTUAL width
+// and height — not standard A4. Forcing a 980px-wide design into a
+// 595pt-wide A4 page was what made the old version cram everything down
+// and cut sections at arbitrary points; a custom-sized page means the
+// PDF is exactly as wide as the report and never needs to be sliced at
+// all, so nothing gets shrunk or cut mid-card.
 // This is a rasterized PDF — pixel-perfect match to what's on screen,
 // but text inside it isn't selectable/searchable. That trade-off is
 // what keeps this a zero-backend, zero-cost solution; a server-side
@@ -1521,24 +1473,15 @@ async function downloadReportPDF() {
   btn.disabled = true;
   try {
     const node = document.getElementById('gr-report-root');
-    const canvas = await html2canvas(node, { scale: 2, backgroundColor: '#070D17', useCORS: true });
+    const scaleFactor = 2; // supersample for crisp text/lines, not for page sizing
+    const canvas = await html2canvas(node, { scale: scaleFactor, backgroundColor: '#070D17', useCORS: true });
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({ unit: 'pt', format: 'a4' });
-    const pageW = pdf.internal.pageSize.getWidth();
-    const pageH = pdf.internal.pageSize.getHeight();
-    const imgW = pageW;
-    const imgH = (canvas.height * imgW) / canvas.width;
-    let heightLeft = imgH;
-    let position = 0;
-    const imgData = canvas.toDataURL('image/jpeg', 0.92);
-    pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
-    heightLeft -= pageH;
-    while (heightLeft > 0) {
-      position = heightLeft - imgH;
-      pdf.addPage();
-      pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
-      heightLeft -= pageH;
-    }
+    // Page dimensions in CSS px (canvas is 2x that, since scaleFactor=2)
+    const pageWidthPx = canvas.width / scaleFactor;
+    const pageHeightPx = canvas.height / scaleFactor;
+    const pdf = new jsPDF({ unit: 'px', format: [pageWidthPx, pageHeightPx], hotfixes: ['px_scaling'] });
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthPx, pageHeightPx);
     const fname = `growth-clarity-co-gtm-diagnostic-${(state.contact.company || state.contact.name || 'report').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.pdf`;
     pdf.save(fname);
   } catch (err) {
