@@ -11,6 +11,7 @@
 <style>
   body { padding-top: 64px; }
   .diag-wrap { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+  .diag-wrap.showing-report { max-width: 1040px; }
   .step-indicator { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .04em; text-transform: uppercase; }
   .progress-track { height: 2px; background: var(--border-dark); position: relative; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--green); transition: width 0.5s var(--ease); width: 0%; }
@@ -179,6 +180,14 @@
 
   /* 01 Snapshot */
   .gr-snap { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: start; }
+  /* CSS Grid items default to min-width:auto, which means they refuse to
+     shrink below their content's natural width — that's what was causing
+     the report to overflow its container and get clipped. Explicitly
+     zeroing it out on every grid item lets long headings/paragraphs wrap
+     and shrink to fit instead. */
+  .gr-snap > *, .gr-axis-row > *, .gr-matrix .mhdr > *, .gr-matrix-row > *,
+  .gr-pb-top > *, .gr-rc-grid > *, .gr-cta-secondary > *, .gr-snap-cards > *,
+  .gr-targets > *, .gr-cover-top > *, .gr-cover-meta > * { min-width: 0; }
   .gr-snap-score .num { font-family: var(--gr-f-display); font-weight: 800; font-size: 76px; line-height: .95; letter-spacing: -.03em; }
   .gr-snap-score .lbl { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gr-text-2); margin-top: 10px; }
   .gr-snap-right .maturity { font-size: 18px; font-weight: 700; color: var(--gr-white); margin-bottom: 10px; }
@@ -192,7 +201,7 @@
   /* 02 Scorecard */
   .gr-scorecard { border: 1px solid var(--gr-line); border-radius: 14px; overflow: hidden; }
   .gr-scorecard .hdr { background: var(--gr-panel); padding: 12px 20px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
-  .gr-axis-row { display: grid; grid-template-columns: 160px 1fr 56px 100px; align-items: center; gap: 16px; padding: 14px 20px; border-top: 1px solid var(--gr-line-2); position: relative; }
+  .gr-axis-row { display: grid; grid-template-columns: 160px 1fr 56px 100px 70px; align-items: center; gap: 16px; padding: 14px 20px; border-top: 1px solid var(--gr-line-2); position: relative; }
   .gr-axis-row.root { background: var(--gr-green-soft); }
   .gr-axis-row.root::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gr-green); }
   .gr-axis-name { font-size: 13.5px; font-weight: 700; color: var(--gr-white); }
@@ -683,6 +692,9 @@ function showScreen(idx) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const name = state.screens[idx];
   document.querySelector(`[data-screen="${name}"]`).classList.add('active');
+  // The report design needs more horizontal room than the 680px used
+  // by the question screens — widen the wrapper only while it's showing.
+  document.querySelector('.diag-wrap').classList.toggle('showing-report', name === 'report');
   const questionScreens = state.screens.filter(s => /^q\d+$/.test(s));
   const totalQ = questionScreens.length;
   const qIdx = questionScreens.indexOf(name);
@@ -1289,10 +1301,8 @@ function renderReport(report, scores, top, tier, m) {
         <div class="gr-axis-name">${AXIS_LABEL[k]}<span class="sub">${m.axisSubLabel[k]}</span></div>
         <div class="gr-axis-bar"><div class="fill ${color}" style="width:${m.matrix[k]}%"></div></div>
         <div class="gr-axis-score ${color}">${sev}/5</div>
-        <div class="gr-axis-tags">
-          <span class="gr-badge ${m.severityBadge(sev)}">${m.severityBadge(sev) === 'critical' ? 'Critical' : m.severityBadge(sev) === 'caution' ? 'Caution' : 'Healthy'}</span>
-          ${isRoot ? '<span class="gr-badge root">Root</span>' : ''}
-        </div>
+        <div class="gr-axis-tags"><span class="gr-badge ${m.severityBadge(sev)}">${m.severityBadge(sev) === 'critical' ? 'Critical' : m.severityBadge(sev) === 'caution' ? 'Caution' : 'Healthy'}</span></div>
+        <div class="gr-axis-tags">${isRoot ? '<span class="gr-badge root">Root</span>' : ''}</div>
       </div>`;
   }).join('');
   const scorecard = `
