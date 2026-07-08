@@ -18,9 +18,9 @@
      header/progress bar, which don't make sense once you're looking
      at a finished report rather than answering a question. */
   body.showing-report header, body.showing-report .progress-track { display: none !important; }
-  body.showing-report { padding-top: 0 !important; }
+  body.showing-report { padding-top: 0 !important; background: #050a12 !important; }
   body.showing-report main.diag-wrap { padding-top: 32px !important; }
-  .diag-wrap.showing-report { max-width: none; padding: 0 24px; }
+  .diag-wrap.showing-report { max-width: none; padding: 0 12px; }
   .step-indicator { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .04em; text-transform: uppercase; }
   .progress-track { height: 2px; background: var(--border-dark); position: relative; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--green); transition: width 0.5s var(--ease); width: 0%; }
@@ -145,7 +145,7 @@
     --gr-teal: #1D9E75; --gr-teal-soft: rgba(29,158,117,.14); --gr-teal-line: rgba(29,158,117,.35);
     --gr-blue: #4C8DFF; --gr-purple: #B08CFF;
     --gr-f-display: 'Bricolage Grotesque', sans-serif; --gr-f-body: 'Instrument Sans', sans-serif; --gr-f-mono: 'Geist Mono', ui-monospace, monospace;
-    max-width: 1078px; margin: 0 auto; background: var(--gr-ink); border: 1px solid var(--gr-line); border-radius: 20px; overflow: hidden;
+    max-width: none; margin: 0; background: var(--gr-ink); border: none; border-radius: 0; overflow: hidden;
     font-family: var(--gr-f-body); color: var(--gr-text); line-height: 1.6;
   }
   .gr-report h1, .gr-report h2, .gr-report h3, .gr-report h4 { font-family: var(--gr-f-display); color: var(--gr-white); letter-spacing: -.02em; font-weight: 800; }
@@ -155,7 +155,7 @@
   .gr-secnum { display: inline-flex; align-items: center; justify-content: center; font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .06em; color: var(--gr-green); border: 1px solid var(--gr-green-line); border-radius: 7px; padding: 3px 8px; flex: none; }
   .gr-sechead { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
   .gr-sechead h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .04em; }
-  .gr-section { padding: 32px 44px; border-top: 1px solid var(--gr-line); }
+  .gr-section { padding: 32px clamp(24px, 6vw, 96px); border-top: 1px solid var(--gr-line); }
   .gr-section:first-of-type { border-top: none; }
 
   .gr-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--gr-line); border-radius: 100px; padding: 5px 11px; color: var(--gr-text-2); }
@@ -166,7 +166,7 @@
   .gr-badge.root { background: var(--gr-green-soft); color: var(--gr-green); border: 1px solid var(--gr-green-line); }
 
   /* Cover */
-  .gr-cover { padding: 44px 44px 40px; border-bottom: 2px solid var(--gr-green); position: relative; overflow: hidden; }
+  .gr-cover { padding: 44px clamp(24px, 6vw, 96px) 40px; border-bottom: 2px solid var(--gr-green); position: relative; overflow: hidden; }
   .gr-cover::before { content: ''; position: absolute; right: -140px; top: -160px; width: 420px; height: 420px; background: radial-gradient(circle, rgba(0,230,118,.14), transparent 62%); pointer-events: none; }
   .gr-cover-top { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; flex-wrap: wrap; gap: 12px; }
   .gr-logo { display: inline-flex; align-items: center; line-height: 1; font-size: 19px; white-space: nowrap; }
@@ -315,7 +315,7 @@
   .gr-cta-sec-card { border: 1px solid var(--gr-line); border-radius: 12px; padding: 16px 18px; text-align: left; }
   .gr-cta-sec-card .k { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
   .gr-cta-sec-card .v { font-size: 13.5px; font-weight: 600; color: var(--gr-white); margin-top: 6px; }
-  .gr-docfoot { display: flex; align-items: center; justify-content: space-between; padding: 20px 44px; border-top: 1px solid var(--gr-line); background: var(--gr-ink-2); flex-wrap: wrap; gap: 12px; }
+  .gr-docfoot { display: flex; align-items: center; justify-content: space-between; padding: 20px clamp(24px, 6vw, 96px); border-top: 1px solid var(--gr-line); background: var(--gr-ink-2); flex-wrap: wrap; gap: 12px; }
   .gr-docfoot .gr-logo { font-size: 15px; }
   .gr-docfoot .conf { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
   .gr-docfoot .dl { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--gr-line); border-radius: 9px; padding: 8px 14px; color: var(--gr-white); cursor: pointer; background: none; }
