@@ -3,1566 +3,634 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GTM Diagnostic — Growth Clarity Co.</title>
-<meta name="description" content="A 10-question diagnostic that scores your positioning, demand generation, CAC, alignment, conversion, and expansion against real Series A–C B2B SaaS benchmarks — then tells you the root cause, not just the symptom.">
+<title>Growth Score Report — Growth Clarity Co.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Geist:wght@800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  body { padding-top: 64px; }
-  .diag-wrap { max-width: 680px; margin: 0 auto; padding: 0 24px; }
-  /* The report is meant to feel like its own page, not a card squeezed
-     inside the quiz shell — so instead of just widening the container,
-     drop the cap entirely (the .gr-report element below has its own
-     980px max-width and centers itself) and hide the quiz's fixed
-     header/progress bar, which don't make sense once you're looking
-     at a finished report rather than answering a question. */
-  body.showing-report header, body.showing-report .progress-track { display: none !important; }
-  body.showing-report { padding-top: 0 !important; background: #050a12 !important; }
-  body.showing-report main.diag-wrap { padding-top: 32px !important; }
-  .diag-wrap.showing-report { max-width: none; padding: 0 12px; }
-  .step-indicator { font-size: 11px; color: rgba(255,255,255,.3); letter-spacing: .04em; text-transform: uppercase; }
-  .progress-track { height: 2px; background: var(--border-dark); position: relative; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--green); transition: width 0.5s var(--ease); width: 0%; }
-  .topbar-inner { display: flex; align-items: baseline; justify-content: space-between; padding: 18px 0; }
-
-  main { padding: 56px 0 100px; }
-  .screen { display: none; }
-  .screen.active { display: block; animation: rise 0.5s cubic-bezier(0.16,1,0.3,1); }
-  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-
-  h1.q-title { font-size: 30px; line-height: 1.2; font-weight: 800; color: var(--white); margin-bottom: 12px; max-width: 560px; letter-spacing: -0.02em; }
-  p.q-sub { font-size: 15px; color: rgba(255,255,255,.5); line-height: 1.6; max-width: 480px; margin-bottom: 36px; }
-
-  .option-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
-  .option {
-    border: 1px solid var(--border-dark); background: rgba(255,255,255,.02); border-radius: 10px;
-    padding: 17px 20px; text-align: left; cursor: pointer; font-size: 15px;
-    color: var(--white); transition: all 0.18s ease; display: flex; align-items: center; justify-content: space-between; gap: 16px; width:100%;
+  :root{
+    --bg:#050a12; --surface:#0a1523; --surface2:#070D17;
+    --accent:#00E676; --logo:#1FE07A;
+    --ink:#F5F7FA; --slate:#8397ad; --slate-dim:#4D6480;
+    --line:rgba(255,255,255,.09); --line-strong:rgba(255,255,255,.16);
+    --radius:9px;
+    --display:'Bricolage Grotesque',sans-serif;
+    --body:'Instrument Sans',sans-serif;
+    --mono:'Geist Mono',monospace;
   }
-  .option:hover { border-color: rgba(0,230,118,.3); background: rgba(0,230,118,.05); }
-  .option.selected { border-color: var(--green); background: rgba(0,230,118,.08); }
-  .option .opt-num { font-size: 11px; color: rgba(255,255,255,.3); flex-shrink: 0; }
-  .option.selected .opt-num { color: var(--green); }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;padding:0 0 80px}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-family:var(--body);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.02em}
+  h2{font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:-.01em}
+  h3{font-family:var(--display);font-weight:700;font-size:17px}
+  .mono{font-family:var(--mono)}
+  .muted{color:var(--slate)}
+  a{color:var(--accent);text-decoration:none}
 
-  .input-field {
-    width: 100%; border: none; border-bottom: 1.5px solid var(--border-dark); background: transparent;
-    font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; padding: 10px 2px; color: var(--white); margin-bottom: 8px;
+  /* top bar */
+  .topbar{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(5,10,18,.86);backdrop-filter:blur(10px);z-index:50}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{font-family:'Geist Mono',monospace;font-weight:600;font-size:15px;letter-spacing:.02em;color:var(--ink)}
+  .logo b{color:var(--logo)}
+  .topbar .tag{font-size:12px;color:var(--slate)}
+
+  .screen{display:none;animation:fade .35s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ---- screen 1: intro + company details ---- */
+  .hero{padding:56px 0 8px}
+  .hero p.lead{font-size:18px;color:var(--slate);max-width:620px;margin-top:16px}
+  .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .badge{font-size:12.5px;font-family:var(--mono);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px}
+  .who{margin-top:34px;padding:18px 20px;border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;background:var(--surface2)}
+  .who b{color:var(--ink)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px}
+  .form-card{margin-top:36px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:600px){.grid2{grid-template-columns:1fr}}
+  label.f{display:block;font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--slate);margin:0 0 7px}
+  .field{margin-bottom:18px}
+  input,select{width:100%;background:var(--surface2);border:1px solid var(--line-strong);border-radius:var(--radius);color:var(--ink);font-family:var(--body);font-size:15px;padding:12px 14px;transition:border-color .15s}
+  input:focus,select:focus{outline:none;border-color:var(--accent)}
+  select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%238397ad' stroke-width='1.5' fill='none'/></svg>");background-repeat:no-repeat;background-position:right 14px center}
+  .vert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:600px){.vert-grid{grid-template-columns:1fr 1fr}}
+  .vert{cursor:pointer;text-align:center;padding:14px 8px;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--surface2);font-size:13.5px;font-weight:600;transition:all .15s;user-select:none}
+  .vert:hover{border-color:var(--slate)}
+  .vert.sel{border-color:var(--accent);background:rgba(0,230,118,.08);color:var(--accent)}
+  .btn{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#04140a;font-family:var(--body);font-weight:700;font-size:15px;border:none;border-radius:var(--radius);padding:14px 26px;cursor:pointer;transition:transform .12s,filter .15s}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:active{transform:scale(.985)}
+  .btn:disabled{opacity:.4;cursor:not-allowed;filter:none}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-strong)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent);filter:none}
+  .err{color:#ff6b6b;font-size:13px;margin-top:10px;min-height:18px}
+
+  /* ---- screen 2: questionnaire ---- */
+  .q-top{position:sticky;top:60px;background:rgba(5,10,18,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:16px 0;z-index:40}
+  .q-top .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px}
+  .prog-meta{display:flex;flex-direction:column;gap:5px;flex:1}
+  .prog-line{display:flex;justify-content:space-between;font-size:12.5px;color:var(--slate)}
+  .prog-line .v{font-family:var(--mono);color:var(--ink)}
+  .bar{height:5px;background:var(--surface);border-radius:99px;overflow:hidden}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .3s}
+  .qhead{padding:44px 0 6px}
+  .qhead .vtag{display:inline-block;font-family:var(--mono);font-size:12px;color:var(--accent);border:1px solid var(--line);border-radius:999px;padding:4px 12px;margin-bottom:16px}
+  .engine-block{margin-top:30px;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+  .engine-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid var(--line);background:var(--surface2)}
+  .engine-head .num{font-family:var(--mono);font-size:13px;color:var(--accent);border:1px solid var(--line-strong);border-radius:7px;padding:4px 9px}
+  .engine-head h3{flex:1}
+  .engine-head .cnt{font-family:var(--mono);font-size:12.5px;color:var(--slate)}
+  .qitem{padding:20px 22px;border-bottom:1px solid var(--line)}
+  .qitem:last-child{border-bottom:none}
+  .qtext{font-size:15.5px;margin-bottom:14px;font-weight:500}
+  .opts{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media(max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{cursor:pointer;border:1px solid var(--line-strong);border-radius:var(--radius);padding:10px 8px;text-align:center;font-size:12px;line-height:1.35;color:var(--slate);transition:all .13s;user-select:none;display:flex;flex-direction:column;gap:5px;align-items:center;justify-content:flex-start}
+  .opt .dot{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink)}
+  .opt:hover{border-color:var(--slate)}
+  .opt.sel{border-color:var(--accent);background:rgba(0,230,118,.09);color:var(--ink)}
+  .opt.sel .dot{color:var(--accent)}
+  .q-actions{margin-top:34px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+  /* ---- screen 3: report ---- */
+  .rep-cover{padding:50px 0 30px;border-bottom:1px solid var(--line)}
+  .rep-cover .eyebrow{margin-bottom:14px}
+  .rep-meta{display:flex;flex-wrap:wrap;gap:22px;margin-top:20px;font-size:13.5px;color:var(--slate)}
+  .rep-meta b{color:var(--ink);font-weight:600}
+  .score-hero{display:flex;align-items:center;gap:32px;margin:38px 0;flex-wrap:wrap}
+  .score-ring{position:relative;width:180px;height:180px;flex-shrink:0}
+  .score-ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .score-ring .num b{font-family:var(--mono);font-size:52px;font-weight:600;line-height:1;color:var(--ink)}
+  .score-ring .num span{font-size:12px;color:var(--slate);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+  .score-verdict{flex:1;min-width:240px}
+  .score-verdict .band{display:inline-block;font-family:var(--mono);font-size:13px;padding:5px 13px;border-radius:999px;margin-bottom:12px}
+  .score-verdict p{color:var(--slate);font-size:15.5px;margin-top:6px}
+  .sec{margin-top:46px}
+  .sec>.eyebrow{display:block;margin-bottom:18px}
+  .bars{display:flex;flex-direction:column;gap:14px}
+  .brow{display:grid;grid-template-columns:180px 1fr 52px;gap:14px;align-items:center}
+  @media(max-width:600px){.brow{grid-template-columns:130px 1fr 42px}}
+  .brow .bl{font-size:13.5px;font-weight:500}
+  .btrack{position:relative;height:9px;background:var(--surface);border-radius:99px;overflow:visible}
+  .btrack>i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+  .btrack .bm{position:absolute;top:-4px;width:2px;height:17px;background:var(--slate);opacity:.7}
+  .bv{font-family:var(--mono);font-size:14px;text-align:right;color:var(--ink)}
+  .constraint{margin-top:14px;padding:26px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 14px 14px 0;background:var(--surface)}
+  .constraint .lab{font-family:var(--mono);font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
+  .constraint h2{margin:8px 0 10px}
+  .constraint p{color:var(--slate);font-size:15px}
+  .offer{margin-top:22px;padding:26px;border:1px solid var(--accent);border-radius:14px;background:rgba(0,230,118,.05)}
+  .offer .lab{font-family:var(--mono);font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
+  .offer .oname{font-family:var(--display);font-weight:800;font-size:22px;margin:8px 0 6px}
+  .offer .price{font-family:var(--mono);font-size:15px;color:var(--ink)}
+  .offer p{color:var(--slate);font-size:14.5px;margin-top:12px}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+  @media(max-width:600px){.twocol{grid-template-columns:1fr}}
+  .mini{padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+  .mini .lab{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--slate);margin-bottom:12px}
+  .mini ul{list-style:none}
+  .mini li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .mini li:last-child{border-bottom:none}
+  .mini li .s{font-family:var(--mono);color:var(--accent)}
+  .rep-cta{margin-top:46px;padding:30px;border:1px solid var(--line);border-radius:14px;background:var(--surface2);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .rep-cta p{color:var(--slate);font-size:14.5px;max-width:440px}
+  .disc{margin-top:30px;font-size:12px;color:var(--slate-dim);line-height:1.6}
+  .foot{margin-top:60px;border-top:1px solid var(--line);padding-top:22px;font-size:12.5px;color:var(--slate-dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  /* print */
+  @media print{
+    .topbar,.q-top,.rep-cta,.btn,.no-print{display:none!important}
+    body{background:#fff;color:#0a0a0a;padding:0}
+    .card,.engine-block,.constraint,.offer,.mini{background:#fff;border-color:#ddd}
+    .muted,.rep-meta,.score-verdict p,.constraint p,.offer p{color:#444}
+    .score-ring .num b,.bv,.mono{color:#0a0a0a}
+    h1,h2,h3{color:#0a0a0a}
+    .btrack{background:#eee}
+    .btrack>i{background:#0a8a4d}
   }
-  .input-field:focus { outline: none; border-bottom-color: var(--green); }
-  .input-field::placeholder { color: rgba(255,255,255,.3); font-family: 'Instrument Sans', sans-serif; font-size: 16px; }
-  .field-hint { font-size: 11px; color: rgba(255,255,255,.3); margin-bottom: 32px; }
-
-  .nav-row-diag { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
-  .btn-ghost { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255,255,255,.4); padding: 14px 4px; transition: color .2s; background:none; border:none; cursor:pointer; }
-  .btn-ghost:hover { color: var(--white); }
-
-  .gate-card { border: 1.5px solid rgba(0,230,118,.3); border-radius: 16px; padding: 40px 36px; background: rgba(0,230,118,.04); position: relative; }
-  .gate-result-preview { display: flex; gap: 20px; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border-dark); flex-wrap:wrap; }
-  .preview-stat { flex: 1; min-width:120px; }
-  .preview-num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 34px; font-weight: 800; color: var(--green); line-height: 1; }
-  .preview-num.warn { color: var(--red); }
-  .preview-label { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: rgba(255,255,255,.35); margin-top: 6px; }
-  .blur-tease { filter: blur(5px); user-select: none; pointer-events: none; opacity: 0.6; }
-
-  .email-form { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
-  .email-form input[type=email], .email-form input[type=text] {
-    border: 1px solid var(--border-dark); background: rgba(255,255,255,.04); padding: 15px 18px; font-size: 15px;
-    font-family: 'Instrument Sans', sans-serif; border-radius: 8px; color: var(--white);
-  }
-  .email-form input::placeholder { color: rgba(255,255,255,.3); }
-  .email-form input:focus { outline: none; border-color: var(--green); }
-  .consent-line { font-size: 11.5px; color: rgba(255,255,255,.3); line-height: 1.5; }
-
-  .loading-screen { text-align: center; padding: 64px 0; }
-  .loading-bar-track { width: 220px; height: 2px; background: var(--border-dark); margin: 28px auto 0; overflow: hidden; }
-  .loading-bar-fill { width: 30%; height: 100%; background: var(--green); animation: load 1.8s ease-in-out infinite; }
-  @keyframes load { 0% { transform: translateX(-100%); } 100% { transform: translateX(330%); } }
-  .loading-line { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 16px; min-height: 16px; }
-
-  .report-header { padding-bottom: 24px; border-bottom: 2px solid var(--green); margin-bottom: 28px; }
-  .report-kicker { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--green); margin-bottom: 10px; font-weight: 700; }
-  .report-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 27px; font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 6px; }
-  .report-meta { font-size: 12px; color: rgba(255,255,255,.35); }
-
-  .score-strip { display: flex; flex-wrap:wrap; gap: 0; margin-bottom: 36px; border: 1px solid var(--border-dark); border-radius: 12px; overflow: hidden; }
-  .score-cell { flex: 1 1 16.66%; min-width:90px; padding: 18px 14px; border-right: 1px solid var(--border-dark); border-bottom:1px solid var(--border-dark); }
-  .score-cell-label { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 10px; line-height:1.3; }
-  .score-cell-val { font-family: 'Bricolage Grotesque', sans-serif; font-size: 23px; font-weight: 800; margin-bottom: 9px; }
-  .score-cell-val.high { color: var(--red); }
-  .score-cell-val.mid { color: #f0a830; }
-  .score-cell-val.low { color: var(--green); }
-  .score-cell-meter { height: 4px; border-radius: 3px; background: rgba(255,255,255,.06); overflow: hidden; }
-  .score-cell-meter i { display: block; height: 100%; border-radius: 3px; }
-  .score-cell-meter i.high { background: linear-gradient(90deg,#b13c3c,var(--red)); }
-  .score-cell-meter i.mid { background: linear-gradient(90deg,#b9831a,#f0a830); }
-  .score-cell-meter i.low { background: linear-gradient(90deg, var(--green-2), var(--green)); }
-  .score-cell.is-root { background: rgba(0,230,118,.06); }
-
-  .report-section { margin-bottom: 32px; }
-  .report-section-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border-dark); }
-  .report-body { font-size: 14.5px; line-height: 1.75; color: rgba(255,255,255,.65); }
-  .report-body p { margin-bottom: 12px; }
-
-  .symptom-row { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border-dark); align-items: flex-start; }
-  .symptom-row:last-child { border-bottom: none; }
-  .symptom-flag { font-size: 10px; color: var(--green); padding-top: 3px; flex-shrink: 0; width: 70px; font-weight: 700; }
-  .symptom-text { font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,.7); }
-
-  .playbook-card { border: 1px solid var(--border-dark); border-radius: 10px; padding: 20px 22px; margin-bottom: 12px; }
-  .playbook-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap:12px; flex-wrap:wrap; }
-  .playbook-name { font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); }
-  .playbook-tier { font-size: 11px; color: var(--green); font-weight: 700; }
-  .playbook-desc { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.6; }
-
-  .roadmap-track { border-left: 2px solid var(--border-dark); padding-left: 24px; margin-left: 4px; }
-  .roadmap-phase { margin-bottom: 22px; position: relative; }
-  .roadmap-phase::before { content: ''; position: absolute; left: -29px; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
-  .roadmap-days { font-size: 11px; color: var(--green); margin-bottom: 4px; font-weight: 700; }
-  .roadmap-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
-  .roadmap-desc { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.55; }
-
-  .tier-callout { border:1px solid var(--border-dark); border-radius:10px; padding:18px 20px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
-  .tier-callout-label { font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.4); }
-  .tier-callout-val { font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; color:var(--green); margin-top:2px; }
-
-  /* ============================================
-     GTM DIAGNOSTIC REPORT — dark consulting-report design
-     Everything below is scoped to gr- prefixed classes so it can't
-     collide with the rest of the page. Colors are defined as their
-     own set of variables (gr-ink, gr-panel, etc.) rather than reusing
-     the page's --ink/--navy, since this report's palette is close
-     but not identical (deliberately matched to the reference design
-     you provided rather than force-fit to the site's exact tokens).
-     ============================================ */
-  .gr-report {
-    --gr-ink: #070D17; --gr-ink-2: #0B1424; --gr-panel: #0E1A2E; --gr-card: #0C1626;
-    --gr-line: rgba(255,255,255,.10); --gr-line-2: rgba(255,255,255,.06);
-    --gr-white: #F5F7FA; --gr-text: rgba(245,247,250,.68); --gr-text-2: rgba(245,247,250,.42); --gr-text-3: rgba(245,247,250,.28);
-    --gr-green: #00E676; --gr-green-2: #1FE07A; --gr-green-soft: rgba(0,230,118,.10); --gr-green-line: rgba(0,230,118,.30);
-    --gr-red: #E24B4A; --gr-red-soft: rgba(226,75,74,.12); --gr-red-line: rgba(226,75,74,.35);
-    --gr-amber: #EF9F27; --gr-amber-soft: rgba(239,159,39,.12); --gr-amber-line: rgba(239,159,39,.35);
-    --gr-teal: #1D9E75; --gr-teal-soft: rgba(29,158,117,.14); --gr-teal-line: rgba(29,158,117,.35);
-    --gr-blue: #4C8DFF; --gr-purple: #B08CFF;
-    --gr-f-display: 'Bricolage Grotesque', sans-serif; --gr-f-body: 'Instrument Sans', sans-serif; --gr-f-mono: 'Geist Mono', ui-monospace, monospace;
-    max-width: none; margin: 0; background: var(--gr-ink); border: none; border-radius: 0; overflow: hidden;
-    font-family: var(--gr-f-body); color: var(--gr-text); line-height: 1.6;
-  }
-  .gr-report h1, .gr-report h2, .gr-report h3, .gr-report h4 { font-family: var(--gr-f-display); color: var(--gr-white); letter-spacing: -.02em; font-weight: 800; }
-  .gr-mono { font-family: var(--gr-f-mono); }
-  .gr-eyebrow-mono { font-family: var(--gr-f-mono); font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--gr-green); }
-
-  .gr-secnum { display: inline-flex; align-items: center; justify-content: center; font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .06em; color: var(--gr-green); border: 1px solid var(--gr-green-line); border-radius: 7px; padding: 3px 8px; flex: none; }
-  .gr-sechead { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .gr-sechead h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .04em; }
-  .gr-section { padding: 32px clamp(24px, 6vw, 96px); border-top: 1px solid var(--gr-line); }
-  .gr-section:first-of-type { border-top: none; }
-
-  .gr-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--gr-line); border-radius: 100px; padding: 5px 11px; color: var(--gr-text-2); }
-  .gr-badge { display: inline-flex; align-items: center; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; border-radius: 100px; padding: 5px 12px; font-weight: 600; }
-  .gr-badge.critical { background: var(--gr-red-soft); color: var(--gr-red); border: 1px solid var(--gr-red-line); }
-  .gr-badge.caution, .gr-badge.high { background: var(--gr-amber-soft); color: var(--gr-amber); border: 1px solid var(--gr-amber-line); }
-  .gr-badge.healthy { background: var(--gr-teal-soft); color: var(--gr-teal); border: 1px solid var(--gr-teal-line); }
-  .gr-badge.root { background: var(--gr-green-soft); color: var(--gr-green); border: 1px solid var(--gr-green-line); }
-
-  /* Cover */
-  .gr-cover { padding: 44px clamp(24px, 6vw, 96px) 40px; border-bottom: 2px solid var(--gr-green); position: relative; overflow: hidden; }
-  .gr-cover::before { content: ''; position: absolute; right: -140px; top: -160px; width: 420px; height: 420px; background: radial-gradient(circle, rgba(0,230,118,.14), transparent 62%); pointer-events: none; }
-  .gr-cover-top { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; flex-wrap: wrap; gap: 12px; }
-  .gr-logo { display: inline-flex; align-items: center; line-height: 1; font-size: 19px; white-space: nowrap; }
-  .gr-logo .star { color: var(--gr-green); margin-right: .5em; font-size: .8em; }
-  .gr-logo .w { font-family: var(--gr-f-display); font-weight: 800; letter-spacing: -.03em; }
-  .gr-logo .w.growth { color: var(--gr-white); margin-right: .1em; }
-  .gr-logo .w.clarity { color: var(--gr-green); margin-right: .1em; }
-  .gr-logo .w.co { color: var(--gr-green); }
-  .gr-cover-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-  .gr-cover-title { font-size: 40px; line-height: 1.08; margin: 30px 0 0; max-width: 20ch; position: relative; z-index: 1; }
-  .gr-cover-title em { font-style: normal; color: var(--gr-green); }
-  .gr-cover-meta { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 34px; position: relative; z-index: 1; flex-wrap: wrap; gap: 20px; }
-  .gr-cover-meta .prep .k { font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--gr-text-3); }
-  .gr-cover-meta .prep .v { font-size: 16px; font-weight: 600; color: var(--gr-white); margin-top: 6px; }
-  .gr-cover-meta .prep .d { font-size: 13px; color: var(--gr-text-2); margin-top: 3px; }
-  .gr-consultant { display: flex; align-items: center; gap: 12px; }
-  .gr-consultant .avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--gr-panel); border: 1px solid var(--gr-green-line); display: grid; place-items: center; font-family: var(--gr-f-display); font-weight: 800; font-size: 15px; color: var(--gr-green); }
-  .gr-consultant .cn { font-size: 14px; font-weight: 700; color: var(--gr-white); }
-  .gr-consultant .cr { font-size: 12px; color: var(--gr-text-2); }
-
-  /* 01 Snapshot */
-  .gr-snap { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: start; }
-  /* CSS Grid items default to min-width:auto, which means they refuse to
-     shrink below their content's natural width — that's what was causing
-     the report to overflow its container and get clipped. Explicitly
-     zeroing it out on every grid item lets long headings/paragraphs wrap
-     and shrink to fit instead. */
-  .gr-snap > *, .gr-axis-row > *, .gr-matrix .mhdr > *, .gr-matrix-row > *,
-  .gr-pb-top > *, .gr-rc-grid > *, .gr-cta-secondary > *, .gr-snap-cards > *,
-  .gr-targets > *, .gr-cover-top > *, .gr-cover-meta > * { min-width: 0; }
-  .gr-snap-score .num { font-family: var(--gr-f-display); font-weight: 800; font-size: 76px; line-height: .95; letter-spacing: -.03em; }
-  .gr-snap-score .lbl { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gr-text-2); margin-top: 10px; }
-  .gr-snap-right .maturity { font-size: 18px; font-weight: 700; color: var(--gr-white); margin-bottom: 10px; }
-  .gr-snap-right .summary { font-size: 14.5px; line-height: 1.65; color: var(--gr-text); max-width: 62ch; }
-  .gr-snap-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
-  .gr-snap-card { background: var(--gr-panel); border: 1px solid var(--gr-line); border-radius: 12px; padding: 16px 18px; }
-  .gr-snap-card .v { font-family: var(--gr-f-display); font-weight: 800; font-size: 22px; line-height: 1.15; letter-spacing: -.02em; overflow-wrap: break-word; }
-  .gr-snap-card .v.red { color: var(--gr-red); } .gr-snap-card .v.amber { color: var(--gr-amber); } .gr-snap-card .v.teal { color: var(--gr-teal); }
-  .gr-snap-card .l { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); margin-top: 8px; }
-
-  /* 02 Scorecard */
-  .gr-scorecard { border: 1px solid var(--gr-line); border-radius: 14px; overflow: hidden; }
-  .gr-scorecard .hdr { background: var(--gr-panel); padding: 12px 20px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
-  .gr-axis-row { display: grid; grid-template-columns: 160px 1fr 56px 100px 70px; align-items: center; gap: 16px; padding: 14px 20px; border-top: 1px solid var(--gr-line-2); position: relative; }
-  .gr-axis-row.root { background: var(--gr-green-soft); }
-  .gr-axis-row.root::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gr-green); }
-  .gr-axis-name { font-size: 13.5px; font-weight: 700; color: var(--gr-white); }
-  .gr-axis-name .sub { display: block; font-size: 11px; font-weight: 400; color: var(--gr-text-2); margin-top: 2px; }
-  .gr-axis-bar { height: 8px; border-radius: 100px; background: rgba(255,255,255,.06); overflow: hidden; }
-  .gr-axis-bar .fill { height: 100%; border-radius: 100px; }
-  .gr-axis-bar .fill.red { background: var(--gr-red); } .gr-axis-bar .fill.amber { background: var(--gr-amber); } .gr-axis-bar .fill.teal { background: var(--gr-teal); }
-  .gr-axis-score { font-family: var(--gr-f-mono); font-size: 13px; font-weight: 600; text-align: right; }
-  .gr-axis-score.red { color: var(--gr-red); } .gr-axis-score.amber { color: var(--gr-amber); } .gr-axis-score.teal { color: var(--gr-teal); }
-  .gr-axis-tags { display: flex; gap: 6px; justify-content: flex-end; }
-
-  /* 03 Diagnosis */
-  .gr-diagnosis { border-left: 3px solid var(--gr-green); background: var(--gr-panel); border-radius: 0 12px 12px 0; padding: 22px 26px; }
-  .gr-diagnosis p { font-size: 14px; line-height: 1.7; color: var(--gr-text); margin-bottom: 12px; }
-  .gr-diagnosis p:last-child { margin-bottom: 0; }
-
-  /* 04 Pain signals */
-  .gr-signals { display: flex; flex-direction: column; gap: 16px; }
-  .gr-signal-row { display: flex; gap: 14px; align-items: flex-start; }
-  .gr-signal-title { font-size: 14.5px; font-weight: 700; color: var(--gr-white); margin-bottom: 4px; }
-  .gr-signal-detail { font-size: 13px; color: var(--gr-text-2); line-height: 1.6; }
-
-  /* 05 Root cause */
-  .gr-rootcause .lbl { font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); margin-bottom: 8px; }
-  .gr-rootcause .statement { font-size: 18px; font-weight: 700; color: var(--gr-white); line-height: 1.4; margin-bottom: 22px; }
-  .gr-rc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .gr-rc-card { background: var(--gr-panel); border: 1px solid var(--gr-line); border-radius: 12px; padding: 18px 20px; }
-  .gr-rc-card h4 { font-size: 13px; margin-bottom: 12px; }
-  .gr-rc-card ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-  .gr-rc-card li { font-size: 13px; color: var(--gr-text); line-height: 1.5; display: flex; gap: 8px; }
-  .gr-rc-card.factors li::before { content: '•'; color: var(--gr-green); flex: none; }
-  .gr-rc-card.effects li::before { content: '→'; color: var(--gr-green); flex: none; }
-  .gr-rc-footer { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--gr-line); font-size: 12.5px; color: var(--gr-text-2); }
-
-  /* 06 Priority matrix */
-  .gr-matrix { border: 1px solid var(--gr-line); border-radius: 14px; overflow: hidden; }
-  .gr-matrix .mhdr { display: grid; grid-template-columns: 56px 1fr 200px 90px; background: var(--gr-panel); padding: 12px 20px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
-  .gr-matrix-row { display: grid; grid-template-columns: 56px 1fr 200px 90px; align-items: center; gap: 10px; padding: 18px 20px; border-top: 1px solid var(--gr-line-2); }
-  .gr-matrix-row .rank { font-family: var(--gr-f-display); font-weight: 800; font-size: 30px; color: var(--gr-text-3); }
-  .gr-matrix-row .prob-name { font-size: 14.5px; font-weight: 700; color: var(--gr-white); }
-  .gr-matrix-row .prob-reason { font-size: 12.5px; color: var(--gr-text-2); margin-top: 4px; line-height: 1.5; }
-  .gr-ice-badges { display: flex; gap: 6px; }
-  .gr-ice-badge { font-family: var(--gr-f-mono); font-size: 10.5px; font-weight: 600; padding: 4px 8px; border-radius: 6px; }
-  .gr-ice-badge.g { background: var(--gr-green-soft); color: var(--gr-green); }
-  .gr-ice-badge.a { background: var(--gr-amber-soft); color: var(--gr-amber); }
-  .gr-ice-total { font-family: var(--gr-f-display); font-weight: 800; font-size: 26px; color: var(--gr-green); text-align: right; }
-
-  /* 07 Playbooks */
-  .gr-playbook { border: 1px solid var(--gr-line); border-radius: 14px; padding: 24px 26px; }
-  .gr-playbook + .gr-playbook { margin-top: 16px; }
-  .gr-pb-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  .gr-pb-name { font-size: 19px; font-weight: 800; color: var(--gr-white); }
-  .gr-pb-badges { display: flex; gap: 8px; }
-  .gr-pb-objective { border-left: 3px solid var(--gr-green); padding-left: 14px; margin-top: 14px; font-size: 13.5px; line-height: 1.6; color: var(--gr-text); }
-  .gr-pb-keyactions { margin-top: 20px; }
-  .gr-pb-keyactions .lbl { font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); margin-bottom: 10px; }
-  .gr-pb-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-  .gr-pb-list li { display: flex; gap: 12px; font-size: 13.5px; color: var(--gr-white); align-items: baseline; }
-  .gr-pb-list li .n { font-family: var(--gr-f-mono); font-size: 11px; color: var(--gr-green); flex: none; }
-  .gr-pb-outcome { margin-top: 18px; background: var(--gr-green-soft); border: 1px solid var(--gr-green-line); border-radius: 10px; padding: 12px 16px; font-size: 13px; color: var(--gr-green); font-weight: 600; }
-
-  /* 08 Service stack */
-  .gr-stack { border: 1px solid var(--gr-line); border-radius: 14px; overflow: hidden; }
-  .gr-stack-group-hdr { background: var(--gr-panel); padding: 10px 22px; font-family: var(--gr-f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); border-top: 1px solid var(--gr-line); }
-  .gr-stack-group-hdr:first-child { border-top: none; }
-  .gr-stack-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 22px; border-top: 1px solid var(--gr-line-2); }
-  .gr-stack-row .sn { font-size: 14px; font-weight: 700; color: var(--gr-white); }
-  .gr-stack-row .sd { font-size: 12.5px; color: var(--gr-text-2); margin-top: 3px; }
-  .gr-stack-row .price { font-family: var(--gr-f-mono); font-size: 14px; font-weight: 600; flex: none; }
-  .gr-stack-row .price.green { color: var(--gr-green); } .gr-stack-row .price.purple { color: var(--gr-purple); }
-
-  /* 09 Roadmap */
-  .gr-timeline { position: relative; padding-left: 30px; }
-  .gr-timeline::before { content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 1.5px; background: var(--gr-green-line); }
-  .gr-phase { position: relative; padding-bottom: 30px; }
-  .gr-phase:last-child { padding-bottom: 0; }
-  .gr-phase::before { content: ''; position: absolute; left: -30px; top: 4px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--gr-ink); }
-  .gr-phase.p1::before { background: var(--gr-green); } .gr-phase.p2::before { background: var(--gr-amber); } .gr-phase.p3::before { background: var(--gr-blue); }
-  .gr-phase-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .gr-phase-name { font-size: 16px; font-weight: 800; color: var(--gr-white); }
-  .gr-phase-tag { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 9px; border-radius: 100px; border: 1px solid var(--gr-line); color: var(--gr-text-2); }
-  .gr-phase-focus { font-size: 13.5px; color: var(--gr-text); margin: 10px 0 14px; max-width: 60ch; }
-  .gr-phase-checks { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .gr-phase-checks li { font-size: 13px; color: var(--gr-text); display: flex; gap: 10px; align-items: baseline; }
-  .gr-phase-checks li::before { content: '✓'; color: var(--gr-green); font-weight: 700; flex: none; }
-
-  /* 10 Targets */
-  .gr-targets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-  .gr-target { background: var(--gr-panel); border: 1px solid var(--gr-line); border-radius: 12px; padding: 18px 18px; }
-  .gr-target .l { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
-  .gr-target .v { font-family: var(--gr-f-display); font-weight: 800; font-size: 26px; color: var(--gr-green); letter-spacing: -.02em; margin: 10px 0 6px; }
-  .gr-target .d { font-size: 12px; color: var(--gr-text-2); line-height: 1.4; }
-
-  /* 11 CTA + footer */
-  .gr-cta-card { border: 1.5px solid var(--gr-green-line); border-radius: 16px; padding: 44px 40px; text-align: center; background: linear-gradient(180deg, rgba(0,230,118,.05), transparent); }
-  .gr-cta-card .lbl { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--gr-green); }
-  .gr-cta-card h3 { font-size: 28px; margin: 14px 0 12px; }
-  .gr-cta-card p { font-size: 14.5px; color: var(--gr-text); max-width: 46ch; margin: 0 auto; line-height: 1.6; }
-  .gr-cta-btn { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; background: var(--gr-green); color: var(--gr-ink); font-family: var(--gr-f-display); font-weight: 700; font-size: 15px; border-radius: 9px; padding: 15px 28px; cursor: pointer; border: none; text-decoration: none; }
-  .gr-cta-btn:hover { background: #14f085; }
-  .gr-cta-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 28px; }
-  .gr-cta-sec-card { border: 1px solid var(--gr-line); border-radius: 12px; padding: 16px 18px; text-align: left; }
-  .gr-cta-sec-card .k { font-family: var(--gr-f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
-  .gr-cta-sec-card .v { font-size: 13.5px; font-weight: 600; color: var(--gr-white); margin-top: 6px; }
-  .gr-docfoot { display: flex; align-items: center; justify-content: space-between; padding: 20px clamp(24px, 6vw, 96px); border-top: 1px solid var(--gr-line); background: var(--gr-ink-2); flex-wrap: wrap; gap: 12px; }
-  .gr-docfoot .gr-logo { font-size: 15px; }
-  .gr-docfoot .conf { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--gr-text-2); }
-  .gr-docfoot .dl { font-family: var(--gr-f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--gr-line); border-radius: 9px; padding: 8px 14px; color: var(--gr-white); cursor: pointer; background: none; }
-  .gr-docfoot .dl:hover { border-color: var(--gr-green-line); color: var(--gr-green); }
-  .gr-docfoot .dl:disabled { opacity: .5; cursor: wait; }
-
-  @media (max-width: 760px) {
-    .gr-section { padding: 26px 22px; } .gr-cover { padding: 30px 22px; }
-    .gr-snap, .gr-rc-grid, .gr-cta-secondary { grid-template-columns: 1fr; }
-    .gr-snap-cards, .gr-targets { grid-template-columns: 1fr 1fr; }
-    .gr-axis-row { grid-template-columns: 1fr; gap: 8px; }
-    .gr-axis-tags { justify-content: flex-start; }
-    .gr-matrix .mhdr, .gr-matrix-row { grid-template-columns: 40px 1fr; }
-    .gr-matrix-row .gr-ice-badges, .gr-matrix-row .gr-ice-total { grid-column: 2; }
-    .gr-docfoot { flex-direction: column; }
-  }
-
-  .cycle-section { margin-top: 56px; }
-  .cycle-card { border: 1.5px solid rgba(0,230,118,.3); border-radius: 16px; padding: 36px 32px; background: rgba(0,230,118,.04); text-align: center; margin-bottom: 16px; }
-  .cycle-card h3 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 10px; }
-  .cycle-card p { font-size: 14px; color: rgba(255,255,255,.5); margin-bottom: 22px; max-width: 440px; margin-left: auto; margin-right: auto; line-height: 1.6; }
-
-  .cycle-secondary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .cycle-secondary-card { border: 1px solid var(--border-dark); border-radius: 12px; padding: 22px 24px; }
-  .cycle-secondary-card h4 { font-size: 14.5px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
-  .cycle-secondary-card p { font-size: 12.5px; color: rgba(255,255,255,.4); line-height: 1.55; margin-bottom: 14px; }
-
-  .err-box { border: 1px solid var(--red); background: rgba(255,80,80,.08); padding: 13px 16px; font-size: 13px; color: #ff8080; margin-top: 14px; border-radius: 8px; }
-
-  .confirm-toast {
-    display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: var(--green); color: var(--ink); padding: 14px 24px; border-radius: 10px;
-    font-size: 13px; font-weight: 700; box-shadow: 0 12px 32px rgba(0,0,0,.4); opacity: 0;
-    transition: all .3s ease; z-index: 1000;
-  }
-  .confirm-toast.show { display: block; opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  @media (max-width: 600px) {
-    h1.q-title { font-size: 24px; }
-    .score-cell { flex: 1 1 50%; }
-    .gate-result-preview { flex-direction: column; gap: 16px; }
-    .cycle-secondary-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ============================================
-   PRINT / PDF — used by the "Download PDF
-   report" button (window.print()). Switches to
-   a light, paper-friendly layout and hides
-   everything except the report itself.
-============================================ */
-@media print {
-  body { background: #fff !important; color: #1a1a1a !important; padding-top: 0 !important; }
-  body::before { display: none !important; }
-  header, .progress-track, .no-print, .nav-mobile-panel, .confirm-toast { display: none !important; }
-  .screen { display: none !important; }
-  .screen[data-screen="report"] { display: block !important; }
-  main { padding: 0 !important; max-width: 100% !important; }
-  .diag-wrap { max-width: 100% !important; padding: 0 24px !important; }
-  h1, h2, h3, h4, .report-title, .playbook-name, .roadmap-title { color: #0B1F3A !important; }
-  .report-kicker { color: #00a85c !important; }
-  .report-meta, .report-body, .symptom-text, .playbook-desc, .roadmap-desc { color: #333 !important; }
-  .score-strip, .playbook-card, .tier-callout { border-color: #ccc !important; }
-  .score-cell { border-color: #ddd !important; }
-  .score-cell-label { color: #555 !important; }
-  .cycle-section { display: none !important; }
-  a[href]::after { content: none !important; }
-  .btn, .btn-outline-white, .btn-green { display: none !important; }
-}
 </style>
 </head>
 <body>
 
-<header style="border-bottom:1px solid var(--border-dark);position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(6,15,28,.94);backdrop-filter:blur(20px)">
-  <div class="diag-wrap topbar-inner">
-    <a href="index.html" class="gcc-logo" style="transform:scale(0.85);transform-origin:left center">
-      <span class="star">&#10022;</span>
-      <span class="w-growth">Growth</span><span class="w-clarity">Clarity</span><span class="w-co">Co.</span>
-    </a>
-    <div class="step-indicator" id="stepIndicator">Step 1 of 10</div>
+<div class="topbar">
+  <div class="wrap">
+    <div class="logo">growth<b>·</b>clarity</div>
+    <div class="tag mono" id="topTag">Growth Score Report</div>
   </div>
-</header>
-<div class="progress-track" style="position:fixed;top:64px;left:0;right:0;z-index:998"><div class="progress-fill" id="progressFill"></div></div>
+</div>
 
-<main class="diag-wrap" style="padding-top:80px">
-
-  <section class="screen active" data-screen="intro">
-    <div class="eyebrow" id="introEyebrow">GTM diagnostic &middot; 4 minutes &middot; free</div>
-    <div id="introWelcomeBanner"></div>
-    <h1 class="q-title">Find out which of six GTM problems is actually costing you pipeline.</h1>
-    <p class="q-sub" id="introSub">Ten quick questions about your stage, motion, and funnel. We score positioning, demand generation, CAC, alignment, conversion, and expansion against patterns from real Series A&ndash;C engagements, then tell you the root cause &mdash; not just the symptom.</p>
-    <button class="btn btn-green btn-lg btn-arrow" onclick="goNext()">Start the diagnostic</button>
-  </section>
-
-  <!-- QUALIFYING -->
-  <section class="screen" data-screen="q1">
-    <div class="eyebrow">Company basics</div>
-    <h1 class="q-title">How do you currently sell?</h1>
-    <p class="q-sub">This shapes which channel and funnel benchmarks we compare you against.</p>
-    <div class="option-grid" id="opts-motion"></div>
-  </section>
-
-  <section class="screen" data-screen="q2">
-    <div class="eyebrow">Company stage</div>
-    <h1 class="q-title">What's your current ARR?</h1>
-    <p class="q-sub">Series A&ndash;C, $1M&ndash;$20M ARR is our core diagnostic range &mdash; outside it, the benchmarks below shift.</p>
-    <div class="option-grid" id="opts-arr"></div>
-  </section>
-
-  <section class="screen" data-screen="q3">
-    <div class="eyebrow">Company stage</div>
-    <h1 class="q-title">How big is your marketing function?</h1>
-    <p class="q-sub">Including founders doing marketing part-time.</p>
-    <div class="option-grid" id="opts-team"></div>
-  </section>
-
-  <!-- SCORED CLUSTERS -->
-  <section class="screen" data-screen="q4">
-    <div class="eyebrow">Positioning &amp; ICP</div>
-    <h1 class="q-title">If a prospect asked "why you and not a competitor," would your reps give the same answer?</h1>
-    <p class="q-sub">Ask two reps this question separately if you're not sure.</p>
-    <div class="option-grid" id="opts-messaging"></div>
-  </section>
-
-  <section class="screen" data-screen="q5">
-    <div class="eyebrow">Demand generation</div>
-    <h1 class="q-title">How would you describe your pipeline month to month?</h1>
-    <p class="q-sub">Be honest &mdash; this is one of the strongest signals in the whole diagnostic.</p>
-    <div class="option-grid" id="opts-pipeline"></div>
-  </section>
-
-  <section class="screen" data-screen="q6">
-    <div class="eyebrow">CAC &amp; unit economics</div>
-    <h1 class="q-title">Over the last 2 quarters, has your CAC...</h1>
-    <p class="q-sub">Compare cost per closed-won customer, not cost per lead. Can you fully explain the move?</p>
-    <div class="option-grid" id="opts-cac"></div>
-  </section>
-
-  <section class="screen" data-screen="q7">
-    <div class="eyebrow">Sales &amp; marketing alignment</div>
-    <h1 class="q-title">Do sales and marketing agree on what a qualified lead looks like?</h1>
-    <p class="q-sub">Disagreement here is the most common silent killer of pipeline velocity.</p>
-    <div class="option-grid" id="opts-alignment"></div>
-  </section>
-
-  <section class="screen" data-screen="q8">
-    <div class="eyebrow">Conversion</div>
-    <h1 class="q-title">Of the demos or trials you run, roughly what share turn into paying customers?</h1>
-    <p class="q-sub">If you're PLG, think trial-to-paid. If you're SLG, think demo-to-close.</p>
-    <div class="option-grid" id="opts-conversion"></div>
-  </section>
-
-  <section class="screen" data-screen="q9">
-    <div class="eyebrow">Expansion &amp; NRR</div>
-    <h1 class="q-title">Is expansion revenue (upsell, cross-sell) a meaningful part of growth?</h1>
-    <p class="q-sub">Healthy SaaS targets 110%+ net revenue retention.</p>
-    <div class="option-grid" id="opts-nrr"></div>
-  </section>
-
-  <section class="screen" data-screen="q10">
-    <div class="eyebrow">Open context</div>
-    <h1 class="q-title">In one sentence, what made you click on this diagnostic today?</h1>
-    <p class="q-sub">Optional, but this is the single most useful field for us when we read your report.</p>
-    <input type="text" class="input-field" id="freeTextInput" placeholder="e.g. our board asked why CAC is up 30% this quarter" maxlength="200">
-    <div class="field-hint">Press enter or continue</div>
-    <div class="nav-row-diag">
-      <button class="btn-ghost" onclick="goBack()">&larr; Back</button>
-      <button class="btn btn-green btn-md btn-arrow" onclick="goNext()">See my results</button>
+<!-- ============ SCREEN 1 — COMPANY DETAILS ============ -->
+<section class="screen active" id="s1">
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Growth Score Report</div>
+      <h1 style="margin-top:14px">A Growth Score Report<br>with your own company details.</h1>
+      <p class="lead">Enter your company details and answer 66 questions. The engine scores your go-to-market across 11 systems and returns your Growth Score, your single binding constraint, and the exact system to fix it — tuned to your vertical.</p>
+      <div class="badges">
+        <span class="badge">66 questions</span>
+        <span class="badge">11 scoring engines</span>
+        <span class="badge">6 verticals</span>
+        <span class="badge">~8 minutes</span>
+      </div>
+      <div class="who">
+        <b>Who this is for.</b> <span class="muted">Founders, CEOs, and heads of growth at B2B SaaS companies between $1M and $20M ARR (Series A–C) who want a clear, benchmarked read on where growth is leaking — before their next board meeting or hire.</span>
+      </div>
     </div>
-  </section>
 
-  <section class="screen" data-screen="loading">
-    <div class="loading-screen">
-      <div class="eyebrow" style="justify-content:center">Generating your diagnostic</div>
-      <h1 class="q-title" style="font-size:22px; text-align:center; margin:0 auto;">Mapping your answers against the Growth OS pattern library</h1>
-      <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
-      <div class="loading-line" id="loadingLine">Classifying company profile...</div>
+    <div class="card form-card">
+      <h2>Your company details</h2>
+      <p class="muted" style="margin:6px 0 22px;font-size:14.5px">You self-report these — they appear on your report and tune the scoring to your vertical.</p>
+      <div class="grid2">
+        <div class="field"><label class="f">Full name</label><input id="i_name" type="text" placeholder="Jane Doe" autocomplete="name"></div>
+        <div class="field"><label class="f">Work email</label><input id="i_email" type="email" placeholder="jane@company.com" autocomplete="email"></div>
+        <div class="field"><label class="f">Company name</label><input id="i_company" type="text" placeholder="Acme Inc." autocomplete="organization"></div>
+        <div class="field"><label class="f">Website</label><input id="i_site" type="text" placeholder="company.com" autocomplete="url"></div>
+        <div class="field">
+          <label class="f">Your role</label>
+          <select id="i_role">
+            <option value="">Select…</option>
+            <option>Founder / CEO</option>
+            <option>Head of Growth / Marketing</option>
+            <option>VP Sales / Revenue</option>
+            <option>RevOps</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="f">ARR band</label>
+          <select id="i_arr">
+            <option value="">Select…</option>
+            <option>Pre-$1M</option>
+            <option>$1M–$3M</option>
+            <option>$3M–$5M</option>
+            <option>$5M–$10M</option>
+            <option>$10M–$20M</option>
+            <option>$20M+</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:6px">
+        <label class="f">Your vertical</label>
+        <div class="vert-grid" id="vertGrid"></div>
+      </div>
+      <div class="err" id="s1err"></div>
+      <button class="btn" id="startBtn" style="margin-top:8px">Start diagnostic →</button>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="screen" data-screen="report">
-    <div id="reportContent"></div>
-  </section>
+<!-- ============ SCREEN 2 — QUESTIONNAIRE ============ -->
+<section class="screen" id="s2">
+  <div class="q-top">
+    <div class="wrap">
+      <div class="prog-meta">
+        <div class="prog-line"><span>Diagnostic progress</span><span class="v"><span id="ansCount">0</span> / 66 answered</span></div>
+        <div class="bar"><i id="progBar"></i></div>
+      </div>
+      <button class="btn" id="genBtn" disabled>Generate report →</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="qhead">
+      <span class="vtag mono" id="qVtag">Vertical</span>
+      <h1>66 questions across 11 growth systems.</h1>
+      <p class="muted" style="margin-top:12px;max-width:600px">Answer honestly. “We don’t measure this” is a valid answer — not measuring is itself a finding, and it’s scored as zero.</p>
+    </div>
+    <div id="engineList"></div>
+    <div class="q-actions">
+      <button class="btn ghost" id="backBtn">← Back to details</button>
+      <button class="btn" id="genBtn2" disabled>Generate report →</button>
+    </div>
+  </div>
+</section>
 
-</main>
+<!-- ============ SCREEN 3 — REPORT ============ -->
+<section class="screen" id="s3">
+  <div class="wrap" id="reportRoot"></div>
+</section>
 
-<div class="confirm-toast" id="confirmToast">Added to the list &mdash; check your inbox in a moment.</div>
-
-<!-- PDF export libraries — only used by the "Download PDF" button on the
-     finished report; loaded from cdnjs, no build step, no backend. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<script src="partials.js"></script>
 <script>
-// ============================================
-// BACKEND CONFIG
-// The Gemini key no longer lives in this file — it's stored as a
-// secret on the Cloudflare Worker (see /worker in the project repo)
-// and never reaches the browser. This file only needs the worker's
-// public URL and your Supabase project's URL + anon key (safe to be
-// public — see supabase-schema.sql for why: insert-only RLS policy).
-// ============================================
-const REPORT_API_URL = "https://gcc-report-api.estondigital.workers.dev/";
-const SUPABASE_URL = "https://vtxqgmioqwftrszgfohy.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ0eHFnbWlvcXdmdHJzemdmb2h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5OTY2OTIsImV4cCI6MjA5ODU3MjY5Mn0.n9APqs8-j4UsS-rlvEJ6IXkLap9LWZ6-wqQ14KPjB4I";
-
-// Writes one row to the `leads` table. Safe to call with the public
-// anon key because the RLS policy only allows INSERT — see
-// supabase-schema.sql. Fails silently so a DB hiccup never blocks
-// the report from rendering for the person waiting on it.
-function saveLead(row) {
-  if (SUPABASE_URL.startsWith('REPLACE_WITH')) return; // not configured yet — see README
-  fetch(`${SUPABASE_URL}/rest/v1/leads`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      'Prefer': 'return=minimal',
-    },
-    body: JSON.stringify(row),
-  }).catch(() => { /* fail silently — never block the client-facing report */ });
-}
-
-const state = {
-  step: 0,
-  screens: ['intro','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','loading','report'],
-  answers: {},
-  contact: {},
-  prefilled: false,
-};
-
 /* ============================================================
-   HANDOFF FROM start-diagnostic.html
-   That page collects name/email/company/role/ARR/motion, saves it
-   to localStorage as 'gcc_prospect', then links here. If we find it,
-   we reuse it instead of asking again: q1 (motion) and q2 (ARR) are
-   skipped since we already have those answers, and the final email
-   gate is skipped entirely since we already have name+email — the
-   person goes straight from q10 into report generation. Consumed
-   once (removed from localStorage after reading) so a return visit
-   later isn't permanently stuck on the shortened flow.
+   GROWTH SCORE REPORT — deterministic engine (self-contained)
+   Scoring runs entirely client-side. No number is ever invented:
+   engine scores are the mean of answered questions; the growth
+   score is the vertical-weighted mean of engine scores.
+   [wire-up] Where marked below, POST {profile, answers, engines,
+   growthScore, constraint} to Supabase `leads` and the Cloudflare
+   Worker for LLM narrative. Omitted here so the page never errors.
    ============================================================ */
-(function applyProspectHandoff() {
-  let raw;
-  try { raw = localStorage.getItem('gcc_prospect'); } catch (e) { return; }
-  if (!raw) return;
-  let data;
-  try { data = JSON.parse(raw); } catch (e) { return; }
-  try { localStorage.removeItem('gcc_prospect'); } catch (e) { /* ignore */ }
 
-  const VALID_MOTION = ['plg', 'slg', 'hybrid'];
-  const VALID_ARR = ['pre', 'sub1m', 'a', 'b', 'c', 'd'];
-  if (!data.name || !data.email || !VALID_MOTION.includes(data.motion) || !VALID_ARR.includes(data.arr)) return;
-
-  state.contact = { name: data.name, email: data.email, company: data.company || '', role: data.role || '' };
-  state.answers.motion = data.motion;
-  state.answers.arr = data.arr;
-  state.prefilled = true;
-  state.screens = state.screens.filter(s => s !== 'q1' && s !== 'q2');
-
-  // Update the intro screen's copy to reflect the shortened flow —
-  // this runs synchronously since the script tag sits after the
-  // markup, so #introEyebrow / #introSub / #introWelcomeBanner
-  // already exist in the DOM at this point.
-  const remainingQ = state.screens.filter(s => /^q\d+$/.test(s)).length;
-  const eyebrowEl = document.getElementById('introEyebrow');
-  const subEl = document.getElementById('introSub');
-  const bannerEl = document.getElementById('introWelcomeBanner');
-  const firstName = data.name.split(' ')[0];
-  if (eyebrowEl) eyebrowEl.innerHTML = `GTM diagnostic &middot; ~3 minutes &middot; free`;
-  if (subEl) subEl.innerHTML = `${remainingQ} quick questions about your funnel &mdash; we've already got your stage and motion from before. We score positioning, demand generation, CAC, alignment, conversion, and expansion against patterns from real Series A&ndash;C engagements, then tell you the root cause &mdash; not just the symptom.`;
-  if (bannerEl) bannerEl.innerHTML = `<div style="font-size:12.5px;color:var(--green);margin-bottom:14px">Continuing as ${firstName}${data.company ? ' &middot; ' + data.company : ''} &mdash; your report goes straight to ${data.email}</div>`;
-})();
-
-const optionSets = {
-  motion: [
-    { v: 'plg', label: 'Self-serve / product-led (low-touch signup)' },
-    { v: 'slg', label: 'Sales-led (demos, sales cycle, contracts)' },
-    { v: 'hybrid', label: 'Hybrid — both self-serve and sales-assisted' },
-  ],
-  arr: [
-    { v: 'pre', label: 'Pre-revenue' },
-    { v: 'sub1m', label: 'Under $1M ARR' },
-    { v: 'a', label: '$1M–$5M ARR (Series A range)' },
-    { v: 'b', label: '$5M–$12M ARR (Series B range)' },
-    { v: 'c', label: '$12M–$20M ARR (Series C range)' },
-    { v: 'd', label: 'Above $20M ARR' },
-  ],
-  team: [
-    { v: 'none', label: 'No dedicated marketing — founder-led' },
-    { v: 'small', label: '1–3 person marketing team' },
-    { v: 'mid', label: '4–10 person marketing team' },
-    { v: 'large', label: '10+ person marketing team' },
-  ],
-  messaging: [
-    { v: 'yes_consistent', label: 'Yes — every rep says nearly the same thing' },
-    { v: 'somewhat', label: 'Roughly, but everyone phrases it differently' },
-    { v: 'no', label: "No — I'd guess very different answers" },
-    { v: 'unsure', label: "Honestly, I'm not sure" },
-  ],
-  pipeline: [
-    { v: 'consistent', label: 'Predictable — roughly the same every month' },
-    { v: 'volatile', label: 'Volatile — great month, then a dead one' },
-    { v: 'declining', label: 'Declining — was fine, now shrinking' },
-    { v: 'none', label: "We don't have real pipeline yet" },
-  ],
-  cac: [
-    { v: 'down', label: 'Gone down' },
-    { v: 'flat', label: 'Stayed flat' },
-    { v: 'up_moderate', label: 'Gone up, but explainable' },
-    { v: 'up_sharp', label: "Gone up and we can't fully explain why" },
-  ],
-  alignment: [
-    { v: 'aligned', label: 'Yes — we have a shared, documented definition' },
-    { v: 'mostly', label: 'Mostly, informally' },
-    { v: 'no', label: "No — sales routinely says marketing's leads aren't good" },
-  ],
-  conversion: [
-    { v: 'strong', label: '25%+ — conversion is a strength' },
-    { v: 'average', label: '10–25% — roughly in line with benchmark' },
-    { v: 'weak', label: 'Under 10% — this feels low' },
-    { v: 'unsure', label: "We don't track this clearly" },
-  ],
-  nrr: [
-    { v: 'strong', label: 'Yes — expansion is a real, tracked growth lever' },
-    { v: 'some', label: 'Some, but it\'s not structured or repeatable' },
-    { v: 'flat', label: 'Barely — NRR is flat or declining' },
-    { v: 'unsure', label: "We don't track this closely" },
-  ]
+/* ---- 11 engines: label + base weight (sum = 100) ---- */
+const ENGINES = {
+  pos:{label:"Positioning",           w:12},
+  dem:{label:"Demand generation",     w:12},
+  con:{label:"Conversion",            w:11},
+  ret:{label:"Retention & expansion", w:11},
+  icp:{label:"ICP & targeting",       w:10},
+  sal:{label:"Pipeline & sales",      w:10},
+  act:{label:"Activation & onboarding",w:9},
+  eco:{label:"Unit economics",        w:9},
+  rev:{label:"RevOps & data",         w:6},
+  cnt:{label:"Content & brand",       w:5},
+  pty:{label:"Ecosystem & partners",  w:5}
 };
 
-function renderOptions(containerId, key, groupName) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = '';
-  optionSets[key].forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option';
-    btn.innerHTML = `<span>${opt.label}</span><span class="opt-num">${String(i+1).padStart(2,'0')}</span>`;
-    btn.onclick = () => selectOption(groupName, opt.v, btn, containerId);
-    container.appendChild(btn);
-  });
-}
+/* ---- constraint → GCC offer routing ---- */
+const OFFERS = {
+  pos:{name:"Positioning & Messaging House", price:"$3K–$8K project",   fix:"Sharpen who you're for, why you're different, and the words the whole team uses."},
+  dem:{name:"Demand Gen Engine",             price:"$2.4K–$10K/mo",     fix:"Build a repeatable, measurable pipeline motion across your working channels."},
+  con:{name:"Funnel & Conversion Audit",     price:"$1.2K–$3K project", fix:"Find and fix the biggest drop-off between visitor and closed revenue."},
+  ret:{name:"Retention & Expansion System",  price:"$2.4K–$8K/mo",      fix:"Protect NRR and build a structured expansion motion inside the base."},
+  icp:{name:"ICP Scoring System",            price:"$3K–$6K project",   fix:"Define, score, and focus effort on the accounts that actually convert."},
+  sal:{name:"GTM Motion Blueprint",          price:"$3K–$10K project",  fix:"Document a repeatable sales process with clean stages and reliable forecasting."},
+  act:{name:"Activation & Onboarding Redesign",price:"$2.4K–$6K project",fix:"Cut time-to-value so new customers reach the moment that predicts retention."},
+  eco:{name:"Unit Economics & Revenue Blueprint",price:"$3K–$10K project",fix:"Make LTV:CAC, payback, and channel economics visible and healthy."},
+  rev:{name:"RevOps & Data Foundation",      price:"$3K–$8K project",   fix:"Establish one source of truth, clean attribution, and a shared dashboard."},
+  cnt:{name:"Content Growth Engine",         price:"$2.4K–$8K/mo",      fix:"Turn content and founder presence into authority and sourced pipeline."},
+  pty:{name:"Ecosystem & Partnerships Program",price:"$3K–$8K project", fix:"Open referral, integration, and community channels as real distribution."}
+};
 
-function selectOption(groupName, value, btnEl, containerId) {
-  document.querySelectorAll(`#${containerId} .option`).forEach(o => o.classList.remove('selected'));
-  btnEl.classList.add('selected');
-  state.answers[groupName] = value;
-  setTimeout(() => goNext(), 280);
-}
+/* ---- 6 vertical config packs: engine weight multipliers + cohort median ---- */
+const VERTICALS = {
+  "HR Tech":         {mult:{act:1.4, ret:1.3, pos:1.2, dem:.8,  sal:.9}, median:68},
+  "FinTech":         {mult:{eco:1.3, sal:1.2, rev:1.2, pos:1.15,con:1.1, dem:.85,cnt:.9}, median:70},
+  "EdTech":          {mult:{act:1.35,ret:1.25,cnt:1.2, con:1.1, eco:.85,sal:.9}, median:66},
+  "Healthcare SaaS": {mult:{sal:1.3, pos:1.25,icp:1.15,rev:1.1, dem:.8, pty:.9}, median:69},
+  "AI SaaS":         {mult:{pos:1.35,cnt:1.25,dem:1.15,con:1.1, ret:1.05,pty:.85,sal:.9}, median:64},
+  "Enterprise SaaS": {mult:{sal:1.3, icp:1.25,pty:1.2, pos:1.1, dem:.85,act:.9, con:.95}, median:71}
+};
 
-renderOptions('opts-motion', 'motion', 'motion');
-renderOptions('opts-arr', 'arr', 'arr');
-renderOptions('opts-team', 'team', 'team');
-renderOptions('opts-messaging', 'messaging', 'messaging');
-renderOptions('opts-pipeline', 'pipeline', 'pipeline');
-renderOptions('opts-cac', 'cac', 'cac');
-renderOptions('opts-alignment', 'alignment', 'alignment');
-renderOptions('opts-conversion', 'conversion', 'conversion');
-renderOptions('opts-nrr', 'nrr', 'nrr');
+/* ---- 66 questions, mapped to engines ---- */
+const Q = [
+  // Positioning (8)
+  ["pos","A new visitor can tell within 5 seconds who you're for and why you're different."],
+  ["pos","Your homepage headline names a specific outcome, not a feature category."],
+  ["pos","You have a written positioning statement the whole team actually uses."],
+  ["pos","You've explicitly defined who you are NOT for."],
+  ["pos","Sales and marketing describe the product in the same words."],
+  ["pos","You can name your top 3 competitors and exactly how you differ from each."],
+  ["pos","Buyers understand what category of tool you are without explanation."],
+  ["pos","You've tested your core message with real buyers in the last 6 months."],
+  // Demand generation (7)
+  ["dem","You know which channels source the majority of your pipeline."],
+  ["dem","You have a repeatable, documented demand-generation motion."],
+  ["dem","Your content produces measurable pipeline, not just traffic."],
+  ["dem","You track cost-per-opportunity by channel."],
+  ["dem","You have more than one acquisition channel that reliably works."],
+  ["dem","Inbound and outbound are both contributing to pipeline."],
+  ["dem","You can predictably increase pipeline by increasing spend or effort."],
+  // Conversion (7)
+  ["con","You measure conversion rate at each funnel stage."],
+  ["con","Your website and landing pages convert visitors to leads at a healthy rate."],
+  ["con","Your demo-to-close rate is tracked and acceptable."],
+  ["con","Your free/trial-to-paid conversion is measured (or you know it's not applicable)."],
+  ["con","You run structured experiments to improve conversion."],
+  ["con","You know exactly where the biggest drop-off in your funnel is."],
+  ["con","Your pricing page is clear and doesn't create avoidable friction."],
+  // Retention & expansion (7)
+  ["ret","You track Net Revenue Retention (NRR)."],
+  ["ret","You track logo churn and know the real reasons customers leave."],
+  ["ret","You have a structured expansion / upsell motion."],
+  ["ret","You use product-usage data as an account health signal."],
+  ["ret","You proactively intervene with at-risk accounts before they churn."],
+  ["ret","Expansion revenue is a meaningful share of new revenue."],
+  ["ret","You have a defined customer success function or process."],
+  // ICP & targeting (6)
+  ["icp","You have a written, specific Ideal Customer Profile."],
+  ["icp","You score or prioritize accounts by fit before pursuing them."],
+  ["icp","You know the buying triggers that signal a good-fit prospect."],
+  ["icp","Your best customers share clearly identifiable common traits."],
+  ["icp","You concentrate sales and marketing effort on your ICP, not everyone."],
+  ["icp","You've defined a negative ICP — who to disqualify early."],
+  // Pipeline & sales (6)
+  ["sal","You have a documented, repeatable sales process."],
+  ["sal","Your pipeline stages have clear entry and exit criteria."],
+  ["sal","You can forecast revenue with reasonable accuracy."],
+  ["sal","Your sales-cycle length is tracked and stable."],
+  ["sal","Reps have real enablement materials — decks, battlecards, case studies."],
+  ["sal","Win/loss reasons are captured and reviewed regularly."],
+  // Activation & onboarding (6)
+  ["act","You measure time-to-first-value for new customers."],
+  ["act","You have a structured onboarding process, not ad hoc handholding."],
+  ["act","You track onboarding completion rates."],
+  ["act","New users reach a clear, defined activation milestone."],
+  ["act","Early product adoption is monitored per account."],
+  ["act","You deliberately remove friction from the first-run experience."],
+  // Unit economics (5)
+  ["eco","You know your LTV:CAC ratio."],
+  ["eco","You track CAC payback period."],
+  ["eco","You know your gross margin."],
+  ["eco","Your unit economics are healthy for your stage."],
+  ["eco","You measure CAC by channel, not just blended."],
+  // RevOps & data (5)
+  ["rev","You have a single source of truth for revenue data."],
+  ["rev","Your CRM data is clean and consistently maintained."],
+  ["rev","You have working attribution for pipeline sources."],
+  ["rev","Leadership reviews a shared metrics dashboard on a regular cadence."],
+  ["rev","Your funnel-stage definitions are standardized and agreed across teams."],
+  // Content & brand (5)
+  ["cnt","You publish content consistently against a real plan."],
+  ["cnt","You have organic search visibility for terms your buyers use."],
+  ["cnt","Your founder or team has a visible presence in your market."],
+  ["cnt","You have strong authority signals — proof, reviews, case studies."],
+  ["cnt","Your brand is recognized within your specific niche."],
+  // Ecosystem & partnerships (4)
+  ["pty","You have a referral or partner pipeline that produces deals."],
+  ["pty","You have integrations that drive distribution or stickiness."],
+  ["pty","You actively participate in the communities your buyers live in."],
+  ["pty","Partnerships contribute measurably to growth."]
+];
 
-function showScreen(idx) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const name = state.screens[idx];
-  document.querySelector(`[data-screen="${name}"]`).classList.add('active');
-  // The report is meant to feel like its own page, not part of the quiz —
-  // full width, no fixed header/progress bar. Toggled on body so the CSS
-  // can hide/adjust the header and main padding together.
-  document.body.classList.toggle('showing-report', name === 'report');
-  document.querySelector('.diag-wrap').classList.toggle('showing-report', name === 'report');
-  const questionScreens = state.screens.filter(s => /^q\d+$/.test(s));
-  const totalQ = questionScreens.length;
-  const qIdx = questionScreens.indexOf(name);
-  if (qIdx >= 0) {
-    document.getElementById('stepIndicator').textContent = `Step ${qIdx+1} of ${totalQ}`;
-    document.getElementById('progressFill').style.width = `${((qIdx+1)/totalQ)*100}%`;
-  } else if (name === 'intro') {
-    document.getElementById('stepIndicator').textContent = `Step 1 of ${totalQ}`;
-    document.getElementById('progressFill').style.width = '0%';
-  } else {
-    document.getElementById('stepIndicator').textContent = 'Almost done';
-    document.getElementById('progressFill').style.width = '100%';
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+const SCALE = [
+  ["0","Not at all / we don't measure this"],
+  ["1","Just starting — ad hoc"],
+  ["2","Developing — inconsistent"],
+  ["3","Solid — mostly working"],
+  ["4","Best-in-class — systematic"]
+];
 
-// Whenever navigation lands on the 'loading' screen — whether via the
-// email gate (non-prefilled visitors) or straight from q10 (prefilled
-// visitors, who skip the gate) — kick off report generation exactly
-// once. This keeps both flows funneling through one code path instead
-// of duplicating the runDiagnostic()/toast calls per-flow.
-function goNext() {
-  state.answers.freetext = document.getElementById('freeTextInput') ? document.getElementById('freeTextInput').value : '';
-  if (state.step < state.screens.length - 1) {
-    state.step++;
-    showScreen(state.step);
-    const screenName = state.screens[state.step];
-    if (screenName === 'loading') { runDiagnostic(); showConfirmToast(); }
-  }
-}
-function goBack() {
-  if (state.step > 0) {
-    state.step--;
-    showScreen(state.step);
-  }
-}
+/* ---- state ---- */
+const state = { profile:{}, answers:{} };
+const $ = id => document.getElementById(id);
+const show = n => { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); $(n).classList.add('active'); window.scrollTo({top:0}); };
 
-document.getElementById('freeTextInput').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') goNext();
+/* ---- screen 1 : vertical picker + validation ---- */
+const vGrid = $('vertGrid');
+Object.keys(VERTICALS).forEach(v=>{
+  const el = document.createElement('div');
+  el.className='vert'; el.textContent=v; el.dataset.v=v;
+  el.onclick=()=>{ document.querySelectorAll('.vert').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); state.profile.vertical=v; };
+  vGrid.appendChild(el);
 });
 
-/* ===================== SCORING ===================== */
-// Six axes, 1–5 each. Tie-break order (most upstream first) encodes the
-// brand thesis: positioning/alignment problems are usually upstream of
-// CAC/conversion symptoms.
-const TIE_BREAK_ORDER = ['positioning','alignment','demand','conversion','cac','expansion'];
+function validEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 
-function computeScores() {
-  const a = state.answers;
-  let positioning = 1, demand = 1, cac = 1, alignment = 1, conversion = 1, expansion = 1;
-
-  if (a.messaging === 'no') positioning += 4;
-  else if (a.messaging === 'unsure') positioning += 3;
-  else if (a.messaging === 'somewhat') positioning += 2;
-
-  if (a.pipeline === 'volatile') demand += 3;
-  else if (a.pipeline === 'declining') demand += 4;
-  else if (a.pipeline === 'none') demand += 4;
-
-  if (a.cac === 'up_sharp') { cac += 4; positioning += 1; }
-  else if (a.cac === 'up_moderate') cac += 2;
-
-  if (a.alignment === 'no') alignment += 4;
-  else if (a.alignment === 'mostly') alignment += 2;
-
-  if (a.conversion === 'weak') conversion += 4;
-  else if (a.conversion === 'average') conversion += 1;
-  else if (a.conversion === 'unsure') conversion += 2;
-
-  if (a.nrr === 'flat') expansion += 4;
-  else if (a.nrr === 'some') expansion += 2;
-  else if (a.nrr === 'unsure') expansion += 3;
-
-  const cap = (n) => Math.max(1, Math.min(5, n));
-  return {
-    positioning: cap(positioning), demand: cap(demand), cac: cap(cac),
-    alignment: cap(alignment), conversion: cap(conversion), expansion: cap(expansion),
+$('startBtn').onclick=()=>{
+  const p={
+    name:$('i_name').value.trim(), email:$('i_email').value.trim(),
+    company:$('i_company').value.trim(), site:$('i_site').value.trim(),
+    role:$('i_role').value, arr:$('i_arr').value,
+    vertical:state.profile.vertical||""
   };
-}
-
-function topProblem(scores) {
-  const labels = { positioning: 'Positioning & ICP', demand: 'Demand generation', cac: 'CAC & unit economics', alignment: 'Sales-marketing alignment', conversion: 'Conversion', expansion: 'Expansion / NRR' };
-  let top = 'positioning', max = -1;
-  TIE_BREAK_ORDER.forEach(k => { if (scores[k] > max) { max = scores[k]; top = k; } });
-  return { key: top, label: labels[top], score: scores[top] };
-}
-
-function criticalCount(scores) {
-  return Object.values(scores).filter(v => v >= 4).length;
-}
-
-function suggestedTier(scores, team) {
-  const crit = criticalCount(scores);
-  if (team === 'large' || crit >= 4) return 'Fractional CMO';
-  if (crit >= 2) return 'Retainer';
-  return 'Entry';
-}
-
-const SERVICE_MAP = {
-  positioning: { primary: 'Messaging House Rebuild', secondary: 'ICP Audit & Hyper-ICP Definition' },
-  alignment:   { primary: 'GTM Alignment Workshop', secondary: 'Sales Enablement Kit System' },
-  demand:      { primary: 'Demand Gen Engine Setup', secondary: 'Content-Led Growth Engine' },
-  conversion:  { primary: 'Website Conversion System (CRO)', secondary: 'Lifecycle Email System' },
-  cac:         { primary: 'CAC / LTV Optimization Audit', secondary: 'Lead Scoring Engine Rebuild' },
-  expansion:   { primary: 'Expansion / NRR Playbook', secondary: 'Product Launch / Adoption System' },
+  const missing=[];
+  if(!p.name) missing.push("name");
+  if(!validEmail(p.email)) missing.push("a valid email");
+  if(!p.company) missing.push("company");
+  if(!p.role) missing.push("role");
+  if(!p.arr) missing.push("ARR band");
+  if(!p.vertical) missing.push("vertical");
+  if(missing.length){ $('s1err').textContent="Please add: "+missing.join(", ")+"."; return; }
+  $('s1err').textContent="";
+  state.profile=p;
+  buildQuestionnaire();
+  show('s2');
 };
 
-/* ============================================================
-   REVENUE ARCHITECTURE DIAGNOSTIC™ — CALCULATION LAYER
-   Every number in the report is derived here, deterministically,
-   from the person's actual quiz answers. The AI call (below) is
-   used ONLY for narrative sentences and is explicitly instructed
-   to reuse these numbers verbatim, never invent its own — this is
-   what keeps the report credible on a sales call. This is what
-   makes the report specific to THIS company, not a templated
-   quiz result: every figure traces back to an answer they gave.
-   ============================================================ */
-const ARR_MIDPOINT = { pre: 250000, sub1m: 750000, a: 3000000, b: 8500000, c: 16000000, d: 25000000 };
-const ARR_LABEL = { pre: 'Pre-revenue', sub1m: 'Under $1M', a: '$1M–$5M (Series A)', b: '$5M–$12M (Series B)', c: '$12M–$20M (Series C)', d: 'Above $20M' };
-
-const AXIS_LABEL = { positioning: 'Positioning & ICP', alignment: 'Sales-Marketing Alignment', demand: 'Demand Generation', conversion: 'Conversion', cac: 'CAC & Unit Economics', expansion: 'Expansion / NRR' };
-// Shorter variants for the snapshot stat card, which is only ~150px wide —
-// the full AXIS_LABEL strings (e.g. "Sales-Marketing Alignment", 25 chars)
-// were wrapping to 3+ lines there and looking broken. Full labels are still
-// used everywhere else (scorecard, root cause, etc.) where there's room.
-const AXIS_LABEL_SHORT = { positioning: 'Positioning', alignment: 'Alignment', demand: 'Demand Gen', conversion: 'Conversion', cac: 'CAC', expansion: 'Expansion' };
-const AXIS_STATUS_LABEL = { positioning: 'Positioning', alignment: 'Sales Alignment', demand: 'Demand Generation', conversion: 'Website Conversion', cac: 'CAC Efficiency', expansion: 'Expansion / NRR' };
-const DIAGNOSIS_NAME = {
-  positioning: 'Messaging-Market Misalignment',
-  alignment: 'Sales-Marketing Alignment Breakdown',
-  demand: 'Demand Generation Deficit',
-  conversion: 'Conversion Funnel Leakage',
-  cac: 'CAC Escalation Syndrome',
-  expansion: 'Expansion Revenue Stagnation',
-};
-const AXIS_OWNER = { positioning: 'CEO + Fractional CMO', alignment: 'Marketing + Sales Leadership', demand: 'Growth Team', conversion: 'Growth Team', cac: 'Finance + Growth', expansion: 'Customer Success + Marketing' };
-
-const AXIS_PHASE = {
-  positioning: { title: 'Rebuild Positioning & Messaging', duration: '21 Days', objectives: ['Positioning Framework', 'Category Narrative', 'Value Proposition', 'Messaging Matrix'], deliverable: 'Messaging Architecture' },
-  alignment:   { title: 'Sales & Marketing Alignment', duration: '14 Days', objectives: ['Shared MQL/SQL Definition', 'GTM Alignment Workshop', 'Lead Scoring Rebuild'], deliverable: 'Revenue Operating Agreement' },
-  demand:      { title: 'Demand Generation', duration: '30 Days', objectives: ['Trigger-Event Mapping', 'Channel Architecture', 'Content Engine', 'Retargeting'], deliverable: 'Predictable Pipeline' },
-  conversion:  { title: 'Conversion Optimization', duration: '21 Days', objectives: ['Homepage', 'Landing Pages', 'Demo Flow', 'CTA Optimization'], deliverable: 'Conversion Engine' },
-  cac:         { title: 'CAC & Unit Economics', duration: '21 Days', objectives: ['Channel-by-Channel CAC Audit', 'ICP Drift Diagnosis', 'Spend Reallocation'], deliverable: 'CAC Efficiency Plan' },
-  expansion:   { title: 'Expansion & Revenue Enablement', duration: '21 Days', objectives: ['Champion Identification', 'Upsell Triggers', 'CS-to-Marketing Handoff'], deliverable: 'Revenue Operating System' },
-};
-
-const MATURITY_LABELS = { 1: 'Marketing Chaos', 2: 'Campaign Driven', 3: 'Demand Engine', 4: 'Revenue Engine', 5: 'AI Revenue Operating System' };
-
-function calculateReportMetrics(scores, answers, top, tier) {
-  const axisKeys = Object.keys(scores);
-  const avg = axisKeys.reduce((s, k) => s + scores[k], 0) / axisKeys.length;
-
-  // Revenue Health Score: 1 (best) -> 100, 5 (worst) -> 20
-  const healthScore = Math.round(Math.max(15, Math.min(95, 120 - avg * 20)));
-
-  let maturityLevel = 1;
-  if (healthScore >= 85) maturityLevel = 5;
-  else if (healthScore >= 70) maturityLevel = 4;
-  else if (healthScore >= 55) maturityLevel = 3;
-  else if (healthScore >= 40) maturityLevel = 2;
-  const teamFloor = { none: 1, small: 2, mid: 3, large: 4 }[answers.team] || 1;
-  maturityLevel = Math.min(maturityLevel, Math.max(maturityLevel, teamFloor >= maturityLevel ? maturityLevel : maturityLevel));
-  const targetLevel = Math.min(5, maturityLevel + (tier === 'Fractional CMO' ? 2 : 1));
-
-  // 0-100 per axis (same scale as health score, so the matrix and hero number agree)
-  const matrix = {};
-  axisKeys.forEach(k => { matrix[k] = Math.round(120 - scores[k] * 20); });
-
-  const arrEstimate = ARR_MIDPOINT[answers.arr] || 3000000;
-  const arrLabel = ARR_LABEL[answers.arr] || 'Not specified';
-  const leakageRate = 0.05 + ((avg - 1) / 4) * 0.30; // 5%–35% of ARR, scaled to actual severity
-  const leakageMid = Math.round(arrEstimate * leakageRate);
-  const leakageLow = Math.round(leakageMid * 0.75);
-  const leakageHigh = Math.round(leakageMid * 1.25);
-
-  const criticalAxes = axisKeys.filter(k => scores[k] >= 4);
-  const critCount = criticalAxes.length;
-  const confidence = Math.min(96, 68 + critCount * 6 + Math.round((scores[top.key] - 1) * 3));
-
-  const CONVERSION_BAND = {
-    weak: { cur: '<10%', tgt: '18–22%' },
-    average: { cur: '10–25%', tgt: '25–32%' },
-    strong: { cur: '25%+', tgt: '32%+' },
-    unsure: { cur: 'Not tracked', tgt: '15%+ (tracked)' },
-  };
-  const CAC_TREND = { down: 'Improving', flat: 'Stable', up_moderate: 'Rising (explainable)', up_sharp: 'Rising (unexplained)' };
-  const PIPELINE_STATE = { consistent: 'Predictable', volatile: 'Volatile', declining: 'Declining', none: 'Not yet established' };
-  const ALIGNMENT_STATE = { aligned: 'Documented & shared', mostly: 'Informal', no: 'Disputed' };
-  const NRR_STATE = { strong: 'Structured lever', some: 'Present, not repeatable', flat: 'Flat / declining', unsure: 'Not tracked' };
-
-  const conversion = CONVERSION_BAND[answers.conversion] || CONVERSION_BAND.unsure;
-  const cacTrend = CAC_TREND[answers.cac] || 'Unknown';
-  const pipelineState = PIPELINE_STATE[answers.pipeline] || 'Unknown';
-  const alignmentState = ALIGNMENT_STATE[answers.alignment] || 'Unknown';
-  const nrrState = NRR_STATE[answers.nrr] || 'Unknown';
-
-  // Business risk: high if 3+ critical axes or health score under 45
-  let businessRisk = 'low';
-  if (critCount >= 3 || healthScore < 45) businessRisk = 'high';
-  else if (critCount >= 1 || healthScore < 65) businessRisk = 'medium';
-
-  // Sequenced 5-phase treatment plan: Phase 1 is always foundation/diagnosis,
-  // Phases 2-5 are the four highest-severity axes, ordered by severity desc.
-  const orderedAxes = [...axisKeys].sort((a, b) => scores[b] - scores[a]);
-  const phaseAxes = orderedAxes.slice(0, 4);
-  const treatmentPlan = [
-    { num: 'Phase One', title: 'Stabilize Revenue Foundation', duration: '14 Days',
-      objectives: ['Executive Interviews', 'ICP Workshop', 'Customer Research', 'Win/Loss Analysis', 'Competitive Review'],
-      deliverable: 'Revenue Foundation Blueprint' },
-    ...phaseAxes.map((k, i) => {
-      const p = AXIS_PHASE[k];
-      return { num: ['Phase Two', 'Phase Three', 'Phase Four', 'Phase Five'][i], title: p.title, duration: p.duration, objectives: p.objectives, deliverable: p.deliverable };
-    }),
-  ];
-
-  // Business impact forecast — current vs target, all grounded in real answers
-  const forecast = [
-    { kpi: 'CAC Trend', current: cacTrend, target: 'Stable / Improving' },
-    { kpi: 'Lead Quality Agreement (SQL)', current: alignmentState, target: 'Documented & shared' },
-    { kpi: answers.motion === 'plg' ? 'Trial-to-Paid Conversion' : 'Demo-to-Close Conversion', current: conversion.cur, target: conversion.tgt },
-    { kpi: 'Pipeline Predictability', current: pipelineState, target: 'Predictable' },
-    { kpi: 'Expansion / NRR', current: nrrState, target: 'Structured lever' },
-    { kpi: 'Revenue Health Score', current: `${healthScore}/100`, target: `${Math.min(95, healthScore + 20)}/100` },
-  ];
-
-  // Board Action Matrix — rows built from the highest-severity axes, priority tied to actual score
-  const boardMatrix = orderedAxes.slice(0, 4).map(k => {
-    const sev = scores[k];
-    let priority = 'Strategic', timeline = '180 Days', dotClass = 'good';
-    if (sev >= 4) { priority = 'Immediate'; timeline = '30 Days'; dotClass = 'critical'; }
-    else if (sev === 3) { priority = 'High'; timeline = '45 Days'; dotClass = 'weak'; }
-    else if (sev === 2) { priority = 'Medium'; timeline = '90 Days'; dotClass = 'moderate'; }
-    return { priority, risk: AXIS_LABEL[k], owner: AXIS_OWNER[k], timeline, dotClass };
-  });
-  boardMatrix.push({ priority: 'Strategic', risk: 'AI GTM Transformation', owner: 'Executive Team', timeline: '180 Days', dotClass: 'good' });
-
-  // ---- Additions below are for the redesigned GTM Diagnostic Report ----
-  // (cover/snapshot/scorecard/diagnosis/pain-signals/root-cause/priority-
-  // matrix/playbooks/service-stack/roadmap/targets/CTA layout). Everything
-  // here is still deterministic — only wording/narrative is left to the AI.
-
-  const AXIS_SUBLABEL = {
-    positioning: 'Value narrative', alignment: 'Lead-quality trust', demand: 'Top-of-funnel volume',
-    conversion: 'MQL → closed-won', cac: 'Acquisition efficiency', expansion: 'NRR & churn signals',
-  };
-  function severityColor(score) { return score >= 4 ? 'red' : score === 3 ? 'amber' : 'teal'; }
-  function severityBadge(score) { return score >= 4 ? 'critical' : score === 3 ? 'caution' : 'healthy'; }
-
-  const AXIS_REASON = {
-    positioning: 'Highest leverage — narrative fixes compound across every other channel.',
-    alignment: 'Directly unblocks the lead-quality trust gap between sales and marketing.',
-    demand: 'Fixes the volume ceiling before spending more on channels that already work.',
-    conversion: 'Fast to ship, meaningful lift on pages with real, wasted traffic.',
-    cac: 'Stops paying more to acquire the same outcome, quarter over quarter.',
-    expansion: 'Unlocks revenue from existing customers without new acquisition spend.',
-  };
-
-  // ICE-scored priority matrix — top 3 axes by severity
-  const iceMatrix = orderedAxes.slice(0, 3).map(k => {
-    const sev = scores[k];
-    const impact = sev >= 4 ? 'H' : sev === 3 ? 'M' : 'L';
-    const confLvl = sev >= 3 ? 'H' : 'M';
-    const durationNum = parseInt(AXIS_PHASE[k].duration, 10) || 21;
-    const ease = durationNum <= 21 ? 'H' : durationNum <= 25 ? 'M' : 'L';
-    const val = { H: 9, M: 6, L: 3 };
-    const total = Math.round(((val[impact] + val[confLvl] + val[ease]) / 3) * 10) / 10;
-    return { probName: AXIS_PHASE[k].title, probReason: AXIS_REASON[k], impact, confidence: confLvl, ease, total };
-  });
-
-  // Service stack — grouped, priced from your actual published tiers
-  const TIER_PRICE = { Entry: '$1.2K–$5K', Retainer: '$2.4K–$10K/mo', 'Fractional CMO': '$12K+/mo' };
-  const svc = SERVICE_MAP[top.key];
-  const serviceStack = {
-    foundationGroup: 'Positioning & messaging engine',
-    foundationRows: [
-      { name: svc.primary, desc: `Fixes ${AXIS_LABEL[top.key].toLowerCase()} directly — the highest-severity constraint found.`, price: '$1.2K–$5K', priceClass: 'green' },
-      { name: svc.secondary, desc: 'Sequenced second, once the primary fix is underway.', price: '$1.2K–$5K', priceClass: 'green' },
-    ],
-    engagementGroup: `${tier} engagement`,
-    engagementRows: [
-      { name: tier === 'Entry' ? 'Follow-up Entry project' : tier, desc: tier === 'Fractional CMO' ? 'Full Growth OS ownership, board-level reporting' : tier === 'Retainer' ? 'Weekly Growth Sprints, monthly Intelligence dashboard' : 'Fixed-scope delivery, 2–4 weeks', price: TIER_PRICE[tier] || TIER_PRICE.Entry, priceClass: 'purple' },
-    ],
-  };
-
-  // Roadmap — reuses the treatment plan's first 3 phases, reshaped
-  const PHASE_TAGS = ['Diagnose and align', 'Build and activate', 'Measure and scale'];
-  const roadmap = treatmentPlan.slice(0, 3).map((p, i) => ({
-    name: `Phase ${i + 1}`, tag: PHASE_TAGS[i], focus: p.deliverable ? `Deliverable: ${p.deliverable}.` : '', checks: p.objectives, cls: `p${i + 1}`,
-  }));
-
-  // Targets — 4 of the 6 forecast KPIs, reshaped for the targets grid
-  const targets = [
-    { l: 'CAC Trend', v: 'Stable', d: `Up from "${cacTrend}"` },
-    { l: answers.motion === 'plg' ? 'Trial-to-Paid' : 'Demo-to-Close', v: conversion.tgt, d: `Up from ${conversion.cur}` },
-    { l: 'Pipeline', v: 'Predictable', d: `Up from "${pipelineState}"` },
-    { l: 'Health Score', v: `${Math.min(95, healthScore + 20)}/100`, d: `Up from ${healthScore}/100` },
-  ];
-
-  // Snapshot stats
-  const pipelineAtRiskPct = Math.round(leakageRate * 100);
-
-  return {
-    healthScore, maturityLevel, maturityLabel: MATURITY_LABELS[maturityLevel],
-    targetLevel, targetLabel: MATURITY_LABELS[targetLevel],
-    matrix, arrEstimate, arrLabel, leakageLow, leakageHigh, leakageRatePct: Math.round(leakageRate * 100),
-    confidence, businessRisk, criticalAxes, critCount,
-    conversion, cacTrend, pipelineState, alignmentState, nrrState,
-    diagnosisName: DIAGNOSIS_NAME[top.key],
-    treatmentPlan, forecast, boardMatrix,
-    orderedAxes,
-    axisSubLabel: AXIS_SUBLABEL, severityColor, severityBadge,
-    iceMatrix, serviceStack, roadmap, targets, pipelineAtRiskPct,
-  };
-}
-
-function fmtUSD(n) {
-  if (n >= 1000000) return `$${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1)}M`;
-  return `$${Math.round(n / 1000)}K`;
-}
-
-function statusPillClass(score100) {
-  if (score100 < 45) return 'critical';
-  if (score100 < 60) return 'weak';
-  if (score100 < 70) return 'moderate';
-  if (score100 < 85) return 'stable';
-  return 'good';
-}
-function statusPillLabel(score100) {
-  if (score100 < 45) return 'Critical';
-  if (score100 < 60) return 'Weak';
-  if (score100 < 70) return 'Moderate';
-  if (score100 < 85) return 'Stable';
-  return 'Strong';
-}
-
-function showConfirmToast() {
-  const toast = document.getElementById('confirmToast');
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3200);
-}
-
-const loadingMessages = [
-  'Classifying company profile...',
-  'Scoring six pain clusters...',
-  'Cross-referencing the Growth OS pattern library...',
-  'Mapping services to your root cause...',
-  'Drafting your 90-day roadmap...',
-];
-let loadingInterval;
-function startLoadingAnimation() {
-  let i = 0;
-  document.getElementById('loadingLine').textContent = loadingMessages[0];
-  loadingInterval = setInterval(() => {
-    i = (i + 1) % loadingMessages.length;
-    document.getElementById('loadingLine').textContent = loadingMessages[i];
-  }, 1400);
-}
-function stopLoadingAnimation() { clearInterval(loadingInterval); }
-
-/* ===================== REPORT GENERATION ===================== */
-// IMPORTANT: this call returns TWO payloads in one JSON object —
-// `client_report` (rendered to the prospect, below) and
-// `internal_brief` (sent only to the internal Zapier webhook, never
-// rendered to the DOM the prospect can inspect). Keep them as separate
-// top-level keys so the split is enforced at the data layer, not just
-// in the render function.
-async function runDiagnostic() {
-  startLoadingAnimation();
-  const scores = computeScores();
-  const top = topProblem(scores);
-  const tier = suggestedTier(scores, state.answers.team);
-  const a = state.answers;
-  const m = calculateReportMetrics(scores, a, top, tier);
-
-  // NOTE ON WHY THE PROMPT IS SHAPED THIS WAY:
-  // Every number that appears in the report (health score, leakage
-  // range, KPI current/target, phase sequencing, board matrix) is
-  // already computed above by calculateReportMetrics() from the
-  // person's real answers. The AI call below is asked for narrative
-  // sentences ONLY, and is explicitly told to reuse the numbers we
-  // hand it rather than invent its own — this is what makes the
-  // report trustworthy on a sales call instead of a source of "wait,
-  // where did that number come from?" objections.
-  const top4 = m.orderedAxes.slice(0, 4).map(k => AXIS_LABEL[k]);
-  const top2Phases = m.treatmentPlan.slice(1, 3); // the two highest-severity axis phases (Phase One is always the fixed foundation phase)
-
-  const prompt = `You are a senior B2B SaaS GTM strategist with 10+ years running discovery calls for Growth Clarity Co, a revenue growth partner for Series A-C B2B SaaS companies ($1M-$20M ARR). Analyze this diagnostic input and respond ONLY with valid JSON, no markdown fences, no preamble. Do NOT invent any statistics, dollar figures, or percentages beyond the ones supplied below — reuse them exactly where relevant, and do NOT assign your own severity/priority labels — those come from the scores, not from you.
-
-Company input:
-- GTM motion: ${a.motion}
-- ARR stage: ${a.arr} (${m.arrLabel})
-- Marketing team size: ${a.team}
-- Messaging consistency across reps: ${a.messaging}
-- Pipeline pattern: ${a.pipeline}
-- CAC trend (2 quarters): ${a.cac}
-- Sales/marketing alignment on lead quality: ${a.alignment}
-- Demo/trial-to-paid conversion band: ${a.conversion}
-- Expansion/NRR health: ${a.nrr}
-- Free text — what made them click today: "${a.freetext || 'none provided'}"
-
-Already-computed figures (reuse these exactly, do not recompute or alter them):
-- Severity scores (1-5, higher = worse): positioning=${scores.positioning}, demand=${scores.demand}, cac=${scores.cac}, alignment=${scores.alignment}, conversion=${scores.conversion}, expansion=${scores.expansion}
-- Revenue Health Score: ${m.healthScore}/100
-- Growth Maturity: Level ${m.maturityLevel} (${m.maturityLabel}), target Level ${m.targetLevel} (${m.targetLabel})
-- Top/root-cause cluster: ${top.label}, severity ${top.score}/5
-- The 4 highest-severity constraint axes, IN THIS EXACT ORDER: 1) ${top4[0]}, 2) ${top4[1]}, 3) ${top4[2]}, 4) ${top4[3]}
-- Diagnostic confidence: ${m.confidence}%
-- Business risk level: ${m.businessRisk}
-- Estimated annual revenue leakage: ${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)} (${m.leakageRatePct}% of estimated ARR)
-- Suggested engagement tier: ${tier}
-- Phase 2 of the treatment plan (2nd-highest-severity axis): "${top2Phases[0] ? top2Phases[0].title : ''}", deliverable "${top2Phases[0] ? top2Phases[0].deliverable : ''}"
-- Phase 3 of the treatment plan (3rd-highest-severity axis): "${top2Phases[1] ? top2Phases[1].title : ''}", deliverable "${top2Phases[1] ? top2Phases[1].deliverable : ''}"
-
-Return this exact JSON structure with TWO top-level keys, client_report and internal_brief:
-
-{
-  "client_report": {
-    "executive_summary": "2-3 sentences, written for a CEO reading this before a board meeting, stating what's healthy and what's broken in plain language, specific to their actual answers — not generic",
-    "pain_signals": [
-      {"title": "short punchy title for the #1 axis listed above", "detail": "1-2 sentences making it concrete and specific to their answers, as if quoting a real pattern"},
-      {"title": "short punchy title for the #2 axis listed above", "detail": "1-2 sentences, same style"},
-      {"title": "short punchy title for the #3 axis listed above", "detail": "1-2 sentences, same style"},
-      {"title": "short punchy title for the #4 axis listed above", "detail": "1-2 sentences, same style"}
-    ],
-    "diagnosis_paragraphs": ["2-3 short paragraphs (2-3 sentences each) explaining WHY ${top.label} is the root cause and how it traces down to the revenue leakage figure above — written directly to the founder, specific to their motion and stage, not generic"],
-    "root_cause": {
-      "statement": "one sharp sentence stating the root cause in plain language",
-      "factors": ["3 short contributing-factor bullets, specific to their answers"],
-      "effects": ["3 short downstream-effect bullets, specific to their answers"],
-      "footer": "one sentence explaining why fixing the root cause first compounds every other investment"
-    },
-    "playbooks": [
-      {"objective": "1-2 sentences on what Phase 2 above actually does and why it comes first", "key_actions": ["4 short, concrete action items for Phase 2"], "outcome": "1 sentence, a plausible directional outcome — no invented specific percentages"},
-      {"objective": "1-2 sentences on what Phase 3 above actually does", "key_actions": ["4 short, concrete action items for Phase 3"], "outcome": "1 sentence, a plausible directional outcome — no invented specific percentages"}
-    ]
-  },
-  "internal_brief": {
-    "fit_score": "High, Medium, or Low based on ARR range and team size matching our $1M-$20M ICP",
-    "intent_score": "High, Medium, or Low based on the free-text answer's urgency language",
-    "timing_score": "Now, Soon, or Later based on overall answer pattern",
-    "opening_line": "a natural one-sentence opener for the sales call, quoting or paraphrasing their free-text answer if provided, otherwise referencing their top pain cluster",
-    "likely_objection": "the single most likely objection this prospect will raise on the call, based on their team size and tier",
-    "objection_counter": "a one-sentence counter to that objection",
-    "price_anchor": "the specific price point to open with, and the fallback if they push back",
-    "disqualify": "true if ARR is outside $1M-$20M and the call should route to the SaaS product/courses pitch instead of consulting, otherwise false",
-    "upsell_flag": "a one-sentence reminder of a natural add-on to mention near the end of the call, or empty string if none applies"
-  }
-}
-
-Be specific and insight-heavy, not generic. Reference their actual answers throughout both sections.`;
-
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // never hang longer than 8s — falls back to the templated report instead
-    const response = await fetch(REPORT_API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      signal: controller.signal,
-      body: JSON.stringify({ prompt }),
+/* ---- screen 2 : build 66 questions grouped by engine ---- */
+function buildQuestionnaire(){
+  $('qVtag').textContent=state.profile.vertical+" · "+(state.profile.company||"your company");
+  $('topTag').textContent=state.profile.company+" — Growth Score";
+  const list=$('engineList'); list.innerHTML="";
+  const order=Object.keys(ENGINES);
+  let n=0;
+  order.forEach((ek,ei)=>{
+    const qs=Q.map((row,idx)=>({idx,eng:row[0],text:row[1]})).filter(x=>x.eng===ek);
+    const block=document.createElement('div'); block.className='engine-block';
+    block.innerHTML=`<div class="engine-head">
+        <span class="num">${String(ei+1).padStart(2,'0')}</span>
+        <h3>${ENGINES[ek].label}</h3>
+        <span class="cnt">${qs.length} questions</span>
+      </div>`;
+    qs.forEach(q=>{
+      n++;
+      const item=document.createElement('div'); item.className='qitem';
+      const opts=SCALE.map(s=>`<div class="opt" data-q="${q.idx}" data-val="${s[0]}"><span class="dot">${s[0]}</span>${s[1]}</div>`).join('');
+      item.innerHTML=`<div class="qtext">${n}. ${q.text}</div><div class="opts">${opts}</div>`;
+      block.appendChild(item);
     });
-    clearTimeout(timeoutId);
-    const data = await response.json();
-    const rawText = data.candidates[0].content.parts[0].text;
-    const cleaned = rawText.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(cleaned);
-    stopLoadingAnimation();
-    renderReport(parsed.client_report, scores, top, tier, m);
-    sendInternalBrief(parsed.internal_brief, scores, top, tier, m);
-  } catch (err) {
-    stopLoadingAnimation();
-    renderFallbackReport(scores, top, tier, m);
-  }
-}
-
-// Saves the full submission — answers, scores, computed metrics, and
-// the internal sales brief — to the leads table. Never written to
-// the DOM, only ever sent over the wire to Supabase.
-function sendInternalBrief(brief, scores, top, tier, m) {
-  if (!brief) return;
-  saveLead({
-    source: 'diagnostic',
-    name: state.contact.name || null,
-    email: state.contact.email || null,
-    company: state.contact.company || null,
-    role: state.contact.role || null,
-    arr: state.answers.arr || null,
-    motion: state.answers.motion || null,
-    team: state.answers.team || null,
-    answers: state.answers,
-    scores,
-    top_cluster: top.key,
-    top_severity: top.score,
-    suggested_tier: tier,
-    health_score: m ? m.healthScore : null,
-    leakage_range: m ? `${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)}` : null,
-    business_risk: m ? m.businessRisk : null,
-    brief,
-    page_url: window.location.href,
-    user_agent: navigator.userAgent,
+    list.appendChild(block);
   });
+  list.querySelectorAll('.opt').forEach(o=>{
+    o.onclick=()=>{
+      const qid=o.dataset.q;
+      o.parentElement.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+      o.classList.add('sel');
+      state.answers[qid]=parseInt(o.dataset.val,10);
+      updateProgress();
+    };
+  });
+  updateProgress();
 }
 
-function scoreClass(n) { return n >= 4 ? 'high' : n >= 2 ? 'mid' : 'low'; }
+function updateProgress(){
+  const c=Object.keys(state.answers).length;
+  $('ansCount').textContent=c;
+  $('progBar').style.width=(c/Q.length*100)+"%";
+  const done=c===Q.length;
+  $('genBtn').disabled=!done; $('genBtn2').disabled=!done;
+}
 
-/* ============================================================
-   RENDER — Revenue Architecture Diagnostic™ Report
-   `report` = AI (or fallback) narrative fields: executive_summary,
-   symptoms[], clinical_explanation, ceo_letter_body.
-   `m` = deterministic metrics from calculateReportMetrics().
-   Every number on screen comes from `m` / `scores`; `report` only
-   supplies sentences, so the numbers never drift between runs.
-   ============================================================ */
-function renderReport(report, scores, top, tier, m) {
-  const name = state.contact.name || 'You';
-  const firstName = name.split(' ')[0];
-  const dateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  const motionLabel = state.answers.motion === 'plg' ? 'Product-Led' : state.answers.motion === 'slg' ? 'Sales-Led' : 'Hybrid';
-  const seriesLabel = state.answers.arr === 'a' ? 'Series A' : state.answers.arr === 'b' ? 'Series B' : state.answers.arr === 'c' ? 'Series C' : state.answers.arr === 'd' ? 'Series D+' : 'Pre-Series A';
-  const preparedFor = `${name}${state.contact.role ? ', ' + state.contact.role : ''}${state.contact.company ? ' — ' + state.contact.company : ''}`;
+$('backBtn').onclick=()=>show('s1');
+$('genBtn').onclick=generate;
+$('genBtn2').onclick=generate;
 
-  // ---- Cover ----
-  const cover = `
-    <div class="gr-cover" id="reportPrintHeader">
-      <div class="gr-cover-top">
-        <span class="gr-logo"><span class="star">✦</span><span class="w growth">Growth</span><span class="w clarity">Clarity</span><span class="w co">Co.</span></span>
-        <div class="gr-cover-badges">
-          <span class="gr-pill">${seriesLabel} &middot; ${fmtUSD(m.arrEstimate)} ARR (est.)</span>
-          <span class="gr-pill">${motionLabel} Motion</span>
-        </div>
-      </div>
-      <h1 class="gr-cover-title">GTM Diagnostic <em>Report</em></h1>
-      <div class="gr-cover-meta">
-        <div class="prep">
-          <div class="k">Prepared for</div>
-          <div class="v">${preparedFor}</div>
-          <div class="d">${dateStr}</div>
-        </div>
-        <div class="gr-consultant">
-          <div class="avatar">JG</div>
-          <div><div class="cn">Jithin George</div><div class="cr">Founder &amp; Fractional CMO</div></div>
-        </div>
-      </div>
+/* ---- scoring ---- */
+function engineScore(ek){
+  const idxs=Q.map((r,i)=>[r[0],i]).filter(x=>x[0]===ek).map(x=>x[1]);
+  const vals=idxs.map(i=>state.answers[i]).filter(v=>v!==undefined);
+  if(!vals.length) return 0;
+  const mean=vals.reduce((a,b)=>a+b,0)/vals.length; // 0..4
+  return Math.round(mean/4*100);
+}
+function verticalWeights(v){
+  const mult=VERTICALS[v].mult||{};
+  const raw={}; let sum=0;
+  Object.keys(ENGINES).forEach(ek=>{ const w=ENGINES[ek].w*(mult[ek]||1); raw[ek]=w; sum+=w; });
+  const norm={}; Object.keys(raw).forEach(ek=>norm[ek]=raw[ek]/sum*100);
+  return norm;
+}
+
+/* ---- screen 3 : report ---- */
+function generate(){
+  const v=state.profile.vertical;
+  const w=verticalWeights(v);
+  const scores={}; Object.keys(ENGINES).forEach(ek=>scores[ek]=engineScore(ek));
+  let growth=0; Object.keys(ENGINES).forEach(ek=>growth+=scores[ek]*w[ek]/100);
+  growth=Math.round(growth);
+  const median=VERTICALS[v].median;
+
+  // binding constraint = highest weighted gap (weight × (100 - score))
+  let constraint=null,maxImpact=-1;
+  Object.keys(ENGINES).forEach(ek=>{
+    const impact=w[ek]*(100-scores[ek]);
+    if(impact>maxImpact){maxImpact=impact;constraint=ek;}
+  });
+
+  // strengths / weaknesses
+  const ranked=Object.keys(ENGINES).map(ek=>({ek,s:scores[ek]})).sort((a,b)=>b.s-a.s);
+  const top=ranked.slice(0,3), bottom=ranked.slice(-3).reverse();
+
+  const band = growth>=85?["Strong","#00E676","rgba(0,230,118,.12)"]
+            : growth>=70?["Healthy","#5DCAA5","rgba(93,202,165,.12)"]
+            : growth>=50?["Developing","#EF9F27","rgba(239,159,39,.12)"]
+            : ["At risk","#ff6b6b","rgba(255,107,107,.12)"];
+
+  const verdict = growth>=85
+      ? "Your GTM is operating as a system. The work now is compounding — protect what's working and widen your lead."
+      : growth>=70
+      ? "You're above your vertical's cohort median. The gains from here come from fixing one binding constraint, not spreading effort thin."
+      : growth>=50
+      ? "The foundations are partly in place but inconsistent. One system is holding the rest back — fix it before adding anything new."
+      : "Growth is leaking faster than it compounds. This is a systems problem, not a tactics problem — and it points to a structured engagement, not a single fix.";
+
+  const off=OFFERS[constraint];
+  const cLabel=ENGINES[constraint].label;
+  const cScore=scores[constraint];
+
+  const ring = (()=>{ // conic ring
+    const pct=growth;
+    return `<div class="score-ring">
+      <svg width="180" height="180" viewBox="0 0 180 180" style="transform:rotate(-90deg)">
+        <circle cx="90" cy="90" r="78" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12"/>
+        <circle cx="90" cy="90" r="78" fill="none" stroke="${band[1]}" stroke-width="12" stroke-linecap="round"
+          stroke-dasharray="${(pct/100*490).toFixed(1)} 490"/>
+      </svg>
+      <div class="num"><b>${growth}</b><span>Growth Score</span></div>
     </div>`;
+  })();
 
-  // ---- 01 Snapshot ----
-  const scoreColor = m.healthScore >= 70 ? 'teal' : m.healthScore >= 45 ? 'amber' : 'red';
-  const snapshot = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">01</span><h2>Revenue health snapshot</h2></div>
-      <div class="gr-snap">
-        <div class="gr-snap-score">
-          <div class="num" style="color:var(--gr-${scoreColor})">${m.healthScore}</div>
-          <div class="lbl">GTM Health / 100</div>
-        </div>
-        <div class="gr-snap-right">
-          <div class="maturity">Maturity: ${m.maturityLabel}, Constrained by ${AXIS_LABEL[top.key]}</div>
-          <p class="summary">${report.executive_summary}</p>
-          <div class="gr-snap-cards">
-            <div class="gr-snap-card"><div class="v ${severityColorFor(top.score)}">${AXIS_LABEL_SHORT[top.key]}</div><div class="l">Top constraint</div></div>
-            <div class="gr-snap-card"><div class="v amber">${m.pipelineAtRiskPct}%</div><div class="l">Pipeline at risk</div></div>
-            <div class="gr-snap-card"><div class="v ${m.critCount >= 3 ? 'red' : m.critCount >= 1 ? 'amber' : 'teal'}">${m.critCount} of 6</div><div class="l">Critical axes</div></div>
-          </div>
-        </div>
-      </div>
+  const bars = Object.keys(ENGINES).map(ek=>{
+    const s=scores[ek];
+    const col = s>=70?"#00E676":s>=50?"#EF9F27":"#ff6b6b";
+    return `<div class="brow">
+      <div class="bl">${ENGINES[ek].label}${ek===constraint?' <span class="mono" style="color:var(--accent);font-size:11px">◆ constraint</span>':''}</div>
+      <div class="btrack"><i style="width:${s}%;background:${col}"></i><span class="bm" style="left:${median}%"></span></div>
+      <div class="bv">${s}</div>
     </div>`;
-
-  // ---- 02 Scorecard ----
-  function severityColorFor(sev) { return sev >= 4 ? 'red' : sev === 3 ? 'amber' : 'teal'; }
-  const axisRows = Object.keys(scores).map(k => {
-    const sev = scores[k];
-    const color = severityColorFor(sev);
-    const isRoot = k === top.key;
-    return `
-      <div class="gr-axis-row${isRoot ? ' root' : ''}">
-        <div class="gr-axis-name">${AXIS_LABEL[k]}<span class="sub">${m.axisSubLabel[k]}</span></div>
-        <div class="gr-axis-bar"><div class="fill ${color}" style="width:${m.matrix[k]}%"></div></div>
-        <div class="gr-axis-score ${color}">${sev}/5</div>
-        <div class="gr-axis-tags"><span class="gr-badge ${m.severityBadge(sev)}">${m.severityBadge(sev) === 'critical' ? 'Critical' : m.severityBadge(sev) === 'caution' ? 'Caution' : 'Healthy'}</span></div>
-        <div class="gr-axis-tags">${isRoot ? '<span class="gr-badge root">Root</span>' : ''}</div>
-      </div>`;
   }).join('');
-  const scorecard = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">02</span><h2>GTM performance scorecard</h2></div>
-      <div class="gr-scorecard">
-        <div class="hdr">Axis &middot; Severity, 1 (worst) &ndash; 5 (best)</div>
-        ${axisRows}
-      </div>
-    </div>`;
 
-  // ---- 03 Diagnosis ----
-  const diagParas = (report.diagnosis_paragraphs || []).map(p => `<p>${p}</p>`).join('');
-  const diagnosis = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">03</span><h2>Strategic diagnosis</h2></div>
-      <div class="gr-diagnosis">
-        <div class="gr-eyebrow-mono" style="margin-bottom:10px">AI Diagnosis &middot; Gemini 2.5</div>
-        ${diagParas}
-      </div>
-    </div>`;
+  const listItems = arr => arr.map(x=>`<li><span>${ENGINES[x.ek].label}</span><span class="s">${x.s}</span></li>`).join('');
 
-  // ---- 04 Pain signals ----
-  const top4Axes = m.orderedAxes.slice(0, 4);
-  const painSignals = (report.pain_signals || []).map((sig, i) => {
-    const axisKey = top4Axes[i];
-    const sev = axisKey ? scores[axisKey] : 3;
-    const badgeType = sev >= 4 ? 'critical' : 'high';
-    return `
-      <div class="gr-signal-row">
-        <span class="gr-badge ${badgeType}">${badgeType === 'critical' ? 'Critical' : 'High'}</span>
-        <div><div class="gr-signal-title">${sig.title}</div><div class="gr-signal-detail">${sig.detail}</div></div>
-      </div>`;
-  }).join('');
-  const painSection = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">04</span><h2>Pain signal analysis</h2></div>
-      <div class="gr-signals">${painSignals}</div>
-    </div>`;
+  const now=new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+  const P=state.profile;
 
-  // ---- 05 Root cause ----
-  const rc = report.root_cause || { statement: '', factors: [], effects: [], footer: '' };
-  const rootCause = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">05</span><h2>Root cause framework</h2></div>
-      <div class="gr-rootcause">
-        <div class="lbl">Primary root cause</div>
-        <div class="statement">${rc.statement}</div>
-        <div class="gr-rc-grid">
-          <div class="gr-rc-card factors"><h4>Contributing factors</h4><ul>${(rc.factors || []).map(f => `<li>${f}</li>`).join('')}</ul></div>
-          <div class="gr-rc-card effects"><h4>Downstream effects</h4><ul>${(rc.effects || []).map(e => `<li>${e}</li>`).join('')}</ul></div>
-        </div>
-        <div class="gr-rc-footer">${rc.footer}</div>
-      </div>
-    </div>`;
-
-  // ---- 06 Priority matrix ----
-  const iceRows = m.iceMatrix.map((row, i) => `
-    <div class="gr-matrix-row">
-      <div class="rank">0${i + 1}</div>
-      <div><div class="prob-name">${row.probName}</div><div class="prob-reason">${row.probReason}</div></div>
-      <div class="gr-ice-badges">
-        <span class="gr-ice-badge ${row.impact === 'H' ? 'g' : 'a'}">I: ${row.impact}</span>
-        <span class="gr-ice-badge ${row.confidence === 'H' ? 'g' : 'a'}">C: ${row.confidence}</span>
-        <span class="gr-ice-badge ${row.ease === 'H' ? 'g' : 'a'}">E: ${row.ease}</span>
-      </div>
-      <div class="gr-ice-total">${row.total}</div>
-    </div>`).join('');
-  const priorityMatrix = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">06</span><h2>Priority action matrix</h2></div>
-      <div class="gr-matrix">
-        <div class="mhdr"><span>Rank</span><span>Problem</span><span>ICE</span><span>Score</span></div>
-        ${iceRows}
-      </div>
-    </div>`;
-
-  // ---- 07 Playbooks ----
-  const phaseTitles = m.treatmentPlan.slice(1, 3).map(p => p.title);
-  const playbooksHtml = (report.playbooks || []).map((pb, i) => `
-    <div class="gr-playbook${i === 1 ? ' muted' : ''}">
-      <div class="gr-pb-top">
-        <div class="gr-pb-name">${phaseTitles[i] || ''}</div>
-        <div class="gr-pb-badges"><span class="gr-pill">Phase ${i + 2}</span></div>
-      </div>
-      <div class="gr-pb-objective">${pb.objective}</div>
-      <div class="gr-pb-keyactions">
-        <div class="lbl">Key actions</div>
-        <ol class="gr-pb-list">${(pb.key_actions || []).map((act, j) => `<li><span class="n">0${j + 1}</span>${act}</li>`).join('')}</ol>
-      </div>
-      <div class="gr-pb-outcome">&rarr; ${pb.outcome}</div>
-    </div>`).join('');
-  const playbooksSection = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">07</span><h2>Growth playbooks</h2></div>
-      ${playbooksHtml}
-    </div>`;
-
-  // ---- 08 Service stack ----
-  const stackRows = (group) => group.map(r => `
-    <div class="gr-stack-row">
-      <div><div class="sn">${r.name}</div><div class="sd">${r.desc}</div></div>
-      <div class="price ${r.priceClass}">${r.price}</div>
-    </div>`).join('');
-  const serviceStack = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">08</span><h2>Recommended service stack</h2></div>
-      <div class="gr-stack">
-        <div class="gr-stack-group-hdr">${m.serviceStack.foundationGroup}</div>
-        ${stackRows(m.serviceStack.foundationRows)}
-        <div class="gr-stack-group-hdr">${m.serviceStack.engagementGroup}</div>
-        ${stackRows(m.serviceStack.engagementRows)}
-      </div>
-    </div>`;
-
-  // ---- 09 Roadmap ----
-  const phasesHtml = m.roadmap.map(ph => `
-    <div class="gr-phase ${ph.cls}">
-      <div class="gr-phase-top"><div class="gr-phase-name">${ph.name}</div><span class="gr-phase-tag">${ph.tag}</span></div>
-      <div class="gr-phase-focus">${ph.focus}</div>
-      <ul class="gr-phase-checks">${ph.checks.map(c => `<li>${c}</li>`).join('')}</ul>
-    </div>`).join('');
-  const roadmapSection = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">09</span><h2>Execution roadmap</h2></div>
-      <div class="gr-timeline">${phasesHtml}</div>
-    </div>`;
-
-  // ---- 10 Targets ----
-  const targetsHtml = m.targets.map(t => `
-    <div class="gr-target"><div class="l">${t.l}</div><div class="v">${t.v}</div><div class="d">${t.d}</div></div>`).join('');
-  const targetsSection = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">10</span><h2>Growth targets</h2></div>
-      <div class="gr-targets">${targetsHtml}</div>
-    </div>`;
-
-  // ---- 11 CTA + footer ----
-  const ctaSection = `
-    <div class="gr-section">
-      <div class="gr-sechead"><span class="gr-secnum">11</span><h2>Your next step</h2></div>
-      <div class="gr-cta-card">
-        <div class="lbl">Your next step</div>
-        <h3>Let's fix the constraint that's actually stalling growth.</h3>
-        <p>This diagnosis is directional &mdash; the next call turns it into a plan with an owner, a metric, and a weekly cadence.</p>
-        <a href="contact.html" class="gr-cta-btn">📅 Schedule a call to discuss</a>
-        <div class="gr-cta-secondary">
-          <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" rel="noopener" class="gr-cta-sec-card"><div class="k">LinkedIn</div><div class="v">Follow for GTM teardowns weekly</div></a>
-          <a href="https://www.linkedin.com/newsletters/marketingled-newsletter-7415340728588926976/" target="_blank" rel="noopener" class="gr-cta-sec-card"><div class="k">Newsletter</div><div class="v">MarketingLed &middot; monthly read</div></a>
-        </div>
+  $('reportRoot').innerHTML=`
+    <div class="rep-cover">
+      <div class="eyebrow">Growth Score Report · Self-reported</div>
+      <h1>${P.company}</h1>
+      <div class="rep-meta">
+        <span><b>${P.vertical}</b></span>
+        <span>ARR <b>${P.arr}</b></span>
+        <span>Prepared for <b>${P.name}</b> · ${P.role}</span>
+        <span>${now}</span>
+        ${P.site?`<span>${P.site}</span>`:''}
       </div>
     </div>
-    <div class="gr-docfoot">
-      <span class="gr-logo"><span class="star">✦</span><span class="w growth">Growth</span><span class="w clarity">Clarity</span><span class="w co">Co.</span></span>
-      <span class="conf">Confidential &middot; Not for distribution</span>
-      <button class="dl" id="downloadPdfBtn" onclick="downloadReportPDF()">Download PDF</button>
-    </div>`;
 
-  const html = `
-    <div class="gr-report" id="gr-report-root">
-      ${cover}${snapshot}${scorecard}${diagnosis}${painSection}${rootCause}${priorityMatrix}${playbooksSection}${serviceStack}${roadmapSection}${targetsSection}${ctaSection}
+    <div class="score-hero">
+      ${ring}
+      <div class="score-verdict">
+        <span class="band mono" style="color:${band[1]};background:${band[2]}">${band[0]} · vs ${P.vertical} median ${median}</span>
+        <h2>${growth>=median?"Above":"Below"} your cohort by ${Math.abs(growth-median)} points.</h2>
+        <p>${verdict}</p>
+      </div>
     </div>
 
-    <div class="cycle-section">
-      <div class="cycle-card">
-        <h3>Want us to build this with you?</h3>
-        <p>Book a 45-minute Revenue Growth Audit and we'll walk through this exact report together &mdash; using it as the starting point, not a cold discovery call.</p>
-        <a href="contact.html" class="btn btn-green btn-lg btn-arrow" style="justify-content:center">Book a call with Jithin</a>
+    <div class="sec">
+      <span class="eyebrow">Engine breakdown · benchmarked</span>
+      <div class="bars">${bars}</div>
+      <p class="disc">The vertical line on each bar is the ${P.vertical} cohort median (${median}). Cohort medians are calibrated placeholders until 20+ completed diagnostics are on file — at which point they become percentiles segmented by stage and vertical.</p>
+    </div>
+
+    <div class="sec">
+      <span class="eyebrow">Your binding constraint</span>
+      <div class="constraint">
+        <div class="lab">Highest weighted gap</div>
+        <h2>${cLabel} — ${cScore}/100</h2>
+        <p>Of all 11 systems, this is where a fix moves your Growth Score the most, given its weight in ${P.vertical}. It's the one thing to fix before adding anything new. ${off.fix}</p>
       </div>
-      <div class="cycle-secondary-grid">
-        <div class="cycle-secondary-card">
-          <h4>Want to keep this report?</h4>
-          <p>${state.contact.email ? `We've saved a copy against ${state.contact.email}. We'll also send 1-2 relevant frameworks over the next few weeks based on your ${top.label.toLowerCase()} score &mdash; not a generic drip sequence.` : `Download the PDF above before you close this tab &mdash; or subscribe below and we'll send 1-2 relevant frameworks over the next few weeks based on your ${top.label.toLowerCase()} score.`}</p>
-          <a href="https://www.linkedin.com/newsletters/marketingled-newsletter-7415340728588926976/" target="_blank" rel="noopener" class="btn btn-outline-white btn-md">Subscribe to the newsletter</a>
-        </div>
-        <div class="cycle-secondary-card">
-          <h4>Want the thinking behind this score?</h4>
-          <p>Jithin breaks down diagnostics like this one on LinkedIn most weeks &mdash; real patterns from real engagements, not theory.</p>
-          <a href="https://www.linkedin.com/in/jithingeorge-marketing-strategist/" target="_blank" rel="noopener" class="btn btn-outline-white btn-md">Connect on LinkedIn</a>
-        </div>
+      <div class="offer">
+        <div class="lab">Recommended system</div>
+        <div class="oname">${off.name}</div>
+        <div class="price">${off.price}</div>
+        <p>This is the Growth Clarity Co. system built to resolve a ${cLabel.toLowerCase()} constraint. The full engagement gives you the causal chain, the revenue at risk, and a 90-day plan with owners.</p>
       </div>
+    </div>
+
+    <div class="sec">
+      <span class="eyebrow">Strengths & gaps</span>
+      <div class="twocol">
+        <div class="mini"><div class="lab">Strongest systems</div><ul>${listItems(top)}</ul></div>
+        <div class="mini"><div class="lab">Weakest systems</div><ul>${listItems(bottom)}</ul></div>
+      </div>
+    </div>
+
+    <div class="rep-cta no-print">
+      <div><h3>Turn this into a plan.</h3><p>Book a working session to pressure-test the constraint and scope the fix — or download this report to share with your team.</p></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn" onclick="window.print()">Download PDF</button>
+        <button class="btn ghost" onclick="location.reload()">Run again</button>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span>Growth Clarity Co. — GTM Intelligence OS</span>
+      <span class="mono">growthclarityco.com</span>
     </div>
   `;
-  document.getElementById('reportContent').innerHTML = html;
 
-  // This is the step that was missing: writing the HTML above only
-  // populates the (hidden) report section — nothing else ever tells
-  // the page to switch off the loading screen and onto this one.
-  // Without this, the loading messages just cycle forever while the
-  // finished report sits there invisible.
-  state.step = state.screens.length - 1; // 'report' is always the last screen
-  showScreen(state.step);
-}
+  /* [wire-up] here: POST {profile:P, answers:state.answers, scores, growth, constraint}
+     → Supabase `leads` insert, then Cloudflare Worker for LLM narrative.
+     Left out of this build so the page has zero external dependencies. */
 
-// Renders the whole .gr-report node to a canvas (via html2canvas) and
-// drops it into a jsPDF page sized to match the report's ACTUAL width
-// and height — not standard A4. Forcing a 980px-wide design into a
-// 595pt-wide A4 page was what made the old version cram everything down
-// and cut sections at arbitrary points; a custom-sized page means the
-// PDF is exactly as wide as the report and never needs to be sliced at
-// all, so nothing gets shrunk or cut mid-card.
-// This is a rasterized PDF — pixel-perfect match to what's on screen,
-// but text inside it isn't selectable/searchable. That trade-off is
-// what keeps this a zero-backend, zero-cost solution; a server-side
-// PDF service is the upgrade path later if selectable text matters.
-async function downloadReportPDF() {
-  const btn = document.getElementById('downloadPdfBtn');
-  const original = btn.textContent;
-  btn.textContent = 'Preparing PDF…';
-  btn.disabled = true;
-  try {
-    const node = document.getElementById('gr-report-root');
-    const scaleFactor = 2; // supersample for crisp text/lines, not for page sizing
-    const canvas = await html2canvas(node, { scale: scaleFactor, backgroundColor: '#070D17', useCORS: true });
-    const { jsPDF } = window.jspdf;
-    // Page dimensions in CSS px (canvas is 2x that, since scaleFactor=2)
-    const pageWidthPx = canvas.width / scaleFactor;
-    const pageHeightPx = canvas.height / scaleFactor;
-    const pdf = new jsPDF({ unit: 'px', format: [pageWidthPx, pageHeightPx], hotfixes: ['px_scaling'] });
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
-    pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthPx, pageHeightPx);
-    const fname = `growth-clarity-co-gtm-diagnostic-${(state.contact.company || state.contact.name || 'report').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.pdf`;
-    pdf.save(fname);
-  } catch (err) {
-    alert('PDF generation failed — please try again, or use your browser\'s Print > Save as PDF instead.');
-  } finally {
-    btn.textContent = original;
-    btn.disabled = false;
-  }
-}
-
-/* ============================================================
-   FALLBACK — used only if the Gemini call fails/times out.
-   Numbers still come entirely from calculateReportMetrics(); only
-   the narrative sentences are templated instead of AI-written, and
-   they're still built from this company's actual top axis and
-   free-text answer, not a single generic paragraph.
-   ============================================================ */
-function renderFallbackReport(scores, top, tier, m) {
-  const a = state.answers;
-  const motionWord = a.motion === 'plg' ? 'product-led' : a.motion === 'slg' ? 'sales-led' : 'hybrid';
-  const top4 = m.orderedAxes.slice(0, 4);
-
-  const AXIS_SIGNAL = {
-    positioning: { title: 'Generic, undifferentiated messaging', detail: 'Reps describe the product differently depending on who is asking, and buyers default to comparing you on price.' },
-    alignment: { title: 'Sales distrusts marketing-sourced leads', detail: 'Sales routinely says marketing-sourced leads are not good enough to work, and the definition of a qualified lead was never agreed in writing.' },
-    demand: { title: 'Inconsistent pipeline month to month', detail: `Pipeline is ${m.pipelineState.toLowerCase()} month to month, which makes forecasting to the board unreliable.` },
-    conversion: { title: `Low ${a.motion === 'plg' ? 'trial-to-paid' : 'demo-to-close'} conversion`, detail: `${a.motion === 'plg' ? 'Trial-to-paid' : 'Demo-to-close'} conversion sits at ${m.conversion.cur}, below where it should be for your stage.` },
-    cac: { title: 'CAC trending in the wrong direction', detail: `CAC has been ${m.cacTrend.toLowerCase()} over the last two quarters, without a clear explanation tied to channel mix.` },
-    expansion: { title: 'Expansion revenue underperforming', detail: `Expansion revenue is ${m.nrrState.toLowerCase()}, leaving NRR flatter than it should be at your stage.` },
-  };
-  const AXIS_FACTOR = {
-    positioning: 'No single narrative reps and pages consistently draw from',
-    alignment: 'No shared, written definition of what counts as a qualified lead',
-    demand: 'No repeatable trigger-event or channel system generating volume',
-    conversion: 'No structured objection-handling or conversion testing in place',
-    cac: 'No channel-by-channel breakdown of what is actually driving cost',
-    expansion: 'No structured handoff from Customer Success into expansion motion',
-  };
-  const AXIS_EFFECT = {
-    positioning: 'Buyers default to comparing you on price instead of value',
-    alignment: 'Good leads get deprioritized because trust between teams has broken down',
-    demand: 'Forecasting to the board becomes guesswork, not a model',
-    conversion: 'Marketing spend converts at a lower rate than it should',
-    cac: 'Every new dollar of spend buys less growth than the last one',
-    expansion: 'Revenue that should compound from existing customers stays flat',
-  };
-
-  const report = {
-    executive_summary: `Your business is a ${motionWord} company with a Revenue Health Score of ${m.healthScore}/100. The assessment identified ${AXIS_LABEL[top.key].toLowerCase()} as the highest-severity constraint currently limiting predictable revenue growth.`,
-    pain_signals: top4.map(k => AXIS_SIGNAL[k]),
-    diagnosis_paragraphs: [
-      `${AXIS_LABEL[top.key]} scored ${scores[top.key]}/5 in this assessment — the highest-severity constraint out of the six measured. Based on your answers, this sits upstream of the other symptoms you're seeing, which is why it's sequenced first in the treatment plan below.`,
-      `Left unaddressed, this constraint is estimated to account for ${fmtUSD(m.leakageLow)}–${fmtUSD(m.leakageHigh)} in annual revenue leakage — roughly ${m.leakageRatePct}% of your estimated ARR — concentrated in the areas this report flags as critical or caution.`,
-      `Fixing ${AXIS_LABEL[top.key].toLowerCase()} first is what makes every other investment (channel spend, headcount, tooling) compound instead of getting diluted by the same underlying gap.`,
-    ],
-    root_cause: {
-      statement: `${AXIS_LABEL[top.key]} is the structural constraint behind the other symptoms flagged in this assessment.`,
-      factors: top4.slice(0, 3).map(k => AXIS_FACTOR[k]),
-      effects: top4.slice(0, 3).map(k => AXIS_EFFECT[k]),
-      footer: `Fixing ${AXIS_LABEL[top.key].toLowerCase()} first compounds every other investment — fixing anything else first will not.`,
-    },
-    playbooks: m.treatmentPlan.slice(1, 3).map(p => ({
-      objective: `${p.title} — ${p.deliverable ? 'delivering a ' + p.deliverable.toLowerCase() : 'addressing this constraint directly'} over ${p.duration.toLowerCase()}.`,
-      key_actions: p.objectives,
-      outcome: `Expected outcome: measurable movement on the KPIs tied to this axis within one quarter.`,
-    })),
-  };
-  renderReport(report, scores, top, tier, m);
-  sendInternalBrief({
-    fit_score: 'Unknown — AI report generation failed, review answers manually',
-    intent_score: 'Unknown', timing_score: 'Unknown',
-    opening_line: state.answers.freetext ? `They mentioned: "${state.answers.freetext}"` : `Lead with their ${top.label} score.`,
-    likely_objection: '', objection_counter: '', price_anchor: '', disqualify: 'false', upsell_flag: '',
-  }, scores, top, tier, m);
+  $('topTag').textContent=P.company+" — "+growth+"/100";
+  show('s3');
 }
 </script>
-
 </body>
 </html>
