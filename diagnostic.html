@@ -801,7 +801,9 @@ function handleFile(file){
     .then(function(res){
       if(!res.ok || !res.j.ok){
         anStat('Extraction failed: ' + (res.j.error || 'unknown error') +
-               '<br><span style="color:var(--slate)">You can still generate your report from the questionnaire alone.</span>', 'err');
+               '<div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">' +
+               '<button class="btn ghost" onclick="retryUpload()">Try a different file</button>' +
+               '<button class="btn" onclick="generate()">Skip and generate report →</button></div>', 'err');
         an.status = 'failed';
         return;
       }
@@ -810,7 +812,10 @@ function handleFile(file){
       an.status = res.j.needs_review ? 'needs_review' : 'extracted';
 
       if(!an.metrics.length){
-        anStat('No readable metrics were found in that PDF. If it is chart-only, try exporting a table view instead.<br><span style="color:var(--slate)">You can still generate your report from the questionnaire alone.</span>', 'err');
+        anStat('No readable metrics were found in that PDF. If it is chart-only, try exporting a table view instead.' +
+               '<div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">' +
+               '<button class="btn ghost" onclick="retryUpload()">Try a different file</button>' +
+               '<button class="btn" onclick="generate()">Skip and generate report →</button></div>', 'err');
         return;
       }
 
@@ -836,11 +841,25 @@ function handleFile(file){
              '<div style="margin-top:14px"><button class="btn" onclick="generate()">Generate combined report →</button></div>', 'ok');
     })
     .catch(function(){
-      anStat('Could not reach the extraction service. You can still generate your report from the questionnaire alone.', 'err');
+      anStat('Could not reach the extraction service.' +
+             '<div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">' +
+             '<button class="btn ghost" onclick="retryUpload()">Try a different file</button>' +
+             '<button class="btn" onclick="generate()">Skip and generate report →</button></div>', 'err');
       an.status = 'failed';
     });
   };
   reader.readAsDataURL(file);
+}
+
+/* Reset the upload widget after a failure so the person has one clear,
+   obvious way back in — instead of relying on the drop zone still being
+   visible above a red error box that draws the eye away from it. */
+function retryUpload(){
+  an.status = 'none'; an.metrics = []; an.meta = null;
+  document.getElementById('anStatus').className = 'an-status';
+  document.getElementById('anStatus').innerHTML = '';
+  document.getElementById('fileIn').value = '';
+  document.getElementById('dropWrap').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 /* ---- persistence: lead -> report -> upload -> metrics ---- */
