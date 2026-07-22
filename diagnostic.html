@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,6 +144,49 @@
   .foot{margin-top:60px;border-top:1px solid var(--line);padding-top:22px;font-size:12.5px;color:var(--slate-dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
   /* print */
+  
+  /* ---- analytics upload screen ---- */
+  .an-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0 6px}
+  @media(max-width:760px){.an-grid{grid-template-columns:1fr}}
+  .an-card{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:20px;cursor:pointer;transition:border-color .15s,background .15s}
+  .an-card:hover{border-color:var(--line-strong)}
+  .an-card.sel{border-color:var(--accent);background:var(--surface2)}
+  .an-card h4{font-size:15.5px;margin-bottom:6px}
+  .an-card p{font-size:13.5px;color:var(--slate);line-height:1.55}
+  .an-card .tag{display:inline-block;font-family:var(--mono);font-size:11px;color:var(--accent);border:1px solid var(--line-strong);border-radius:6px;padding:3px 8px;margin-bottom:10px}
+  .drop{border:1.5px dashed var(--line-strong);border-radius:14px;padding:30px 22px;text-align:center;background:var(--surface);transition:border-color .15s}
+  .drop.over{border-color:var(--accent)}
+  .drop b{display:block;font-size:15px;margin-bottom:6px}
+  .drop span{font-size:13.5px;color:var(--slate)}
+  .drop input{display:none}
+  .an-status{margin-top:16px;font-size:14px;border-radius:11px;padding:14px 16px;border:1px solid var(--line);background:var(--surface2);display:none}
+  .an-status.show{display:block}
+  .an-status.err{border-color:#ff6b6b;color:#ff9c9c}
+  .an-status.ok{border-color:var(--accent)}
+  .kpi-list{list-style:none;margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media(max-width:760px){.kpi-list{grid-template-columns:1fr}}
+  .kpi-list li{display:flex;justify-content:space-between;gap:10px;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:8px 11px;background:var(--surface)}
+  .kpi-list li .k{color:var(--slate)}
+  .kpi-list li .v{font-family:var(--mono);color:var(--ink)}
+  .kpi-list li.low{border-color:#EF9F27}
+  .noga{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 12px 12px 0;background:var(--surface2);padding:20px 22px;margin-top:18px}
+  .noga h4{font-size:15px;margin-bottom:10px}
+  .noga ol{margin:0 0 0 18px;font-size:13.5px;color:var(--slate);line-height:1.85}
+  .noga a{color:var(--accent)}
+  .an-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+  /* analytics block inside report */
+  .an-sec .row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .an-sec .row:last-child{border-bottom:0}
+  .an-sec .row .lab{font-size:14px}
+  .an-sec .row .lab small{display:block;color:var(--slate);font-size:12px;margin-top:2px}
+  .an-sec .row .val{font-family:var(--mono);font-size:14px;white-space:nowrap}
+  .vd{font-family:var(--mono);font-size:11px;border-radius:6px;padding:3px 8px;margin-left:8px}
+  .vd.good{color:#00E676;border:1px solid rgba(0,230,118,.35)}
+  .vd.warn{color:#EF9F27;border:1px solid rgba(239,159,39,.35)}
+  .vd.bad{color:#ff6b6b;border:1px solid rgba(255,107,107,.35)}
+  .conflict{border:1px solid #EF9F27;border-radius:11px;background:rgba(239,159,39,.07);padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.6}
+  .conflict b{color:#EF9F27}
+
   @media print{
     .topbar,.q-top,.rep-cta,.btn,.no-print{display:none!important}
     body{background:#fff;color:#0a0a0a;padding:0}
@@ -245,6 +289,63 @@
     <div class="q-actions">
       <button class="btn ghost" id="backBtn">← Back to details</button>
       <button class="btn" id="genBtn2" disabled>Generate report →</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ SCREEN 2B — WEBSITE ANALYTICS ============ -->
+<section class="screen" id="s2b">
+  <div class="wrap" style="max-width:900px">
+    <div class="card">
+      <span class="badge">Step 3 of 3 — optional but recommended</span>
+      <h1 style="margin-top:14px;font-size:clamp(28px,4vw,40px)">Add your website analytics.</h1>
+      <p class="lead">Your 66 answers are self-reported. Attaching a Google Analytics or Microsoft Clarity export lets the engine check those answers against what your website actually did — and flags anywhere the two disagree.</p>
+
+      <div class="an-grid">
+        <div class="an-card" id="cardGA" data-p="google_analytics">
+          <span class="tag">Recommended</span>
+          <h4>Google Analytics 4</h4>
+          <p>Export any GA4 report as PDF and upload it. Traffic, channels, engagement and conversions are read automatically.</p>
+        </div>
+        <div class="an-card" id="cardCL" data-p="clarity">
+          <span class="tag">Optional</span>
+          <h4>Microsoft Clarity</h4>
+          <p>Clarity adds behavioural signals — rage clicks, dead clicks, scroll depth — that show where the page itself is losing people.</p>
+        </div>
+      </div>
+
+      <div id="dropWrap" style="display:none;margin-top:18px">
+        <label class="drop" id="drop">
+          <b>Drop your PDF here, or click to choose a file</b>
+          <span id="dropHint">PDF only, up to 18MB.</span>
+          <input type="file" id="fileIn" accept="application/pdf">
+        </label>
+        <div class="an-status" id="anStatus"></div>
+      </div>
+
+      <div class="an-actions">
+        <button class="btn ghost" id="noGaBtn">I don't have analytics set up</button>
+        <button class="btn" id="skipBtn">Skip and generate report →</button>
+      </div>
+
+      <div class="noga" id="noGaPanel" style="display:none">
+        <h4>Set up Google Analytics first — it's free, and it takes about 15 minutes.</h4>
+        <p style="font-size:13.5px;color:var(--slate);line-height:1.7;margin-bottom:12px">
+          Without analytics you are making go-to-market decisions blind. You cannot see which channels bring buyers, where the funnel leaks, or whether a change helped. For a B2B SaaS company between $1M and $20M ARR this is the single cheapest fix available — and it is a prerequisite for almost every other improvement in your report.
+        </p>
+        <ol>
+          <li>Go to <a href="https://analytics.google.com" target="_blank" rel="noopener">analytics.google.com</a> and create a free account.</li>
+          <li>Create a GA4 property for your website and copy the measurement ID.</li>
+          <li>Add the tag to your site — directly, or through Google Tag Manager.</li>
+          <li>Mark your key events as conversions: demo request, trial signup, pricing view, contact form.</li>
+          <li>Also install <a href="https://clarity.microsoft.com" target="_blank" rel="noopener">Microsoft Clarity</a> — also free — for heatmaps and session recordings.</li>
+          <li>Let it collect for 28 days, then come back and re-run this diagnostic with real data attached.</li>
+        </ol>
+        <p style="font-size:13.5px;color:var(--slate);margin-top:14px">
+          Your report will still generate now from your questionnaire answers alone — it will simply be scored at self-reported confidence, and RevOps &amp; data will reflect the missing measurement layer.
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -396,6 +497,95 @@ const SCALE = [
 
 /* ---- state ---- */
 const state = { profile:{}, answers:{} };
+
+/* ============================================================
+   BACKEND CONFIG
+   Same Supabase project as contact.html / start-diagnostic.html.
+   The anon key is public by design — RLS is insert-only, so nobody
+   can read anyone else's diagnostic. See supabase-schema.sql.
+   ============================================================ */
+const SUPABASE_URL = "https://vtxqgmioqwftrszgfohy.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ0eHFnbWlvcXdmdHJzemdmb2h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5OTY2OTIsImV4cCI6MjA5ODU3MjY5Mn0.n9APqs8-j4UsS-rlvEJ6IXkLap9LWZ6-wqQ14KPjB4I";
+const WORKER_URL = "https://gcc-report-api.estondigital.workers.dev";
+
+/* trust multipliers — must match the CHECK constraint in supabase-schema.sql */
+const TRUST = { self_report:0.70, pdf_extract:0.80, crawl:0.85, connected_api:1.00 };
+
+/* Local mirror of kpi_dictionary. Kept here so the report can render
+   feedback without a network round-trip; the database copy is canonical. */
+const KPI_META = {
+  conversion_rate:        {label:"Site conversion rate",      unit:"percent", engine:"con", dir:"higher", poor:1.0,  good:2.5},
+  bounce_rate:            {label:"Bounce rate",               unit:"percent", engine:"con", dir:"lower",  poor:null, good:null},
+  engagement_rate:        {label:"Engagement rate",           unit:"percent", engine:"con", dir:"higher", poor:40,   good:60},
+  conversions_total:      {label:"Total conversions",         unit:"count",   engine:"con", dir:"higher", poor:null, good:null},
+  rage_clicks:            {label:"Rage clicks",               unit:"count",   engine:"con", dir:"lower",  poor:null, good:null},
+  dead_clicks:            {label:"Dead clicks",               unit:"count",   engine:"con", dir:"lower",  poor:null, good:null},
+  sessions_total:         {label:"Total sessions",            unit:"count",   engine:"dem", dir:"higher", poor:null, good:null},
+  sessions_organic:       {label:"Organic sessions",          unit:"count",   engine:"dem", dir:"higher", poor:null, good:null},
+  sessions_paid:          {label:"Paid sessions",             unit:"count",   engine:"dem", dir:"higher", poor:null, good:null},
+  sessions_direct:        {label:"Direct sessions",           unit:"count",   engine:"dem", dir:"higher", poor:null, good:null},
+  sessions_referral:      {label:"Referral sessions",         unit:"count",   engine:"dem", dir:"higher", poor:null, good:null},
+  sessions_social:        {label:"Social sessions",           unit:"count",   engine:"dem", dir:"higher", poor:null, good:null},
+  sessions_email:         {label:"Email sessions",            unit:"count",   engine:"dem", dir:"higher", poor:null, good:null},
+  channel_count:          {label:"Working channels",          unit:"count",   engine:"dem", dir:"higher", poor:2,    good:3},
+  avg_engagement_time:    {label:"Avg engagement time",       unit:"seconds", engine:"cnt", dir:"higher", poor:30,   good:60},
+  pages_per_session:      {label:"Pages per session",         unit:"count",   engine:"cnt", dir:"higher", poor:1.5,  good:2.5},
+  scroll_depth_avg:       {label:"Average scroll depth",      unit:"percent", engine:"cnt", dir:"higher", poor:50,   good:70},
+  new_users:              {label:"New users",                 unit:"count",   engine:"cnt", dir:"higher", poor:null, good:null},
+  returning_user_rate:    {label:"Returning user rate",       unit:"percent", engine:"icp", dir:"higher", poor:15,   good:30},
+  sessions_desktop:       {label:"Desktop sessions",          unit:"count",   engine:"icp", dir:"higher", poor:null, good:null},
+  sessions_mobile:        {label:"Mobile sessions",           unit:"count",   engine:"icp", dir:"higher", poor:null, good:null},
+  top_country_share:      {label:"Top country share",         unit:"percent", engine:"icp", dir:"higher", poor:null, good:null},
+  avg_session_duration:   {label:"Avg session duration",      unit:"seconds", engine:"act", dir:"higher", poor:60,   good:120},
+  quick_backs:            {label:"Quick backs",               unit:"count",   engine:"act", dir:"lower",  poor:null, good:null},
+  conversion_events_count:{label:"Conversion events set up",  unit:"count",   engine:"rev", dir:"higher", poor:1,    good:3},
+  data_period_days:       {label:"Reporting period",          unit:"count",   engine:"rev", dir:"higher", poor:28,   good:90},
+  js_errors:              {label:"JavaScript errors",         unit:"count",   engine:"rev", dir:"lower",  poor:null, good:null}
+};
+
+/* analytics state */
+const an = { provider:null, metrics:[], meta:null, status:'none', uploadId:null };
+
+/* ---- supabase helpers ---- */
+function sbInsert(table, row, returnRow){
+  const headers = {
+    'Content-Type':'application/json',
+    'apikey': SUPABASE_ANON_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+    'Prefer': returnRow ? 'return=representation' : 'return=minimal'
+  };
+  return fetch(SUPABASE_URL + '/rest/v1/' + table, {
+    method:'POST', headers:headers, body: JSON.stringify(row)
+  }).then(function(r){
+    if(!r.ok) throw new Error(table + ' insert failed: ' + r.status);
+    return returnRow ? r.json() : null;
+  });
+}
+
+function fmt(v, unit){
+  if(v === null || v === undefined) return '—';
+  if(unit === 'percent') return (Math.round(v*10)/10) + '%';
+  if(unit === 'seconds'){
+    if(v < 60) return Math.round(v) + 's';
+    return Math.floor(v/60) + 'm ' + Math.round(v%60) + 's';
+  }
+  return Number(v).toLocaleString('en-US');
+}
+
+/* verdict for one KPI against its benchmark */
+function verdict(key, val){
+  const m = KPI_META[key];
+  if(!m || m.poor === null || m.good === null) return null;
+  if(m.dir === 'higher'){
+    if(val >= m.good) return ['good','above benchmark'];
+    if(val <  m.poor) return ['bad','below benchmark'];
+    return ['warn','near benchmark'];
+  } else {
+    if(val <= m.poor) return ['good','healthy'];
+    return ['warn','worth checking'];
+  }
+}
+
 const $ = id => document.getElementById(id);
 const show = n => { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); $(n).classList.add('active'); window.scrollTo({top:0}); };
 
@@ -407,6 +597,43 @@ Object.keys(VERTICALS).forEach(v=>{
   el.onclick=()=>{ document.querySelectorAll('.vert').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); state.profile.vertical=v; };
   vGrid.appendChild(el);
 });
+
+
+/* ---- pre-fill from start-diagnostic.html, if the visitor came from there ----
+   start-diagnostic.html writes localStorage.gcc_prospect using its own short
+   codes for role/arr (e.g. 'cmo', 'b'), which do not match this page's
+   dropdown option text. The two forms were never actually wired together —
+   this maps between them. ARR bands also don't align 1:1 (5 bands there vs
+   6 here), so a code that spans a boundary is mapped to its closest option
+   rather than left blank. */
+(function prefillFromProspect(){
+  let raw;
+  try { raw = localStorage.getItem('gcc_prospect'); } catch(e) { return; }
+  if(!raw) return;
+  let p; try { p = JSON.parse(raw); } catch(e) { return; }
+
+  const ROLE_MAP = {
+    founder:'Founder / CEO',
+    cmo:'Head of Growth / Marketing',
+    growth:'Head of Growth / Marketing',
+    sales:'VP Sales / Revenue',
+    other:'Other'
+  };
+  const ARR_MAP = {
+    pre:'Pre-$1M',
+    sub1m:'Pre-$1M',
+    a:'$1M–$3M',       // start-diagnostic's "$1M–$5M" spans two options here; nearest is used
+    b:'$5M–$10M',      // start-diagnostic's "$5M–$12M" spans two options here; nearest is used
+    c:'$10M–$20M',
+    d:'$20M+'
+  };
+
+  if(p.name)  $('i_name').value  = p.name;
+  if(p.email) $('i_email').value = p.email;
+  if(p.company) $('i_company').value = p.company;
+  if(p.role && ROLE_MAP[p.role]) $('i_role').value = ROLE_MAP[p.role];
+  if(p.arr  && ARR_MAP[p.arr])   $('i_arr').value  = ARR_MAP[p.arr];
+})();
 
 function validEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 
@@ -476,8 +703,8 @@ function updateProgress(){
 }
 
 $('backBtn').onclick=()=>show('s1');
-$('genBtn').onclick=generate;
-$('genBtn2').onclick=generate;
+$('genBtn').onclick=toAnalytics;
+$('genBtn2').onclick=toAnalytics;
 
 /* ---- scoring ---- */
 function engineScore(ek){
@@ -493,6 +720,271 @@ function verticalWeights(v){
   Object.keys(ENGINES).forEach(ek=>{ const w=ENGINES[ek].w*(mult[ek]||1); raw[ek]=w; sum+=w; });
   const norm={}; Object.keys(raw).forEach(ek=>norm[ek]=raw[ek]/sum*100);
   return norm;
+}
+
+
+/* ---- screen 2b : analytics upload ---- */
+function toAnalytics(){ show('s2b'); }
+
+function setProvider(p){
+  an.provider = p;
+  document.getElementById('cardGA').classList.toggle('sel', p === 'google_analytics');
+  document.getElementById('cardCL').classList.toggle('sel', p === 'clarity');
+  document.getElementById('dropWrap').style.display = 'block';
+  document.getElementById('dropHint').textContent =
+    p === 'google_analytics'
+      ? 'Export a GA4 report as PDF. Table-based exports read far more accurately than chart-heavy dashboards.'
+      : 'Export your Clarity dashboard as PDF.';
+  document.getElementById('noGaPanel').style.display = 'none';
+}
+
+document.getElementById('cardGA').onclick = function(){ setProvider('google_analytics'); };
+document.getElementById('cardCL').onclick = function(){ setProvider('clarity'); };
+
+document.getElementById('noGaBtn').onclick = function(){
+  const panel = document.getElementById('noGaPanel');
+  const open = panel.style.display === 'block';
+  panel.style.display = open ? 'none' : 'block';
+  if(!open){
+    an.status = 'none';
+    document.getElementById('dropWrap').style.display = 'none';
+    document.getElementById('cardGA').classList.remove('sel');
+    document.getElementById('cardCL').classList.remove('sel');
+    an.provider = null; an.metrics = []; an.meta = null;
+    panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+};
+
+document.getElementById('skipBtn').onclick = function(){ generate(); };
+
+const drop = document.getElementById('drop');
+['dragenter','dragover'].forEach(function(ev){
+  drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.add('over'); });
+});
+['dragleave','drop'].forEach(function(ev){
+  drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.remove('over'); });
+});
+drop.addEventListener('drop', function(e){
+  if(e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+document.getElementById('fileIn').onchange = function(e){
+  if(e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+};
+
+function anStat(html, cls){
+  const el = document.getElementById('anStatus');
+  el.className = 'an-status show' + (cls ? ' ' + cls : '');
+  el.innerHTML = html;
+}
+
+function handleFile(file){
+  if(file.type !== 'application/pdf'){
+    anStat('That file is not a PDF. Please export your report as PDF and try again.', 'err');
+    return;
+  }
+  if(file.size > 18 * 1024 * 1024){
+    anStat('That file is larger than 18MB. Export a shorter date range and try again.', 'err');
+    return;
+  }
+  anStat('Reading <b>' + file.name + '</b> — extracting KPIs. This usually takes 10–20 seconds.');
+  an.status = 'working';
+
+  const reader = new FileReader();
+  reader.onerror = function(){ anStat('Could not read that file. Please try again.', 'err'); };
+  reader.onload = function(){
+    const b64 = String(reader.result).split(',')[1];
+    fetch(WORKER_URL + '/extract-analytics', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ pdf_base64: b64, provider_hint: an.provider })
+    })
+    .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
+    .then(function(res){
+      if(!res.ok || !res.j.ok){
+        anStat('Extraction failed: ' + (res.j.error || 'unknown error') +
+               '<br><span style="color:var(--slate)">You can still generate your report from the questionnaire alone.</span>', 'err');
+        an.status = 'failed';
+        return;
+      }
+      an.metrics = res.j.metrics || [];
+      an.meta = res.j;
+      an.status = res.j.needs_review ? 'needs_review' : 'extracted';
+
+      if(!an.metrics.length){
+        anStat('No readable metrics were found in that PDF. If it is chart-only, try exporting a table view instead.<br><span style="color:var(--slate)">You can still generate your report from the questionnaire alone.</span>', 'err');
+        return;
+      }
+
+      const items = an.metrics.slice(0, 12).map(function(m){
+        const meta = KPI_META[m.metric_key] || {label:m.metric_key, unit:m.unit};
+        return '<li class="' + (m.confidence === 'low' ? 'low' : '') + '">' +
+               '<span class="k">' + meta.label + (m.dimension ? ' · ' + m.dimension : '') + '</span>' +
+               '<span class="v">' + fmt(m.metric_value, m.unit) + '</span></li>';
+      }).join('');
+
+      let head = 'Read <b>' + an.metrics.length + ' metrics</b>';
+      if(res.j.period_start && res.j.period_end){
+        head += ' covering <b>' + res.j.period_start + '</b> to <b>' + res.j.period_end + '</b>';
+      }
+      head += '.';
+      if(res.j.low_confidence_count){
+        head += ' <span style="color:#EF9F27">' + res.j.low_confidence_count +
+                ' value(s) were hard to read and are flagged for review — they are stored but excluded from scoring.</span>';
+      }
+      if(res.j.notes) head += '<br><span style="color:var(--slate);font-size:13px">' + res.j.notes + '</span>';
+
+      anStat(head + '<ul class="kpi-list">' + items + '</ul>' +
+             '<div style="margin-top:14px"><button class="btn" onclick="generate()">Generate combined report →</button></div>', 'ok');
+    })
+    .catch(function(){
+      anStat('Could not reach the extraction service. You can still generate your report from the questionnaire alone.', 'err');
+      an.status = 'failed';
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ---- persistence: lead -> report -> upload -> metrics ---- */
+function persist(payload){
+  const P = payload.profile;
+  return sbInsert('leads', {
+    source:'diagnostic', name:P.name, email:P.email, company:P.company,
+    website:P.site || null, role:P.role, arr:P.arr, vertical:P.vertical,
+    page_url: window.location.href, user_agent: navigator.userAgent
+  }, true)
+  .then(function(rows){
+    const leadId = rows && rows[0] ? rows[0].id : null;
+    return sbInsert('reports', {
+      lead_id: leadId, company:P.company, email:P.email, website:P.site || null,
+      vertical:P.vertical, arr_band:P.arr, role:P.role,
+      answers: payload.answers, engine_scores: payload.scores,
+      growth_score: payload.growth, constraint_key: payload.constraintKey,
+      constraint_label: payload.constraintLabel, cohort_median: payload.median,
+      report_object: payload.reportObject, config_pack: P.vertical,
+      has_analytics: an.metrics.length > 0
+    }, true).then(function(rr){ return {leadId:leadId, reportId: rr && rr[0] ? rr[0].id : null}; });
+  })
+  .then(function(ids){
+    if(!an.metrics.length) return ids;
+    return sbInsert('analytics_uploads', {
+      lead_id: ids.leadId, report_id: ids.reportId,
+      company: P.company, email: P.email, website: P.site || null,
+      provider: an.provider || 'other',
+      period_start: an.meta.period_start || null,
+      period_end: an.meta.period_end || null,
+      raw_extraction: an.meta, model_used: an.meta.model_used || 'gemini-2.5-flash',
+      extraction_status: an.meta.needs_review ? 'needs_review' : 'extracted'
+    }, true).then(function(ur){
+      const uploadId = ur && ur[0] ? ur[0].id : null;
+      const rows = an.metrics.map(function(m){
+        const meta = KPI_META[m.metric_key] || {};
+        return {
+          upload_id: uploadId, lead_id: ids.leadId, report_id: ids.reportId,
+          company: P.company, metric_key: m.metric_key, metric_value: m.metric_value,
+          metric_unit: m.unit, dimension: m.dimension || null,
+          period_start: an.meta.period_start || null, period_end: an.meta.period_end || null,
+          source: 'pdf_extract', trust_multiplier: TRUST.pdf_extract,
+          confidence: m.confidence, page_found: m.page_found,
+          source_ref: { raw_label: m.raw_label, extracted_at: new Date().toISOString(),
+                        model: an.meta.model_used, file_provider: an.provider },
+          engine_key: meta.engine || null,
+          approved: m.confidence !== 'low'
+        };
+      });
+      return sbInsert('analytics_metrics', rows, false).then(function(){ return ids; });
+    });
+  });
+}
+
+
+/* ---- build the analytics section of the report ----
+   Every number here is transcribed from the uploaded file. Nothing is
+   computed by a model. Where a self-reported answer and a measured value
+   disagree, we surface the disagreement rather than silently picking one. */
+function analyticsBlock(scores){
+  if(!an.metrics.length){
+    return `
+    <div class="sec an-sec">
+      <span class="eyebrow">Website analytics</span>
+      <h2>No analytics attached.</h2>
+      <p class="muted" style="margin-top:10px;font-size:14.5px;line-height:1.7">
+        This report is scored entirely from self-reported answers, at 0.70 confidence.
+        Attaching a Google Analytics export would raise that to 0.80 and let the engine
+        check your answers against measured behaviour.
+      </p>
+      <div class="conflict" style="border-color:var(--line-strong);background:var(--surface2)">
+        <b>Recommended next step.</b> Set up Google Analytics 4 at analytics.google.com
+        (free, about 15 minutes) and Microsoft Clarity at clarity.microsoft.com.
+        Mark demo requests, trial signups and contact submissions as conversion events.
+        Let both collect for 28 days, then re-run this diagnostic. Until measurement exists,
+        every channel and conversion decision in your business is being made on intuition —
+        and your RevOps &amp; data score reflects that.
+      </div>
+    </div>`;
+  }
+
+  const used = an.metrics.filter(function(m){ return m.confidence !== 'low'; });
+  const held = an.metrics.filter(function(m){ return m.confidence === 'low'; });
+
+  // group by engine
+  const byEngine = {};
+  used.forEach(function(m){
+    const meta = KPI_META[m.metric_key]; if(!meta) return;
+    (byEngine[meta.engine] = byEngine[meta.engine] || []).push(m);
+  });
+
+  let rows = '';
+  Object.keys(byEngine).forEach(function(ek){
+    rows += '<div style="margin-top:18px"><div class="lab" style="font-family:var(--mono);font-size:11.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">' +
+            (ENGINES[ek] ? ENGINES[ek].label : ek) + '</div>';
+    byEngine[ek].forEach(function(m){
+      const meta = KPI_META[m.metric_key];
+      const v = verdict(m.metric_key, m.metric_value);
+      rows += '<div class="row"><div class="lab">' + meta.label +
+              (m.dimension ? ' <span style="color:var(--slate)">· ' + m.dimension + '</span>' : '') +
+              '<small>page ' + m.page_found + ' of your upload</small></div>' +
+              '<div class="val">' + fmt(m.metric_value, m.unit) +
+              (v ? '<span class="vd ' + v[0] + '">' + v[1] + '</span>' : '') + '</div></div>';
+    });
+    rows += '</div>';
+  });
+
+  // conflict detection: self-reported engine score high, measured KPIs poor
+  let conflicts = '';
+  Object.keys(byEngine).forEach(function(ek){
+    const selfScore = scores[ek];
+    if(selfScore === undefined || selfScore < 65) return;
+    const bad = byEngine[ek].filter(function(m){
+      const v = verdict(m.metric_key, m.metric_value); return v && v[0] === 'bad';
+    });
+    if(!bad.length) return;
+    const names = bad.map(function(m){ return KPI_META[m.metric_key].label.toLowerCase(); }).join(', ');
+    conflicts += '<div class="conflict"><b>Check this.</b> You scored ' +
+      (ENGINES[ek] ? ENGINES[ek].label.toLowerCase() : ek) + ' at ' + selfScore +
+      '/100, but your uploaded analytics show ' + names +
+      ' below the benchmark for B2B SaaS at your ARR band. Either the measurement is not capturing what you think it is, or the system is weaker than it feels from the inside. Both are worth ten minutes before your next planning session.</div>';
+  });
+
+  const period = (an.meta && an.meta.period_start && an.meta.period_end)
+    ? an.meta.period_start + ' to ' + an.meta.period_end : 'period not stated in file';
+
+  const heldNote = held.length
+    ? '<p class="muted" style="margin-top:16px;font-size:13px;line-height:1.6">' + held.length +
+      ' value(s) could not be read with confidence and were excluded from this analysis. They are stored against your record for manual review.</p>'
+    : '';
+
+  return `
+  <div class="sec an-sec">
+    <span class="eyebrow">Website analytics — measured</span>
+    <h2>What your website actually did.</h2>
+    <p class="muted" style="margin-top:8px;font-size:14px">
+      Source: ${an.provider === 'clarity' ? 'Microsoft Clarity' : 'Google Analytics'} export ·
+      ${period} · ${used.length} metrics read · confidence tier 0.80 (document extract)
+    </p>
+    ${rows}
+    ${conflicts}
+    ${heldNote}
+  </div>`;
 }
 
 /* ---- screen 3 : report ---- */
@@ -520,7 +1012,7 @@ function generate(){
             : growth>=50?["Developing","#EF9F27","rgba(239,159,39,.12)"]
             : ["At risk","#ff6b6b","rgba(255,107,107,.12)"];
 
-  const verdict = growth>=85
+  const verdict_text = growth>=85
       ? "Your GTM is operating as a system. The work now is compounding — protect what's working and widen your lead."
       : growth>=70
       ? "You're above your vertical's cohort median. The gains from here come from fixing one binding constraint, not spreading effort thin."
@@ -577,7 +1069,7 @@ function generate(){
       <div class="score-verdict">
         <span class="band mono" style="color:${band[1]};background:${band[2]}">${band[0]} · vs ${P.vertical} median ${median}</span>
         <h2>${growth>=median?"Above":"Below"} your cohort by ${Math.abs(growth-median)} points.</h2>
-        <p>${verdict}</p>
+        <p>${verdict_text}</p>
       </div>
     </div>
 
@@ -602,6 +1094,8 @@ function generate(){
       </div>
     </div>
 
+    ${analyticsBlock(scores)}
+
     <div class="sec">
       <span class="eyebrow">Strengths & gaps</span>
       <div class="twocol">
@@ -624,9 +1118,39 @@ function generate(){
     </div>
   `;
 
-  /* [wire-up] here: POST {profile:P, answers:state.answers, scores, growth, constraint}
-     → Supabase `leads` insert, then Cloudflare Worker for LLM narrative.
-     Left out of this build so the page has zero external dependencies. */
+  /* ---- persist: leads → reports → analytics_uploads → analytics_metrics ----
+     Fire-and-forget. A database failure must never stop the user seeing
+     their report, so every error is swallowed after logging. */
+  try {
+    persist({
+      profile: P,
+      answers: state.answers,
+      scores: scores,
+      growth: growth,
+      constraintKey: constraint,
+      constraintLabel: cLabel,
+      median: median,
+      reportObject: {
+        growth_score: growth,
+        band: band[0],
+        verdict: verdict_text,
+        engine_scores: scores,
+        weights: w,
+        constraint: { key: constraint, label: cLabel, score: cScore, offer: off },
+        strengths: top,
+        weaknesses: bottom,
+        analytics: {
+          attached: an.metrics.length > 0,
+          provider: an.provider,
+          period_start: an.meta ? an.meta.period_start : null,
+          period_end: an.meta ? an.meta.period_end : null,
+          metric_count: an.metrics.length,
+          needs_review: an.meta ? !!an.meta.needs_review : false
+        },
+        generated_at: new Date().toISOString()
+      }
+    }).catch(function(e){ console.warn('[gcc] persist failed:', e.message); });
+  } catch(e) { console.warn('[gcc] persist threw:', e); }
 
   $('topTag').textContent=P.company+" — "+growth+"/100";
   show('s3');
