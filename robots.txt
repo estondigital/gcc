@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://growthclarity-saas-prelaunch.easycrane26.chatgpt.site/sitemap.xml
