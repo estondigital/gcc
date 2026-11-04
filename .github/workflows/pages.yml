@@ -1,0 +1,30 @@
+name: Deploy Growth Clarity website
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Prepare paths for this repository
+        run: node scripts/prepare-pages.mjs "${{ steps.pages.outputs.base_path }}"
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

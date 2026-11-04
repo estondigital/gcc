@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://www.growthclarityco.com/sitemap.xml
